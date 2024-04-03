@@ -36,6 +36,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -49,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

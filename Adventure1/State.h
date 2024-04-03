@@ -6,12 +6,17 @@
 //game will have 1 or more "state", just click 1 state to see
 class State
 {
-private:
+protected:
 	RenderWindow* window; // ok this is the target 
-	vector <Texture*> textures; // what this state look like
+	map <string, int>* supportedKeys; // point to the supported keys in game.h
+	map <string, int> keybinds; // keybinds: what happen if i click this key?
 	bool quit;
+
+	vector <Texture*> textures; // what this state look like
+
+	virtual void InitKeybinds() = 0;
 public:
-	State(RenderWindow* window);
+	State(RenderWindow* window, map <string,int>* supportedKeys);
 	~State();
 
 	virtual void EndState() = 0;
@@ -19,6 +24,6 @@ public:
 	virtual void Update(const float& deltaTime) = 0; //update the state with some input.
 	virtual void Render(RenderTarget* target=nullptr) = 0; // draw the state on window (by default) on sth else if u want
 	const bool& GetQuit() const;
-	virtual void UpdateKeybinds(const float& deltaTime) = 0;
+	virtual void UpdateInput(const float& deltaTime) = 0;
 };
 

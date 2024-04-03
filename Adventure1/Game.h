@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameState.h"
+#include "MainMenuState.h"
 
 using namespace sf;
 using namespace std;
@@ -20,9 +21,14 @@ private:
 	// will be pop out and reveal other States
 	stack <State*> states; 
 
+
+	//supported keys in game
+	map <string, int> supportedKeys;
+
 	//init
 	void InitWindow();
 	void InitStates();
+	void InitKeys();
 
 public:
 	//constructor & deconstructor

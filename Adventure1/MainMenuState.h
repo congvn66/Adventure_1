@@ -1,17 +1,15 @@
 #pragma once
 #include "State.h"
-
-class GameState :
+class MainMenuState :
     public State
 {
 private:
-    Entity player;
+    RectangleShape background;
 
     void InitKeybinds();
 public:
-    //ok, basic things that a state must have:
-    GameState(RenderWindow* window, map <string, int>* supportedKeys);
-    ~GameState();
+    MainMenuState(RenderWindow* window, map <string, int>* supportedKeys);
+    ~MainMenuState();
 
     void EndState();
     void Update(const float& deltaTime);

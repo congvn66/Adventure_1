@@ -14,12 +14,24 @@ void Game::InitWindow()
 void Game::InitStates()
 {
 	//only once per app starts.
-	this->states.push(new GameState(this->window));
+	this->states.push(new GameState(this->window, &this->supportedKeys));
+	this->states.push(new MainMenuState(this->window,&this->supportedKeys));
+}
+
+void Game::InitKeys()
+{
+	//add supported keys
+	this->supportedKeys["A"] = Keyboard::Key::A;
+	this->supportedKeys["S"] = Keyboard::Key::S;
+	this->supportedKeys["D"] = Keyboard::Key::D;
+	this->supportedKeys["W"] = Keyboard::Key::W;
+	this->supportedKeys["ESC"] = Keyboard::Key::Escape;
 }
 
 Game::Game()
 {
 	this->InitWindow();
+	this->InitKeys();
 	this->InitStates();
 }
 
@@ -64,7 +76,7 @@ void Game::Render()
 
 	//render things
 	if (!this->states.empty()) {
-		this->states.top()->Render(this->window);
+		this->states.top()->Render();
 	}
 	this->window->display();
 }
