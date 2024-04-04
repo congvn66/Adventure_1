@@ -5,17 +5,32 @@
 //init func
 void Game::InitWindow()
 {
-	//only once per app starts.
-	this->window = new RenderWindow(VideoMode(1920, 1080), "Adventure 1");
+	this->fullscreen = true;
+	this->settings.antialiasingLevel = this->AALevel;
+	if (this->fullscreen) {
+		this->window = new RenderWindow(VideoMode(1920, 1080), "Adventure 1", Style::Fullscreen, settings);
+	}
+	else {
+		this->window = new RenderWindow(VideoMode(1920, 1080), "Adventure 1", Style::Titlebar |Style :: Close, settings);
+	}
 	this->window->setFramerateLimit(120);
 	this->window->setVerticalSyncEnabled(false);
+}
+
+void Game::InitVal()
+{
+	//only once per app starts.
+	this->videoModes = VideoMode::getFullscreenModes();
+	this->fullscreen = false;
+	bool verticalSync = false;
+	unsigned AALevel = 0;
 }
 
 void Game::InitStates()
 {
 	//only once per app starts.
-	this->states.push(new GameState(this->window, &this->supportedKeys));
-	this->states.push(new MainMenuState(this->window,&this->supportedKeys));
+	/*this->states.push(new GameState(this->window, &this->supportedKeys));*/
+	this->states.push(new MainMenuState(this->window,&this->supportedKeys,&this->states));
 }
 
 void Game::InitKeys()
@@ -30,6 +45,7 @@ void Game::InitKeys()
 
 Game::Game()
 {
+	this->InitVal();
 	this->InitWindow();
 	this->InitKeys();
 	this->InitStates();
@@ -58,6 +74,8 @@ void Game::Update()
 	if (!this->states.empty()) {
 		/*cout << this->states.size() << endl;*/
 		this->states.top()->Update(this->deltaTime);
+
+		//check 4 quit
 		if (this->states.top()->GetQuit()) {
 			this->states.top()->EndState();
 			delete this->states.top();

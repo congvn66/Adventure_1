@@ -10,10 +10,9 @@ private:
     void InitKeybinds();
 public:
     //ok, basic things that a state must have:
-    GameState(RenderWindow* window, map <string, int>* supportedKeys);
+    GameState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
     ~GameState();
 
-    void EndState();
     void Update(const float& deltaTime);
     void Render(RenderTarget* target = nullptr);
     void UpdateInput(const float& deltaTime);

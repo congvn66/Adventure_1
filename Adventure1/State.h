@@ -7,23 +7,32 @@
 class State
 {
 protected:
+	stack <State*>* states; // a pointer to a stack full of state pointers
 	RenderWindow* window; // ok this is the target 
 	map <string, int>* supportedKeys; // point to the supported keys in game.h
 	map <string, int> keybinds; // keybinds: what happen if i click this key?
-	bool quit;
+
+	bool quit; // check to escape this state?
+
+	//mouse pos
+	Vector2i mousePosScreen;
+	Vector2i mousePosWindow;
+	Vector2f mousePosView;
 
 	vector <Texture*> textures; // what this state look like
 
 	virtual void InitKeybinds() = 0;
 public:
-	State(RenderWindow* window, map <string,int>* supportedKeys);
+	State(RenderWindow* window, map <string,int>* supportedKeys, stack <State*>* states);
 	~State();
 
-	virtual void EndState() = 0;
-	virtual void CheckQuit() ; // i dont know wut 2 do w/ dis
+	void EndState();
+	/*virtual void EndStateUpdate() =0;*/ // update end of the state. 
+
 	virtual void Update(const float& deltaTime) = 0; //update the state with some input.
 	virtual void Render(RenderTarget* target=nullptr) = 0; // draw the state on window (by default) on sth else if u want
 	const bool& GetQuit() const;
 	virtual void UpdateInput(const float& deltaTime) = 0;
+	virtual void UpdateMousePos();
 };
 

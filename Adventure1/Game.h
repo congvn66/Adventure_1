@@ -14,7 +14,11 @@ private:
 	Event event;
 	float deltaTime;
 	Clock clock;
+	ContextSettings settings;
+	bool fullscreen;
+	unsigned AALevel;
 
+	vector <VideoMode> videoModes;
 
 	// just like powerpoint presentation, 
 	// for ex: if u click "Exit" the GameState 
@@ -26,6 +30,7 @@ private:
 	map <string, int> supportedKeys;
 
 	//init
+	void InitVal();
 	void InitWindow();
 	void InitStates();
 	void InitKeys();
