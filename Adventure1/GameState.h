@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "State.h"
 
+//state of the window when we in the game
 class GameState :
     public State
 {
@@ -12,7 +13,6 @@ private:
     void InitTexture();
     void InitPlayer();
 public:
-    //ok, basic things that a state must have:
     GameState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
     ~GameState();
 

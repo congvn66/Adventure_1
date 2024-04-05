@@ -18,11 +18,11 @@ void MainMenuState::InitBackground()
 {
 	this->background.setSize(Vector2f(this->window->getSize().x, this->window->getSize().y));
 	if (this->texture.loadFromFile("Assets/Image/Background/mainmenubackground.jpg")) {
-		cout << "Main menu's background loaded!" << endl;
+		cout << "Main menu: background loaded!" << endl;
 		this->background.setTexture(&this->texture);
 	}
 	else {
-		cout << "Main menu's background failed to load!";
+		cout << "Main menu: background failed to load!";
 	}
 }
 
@@ -35,10 +35,10 @@ void MainMenuState::InitFont()
 {	
 	//load font
 	if (font.loadFromFile("Assets/Font/ARCADECLASSIC.TTF")) {
-		cout << "Font loaded!" << endl;
+		cout << "Main menu: Font loaded!" << endl;
 	}
 	else {
-		cout << "Font failed to load!" << endl;
+		cout << "Main menu: Font failed to load!" << endl;
 	}
 }
 
@@ -106,6 +106,13 @@ void MainMenuState::UpdateButton()
 	if (this->buttons["QUIT"]->IsPressed()) {
 		this->EndState();
 	}
+
+	//editor
+	if (this->buttons["EDITOR"]->IsPressed()) {
+		this->states->push(new EditorState(this->window, this->supportedKeys, this->states));
+	}
+
+	//new game
 	if (this->buttons["GAME"]->IsPressed()) {
 		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
 	}

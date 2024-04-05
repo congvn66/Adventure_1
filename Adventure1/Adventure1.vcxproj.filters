@@ -51,6 +51,12 @@
     <ClCompile Include="Player.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -76,6 +82,12 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorState.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

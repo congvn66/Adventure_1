@@ -16,6 +16,45 @@ const Vector2f& MovementComponent::GetVelocity() const
 	return this->velocity;
 }
 
+const bool MovementComponent::GetState(const short unsigned state) const
+{
+	switch (state) {
+	case IDLE:
+		if (this->velocity.x == 0.f && this->velocity.y == 0.f) {
+			return true;
+		}
+		break;
+	case M:
+		if (this->velocity.x != 0.f || this->velocity.y != 0.f) {
+			return true;
+		}
+		break;
+	case M_LEFT:
+		if (this->velocity.x < 0.f) {
+			return true;
+		}
+		break;
+	case M_RIGHT:
+		if (this->velocity.x > 0.f) {
+			return true;
+		}
+		break;
+	case M_DOWN:
+		if (this->velocity.y > 0.f) {
+			return true;
+		}
+		break;
+	case M_UP:
+		if (this->velocity.y < 0.f) {
+			return true;
+		}
+		break;
+	default:
+		break;
+	}
+	return false;
+}
+
 void MovementComponent::Move(const float dirX, const float dirY, const float& dt)
 {
 	//acceleration

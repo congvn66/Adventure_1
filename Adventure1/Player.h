@@ -6,13 +6,15 @@ class Player :
 private:
     //val
 
+
     //init
     void InitVal();
-    void InitComponents();
+    void InitComponents(); // init its own abilities
 
 public:
     //con & de
-    Player(float x, float y, Texture& texture);
+    Player(float x, float y, Texture& textureSheet);
     ~Player();
+    virtual void Update(const float& dt);
 };
 

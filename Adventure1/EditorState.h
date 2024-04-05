@@ -1,31 +1,26 @@
 #pragma once
 #include "State.h"
 #include "Button.h"
-#include "GameState.h"
-#include "EditorState.h"
 
-class MainMenuState :
+class EditorState :
     public State
 {
 private:
-    //menu
-    RectangleShape background;
-
+   
     //button elements
     Font font;
     map<string, Button*> buttons;
-    Texture texture;
 
     //init
     void InitVal();
-    void InitBackground();
     void InitKeybinds();
     void InitFont();
     void InitButton();
+    void InitBackground();
 public:
     //constructor, deconstructor
-    MainMenuState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
-    ~MainMenuState();
+    EditorState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
+    ~EditorState();
 
     //just look in cpp file.
     void Update(const float& deltaTime);
@@ -33,5 +28,6 @@ public:
     void UpdateButton();
     void Render(RenderTarget* target = nullptr);
     void RenderButtons(RenderTarget* target = nullptr);
+
 };
 
