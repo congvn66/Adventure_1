@@ -32,6 +32,7 @@ void Button::Update(const Vector2f mousePos)
 {
 	//idle
 	this->buttonState = B_IDLE;
+	this->text.setFillColor(Color::Black);
 
 	//hover
 	if (this->shape.getGlobalBounds().contains(mousePos)) {
@@ -50,10 +51,12 @@ void Button::Update(const Vector2f mousePos)
 		this->shape.setFillColor(this->idleColor);
 		break;
 	case B_ACTIVATED:
-		this->shape.setFillColor(this->activeColor);
+		this->shape.setFillColor(this->activeColor); 
+		this->text.setFillColor(Color::White);
 		break;
 	case B_HOVER:
 		this->shape.setFillColor(this->hoverColor);
+		this->text.setFillColor(Color::White);
 		break;
 	default:
 		break;

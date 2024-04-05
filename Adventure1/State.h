@@ -19,7 +19,7 @@ protected:
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
 
-	vector <Texture*> textures; // what this state look like
+	map <string,Texture> textures; //the textures that this state contain
 
 	virtual void InitKeybinds() = 0;
 public:
