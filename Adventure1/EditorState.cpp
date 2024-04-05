@@ -73,7 +73,7 @@ void EditorState::Render(RenderTarget* target)
 		target = this->window;
 	}
 	//render buttons
-	this->RenderButtons(target);
+	this->RenderButtons(*target);
 }
 
 void EditorState::UpdateInput(const float& deltaTime)
@@ -92,7 +92,7 @@ void EditorState::UpdateButton()
 	}
 }
 
-void EditorState::RenderButtons(RenderTarget* target)
+void EditorState::RenderButtons(RenderTarget& target)
 {
 	//this how to loop thru all elements in a map?
 	for (auto& it : this->buttons) {

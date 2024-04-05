@@ -4,6 +4,7 @@ AnimationComponent::AnimationComponent(Sprite& sprite, Texture& textureSheet)
 	:sprite(sprite), textureSheet(textureSheet)
 {
 	this->lastAnimation = nullptr;
+	this->priorityAnimation = nullptr;
 }
 
 AnimationComponent::~AnimationComponent()
@@ -21,17 +22,73 @@ void AnimationComponent::AddAnimation(const string name, float animationTimer,
 }
 
 
-void AnimationComponent::Play(const string name, const float& dt)
+void AnimationComponent::Play(const string name, const float& dt, const bool prior)
 {
-	//i even cant realise the diffirent :D
-	if (this->lastAnimation != this->animation[name]) {
-		if (this->lastAnimation == nullptr) {
-			this->lastAnimation = this->animation[name];
-		}
-		else {
-			this->lastAnimation->Reset();
-			this->lastAnimation = this->animation[name];
+	if (this->priorityAnimation) {
+		if (this->priorityAnimation == this->animation[name]) {
+			if (this->lastAnimation != this->animation[name]) {
+				if (this->lastAnimation == nullptr) {
+					this->lastAnimation = this->animation[name];
+				}
+				else {
+					this->lastAnimation->Reset();
+					this->lastAnimation = this->animation[name];
+				}
+			}
+			if (this->animation[name]->Play(dt)) {
+				this->priorityAnimation = nullptr;
+			}
 		}
 	}
-	this->animation[name]->Play(dt);
+	else {
+		if (prior) {
+			this->priorityAnimation = this->animation[name];
+		}
+		//i even cant realise the diffirent :D
+		if (this->lastAnimation != this->animation[name]) {
+			if (this->lastAnimation == nullptr) {
+				this->lastAnimation = this->animation[name];
+			}
+			else {
+				this->lastAnimation->Reset();
+				this->lastAnimation = this->animation[name];
+			}
+		}
+		this->animation[name]->Play(dt);
+	}
+	
+}
+
+void AnimationComponent::Play(const string name, const float& dt, const float& modifier, 
+	const float& modifier_max, const bool prior)
+{
+	if (this->priorityAnimation) {
+		if (this->priorityAnimation == this->animation[name]) {
+			if (this->lastAnimation != this->animation[name]) {
+				if (this->lastAnimation == nullptr) {
+					this->lastAnimation = this->animation[name];
+				}
+				else {
+					this->lastAnimation->Reset();
+					this->lastAnimation = this->animation[name];
+				}
+			}
+			if (this->animation[name]->Play(dt, abs(modifier / modifier_max))) {
+				this->priorityAnimation = nullptr;
+			}
+		}
+	}
+	else {
+		//i even cant realise the diffirent :D
+		if (this->lastAnimation != this->animation[name]) {
+			if (this->lastAnimation == nullptr) {
+				this->lastAnimation = this->animation[name];
+			}
+			else {
+				this->lastAnimation->Reset();
+				this->lastAnimation = this->animation[name];
+			}
+		}
+		this->animation[name]->Play(dt,abs(modifier/modifier_max));
+	}
 }

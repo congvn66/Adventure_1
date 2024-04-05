@@ -4,6 +4,7 @@ void Entity::InitVal()
 {
 	this->movementComponent = nullptr;
 	this->animationComponent = nullptr;
+	this->hitboxComponent = nullptr;
 }
 
 Entity::Entity()
@@ -15,6 +16,12 @@ Entity::~Entity()
 {
 	delete this->movementComponent; 
 	delete this->animationComponent;
+	delete this->hitboxComponent;
+}
+
+void Entity::CreateHitboxComponent(Sprite& sprite, float offsetX, float offsetY, float width, float height)
+{
+	this->hitboxComponent = new HitboxComponent(sprite, offsetX, offsetY,width, height);
 }
 
 void Entity::CreateMovementComponent(const float maxSpeed,const float acceleration, const float deceleration)
@@ -51,9 +58,10 @@ void Entity::Update(const float& deltaTime)
 
 }
 
-void Entity::Render(RenderTarget* target)
+void Entity::Render(RenderTarget& target)
 {
-	
-	target->draw(this->sprite);
-
+	target.draw(this->sprite);
+	if (this->hitboxComponent) {
+		this->hitboxComponent->Render(target);
+	}
 }

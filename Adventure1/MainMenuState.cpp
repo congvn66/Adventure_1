@@ -50,7 +50,7 @@ void MainMenuState::InitButton()
 	this->buttons["EDITOR"] = new Button(850, 436 + 60, 120.f, 60.f,
 		&this->font, "Editor", Color::Transparent, Color::Transparent, Color::Transparent);
 	this->buttons["OPTION"] = new Button(850, 436 + 120, 120.f, 60.f,
-		&this->font, "Option", Color::Transparent, Color::Transparent, Color::Transparent);
+		&this->font, "Options", Color::Transparent, Color::Transparent, Color::Transparent);
 	this->buttons["QUIT"] = new Button(850, 436 + 180, 120.f, 60.f,
 		&this->font, "Quit", Color::Transparent, Color::Transparent, Color::Transparent);
 }
@@ -87,7 +87,7 @@ void MainMenuState::Render(RenderTarget* target)
 	target->draw(this->background);
 
 	//render buttons
-	this->RenderButtons(target);
+	this->RenderButtons(*target);
 }
 
 void MainMenuState::UpdateInput(const float& deltaTime)
@@ -118,7 +118,7 @@ void MainMenuState::UpdateButton()
 	}
 }
 
-void MainMenuState::RenderButtons(RenderTarget* target)
+void MainMenuState::RenderButtons(RenderTarget& target)
 {
 	//this how to loop thru all elements in a map?
 	for (auto& it : this->buttons) {

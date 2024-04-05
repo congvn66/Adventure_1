@@ -27,7 +27,7 @@ public:
     void UpdateInput(const float& deltaTime);
     void UpdateButton();
     void Render(RenderTarget* target = nullptr);
-    void RenderButtons(RenderTarget* target = nullptr);
+    void RenderButtons(RenderTarget& target);
 
 };
 

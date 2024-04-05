@@ -36,6 +36,6 @@ public:
 	//look in cpp file
 	const bool IsPressed() const;
 	void Update(const Vector2f mousePos);
-	void Render(RenderTarget* target);
+	void Render(RenderTarget& target);
 };
 

@@ -27,6 +27,7 @@ public:
 	MovementComponent(float maxSpeed, Sprite& sprite, float acceleration, float decelaration);
 	~MovementComponent();
 
+	const float& GetMaxSpeed() const;
 	const Vector2f& GetVelocity() const;
 
 	const bool GetState(const short unsigned state) const;

@@ -10,6 +10,12 @@ MovementComponent::~MovementComponent()
 {
 }
 
+const float& MovementComponent::GetMaxSpeed() const
+{
+	// TODO: insert return statement here
+	return this->maxSpeed;
+}
+
 const Vector2f& MovementComponent::GetVelocity() const
 {
 	// TODO: insert return statement here

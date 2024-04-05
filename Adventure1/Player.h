@@ -5,7 +5,7 @@ class Player :
 {
 private:
     //val
-
+    bool attacking;
 
     //init
     void InitVal();

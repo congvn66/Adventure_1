@@ -51,7 +51,7 @@ void GameState::Render(RenderTarget* target)
 	if (target == nullptr) {
 		target = this->window;
 	}
-	this->player->Render(target);
+	this->player->Render(*target);
 	
 }
 
