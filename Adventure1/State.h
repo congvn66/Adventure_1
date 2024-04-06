@@ -14,6 +14,8 @@ protected:
 
 	bool quit; // check to escape this state?
 	bool pause; //check for pause
+	float keyTime;
+	float keyTimeMax;
 
 	//mouse pos
 	Vector2i mousePosScreen;
@@ -31,9 +33,12 @@ public:
 	void PauseState(); // pause the state
 	void UnpauseState(); // same
 
-	virtual void Update(const float& deltaTime) = 0; //update the state with some input.
-	virtual void Render(RenderTarget* target=nullptr) = 0; // draw the state on window (by default) on sth else if u want
 	const bool& GetQuit() const;
+	const bool GetKeyTime();
+
+	virtual void Update(const float& deltaTime) = 0; //update the state with some input.
+	virtual void UpdatekeyTime(const float& dt);
+	virtual void Render(RenderTarget* target=nullptr) = 0; // draw the state on window (by default) on sth else if u want
 	virtual void UpdateInput(const float& deltaTime) = 0;
 	virtual void UpdateMousePos();
 };

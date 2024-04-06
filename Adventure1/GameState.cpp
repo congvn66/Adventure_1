@@ -1,5 +1,7 @@
+#include "stdafx.h"
 #include "GameState.h"
 
+//--------------------------------INITIALIZE------------------------------------------
 void GameState::InitKeybinds()
 {
 	//map added supported keys into funtion name (in fact just map with an int)
@@ -20,13 +22,11 @@ void GameState::InitFont()
 		cout << "Game State: Font failed to load!" << endl;
 	}
 }
-
 void GameState::InitPauseMenu()
 {
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
 	this->pauseMenu->AddButton("QUIT", 800.f, "Quit");
 }
-
 void GameState::InitTexture()
 {
 	Texture temp;
@@ -35,13 +35,14 @@ void GameState::InitTexture()
 	}
 	this->textures["PLAYER_SHEET"] = temp;
 }
-
 void GameState::InitPlayer()
 {
 	this->player = new Player(100, 100, this->textures["PLAYER_SHEET"]);
 }
-
-GameState::GameState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states)
+//--------------------------------INITIALIZE------------------------------------------
+// 
+//---------------------------------CON & DE-------------------------------------------
+GameState::GameState(RenderWindow* window, std::map <string, int>* supportedKeys, stack <State*>* states)
 	:State(window, supportedKeys, states)
 {
 	this->InitKeybinds();
@@ -50,54 +51,54 @@ GameState::GameState(RenderWindow* window, map <string, int>* supportedKeys, sta
 	this->InitPauseMenu();
 	this->InitPlayer();
 }
-
 GameState::~GameState()
 {
 	delete this->player;
 	delete this->pauseMenu;
 }
-
+//---------------------------------CON & DE-------------------------------------------
+// 
+//------------------------------------FUNCTION----------------------------------------
 void GameState::UpdateInput(const float& dt)
 {
-	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE")))) {
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE"))) && this->GetKeyTime()) {
 		//pause if it not paused already
 		if (this->pause == false) {
 			this->PauseState();
 		}
 		else {
-			if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE")))) {
-				this->UnpauseState();
-			}
+			this->UnpauseState();
 		}
 	}
 }
-
 void GameState::Update(const float& deltaTime)
 {
+	//update in main game
 	this->UpdateMousePos();
+	this->UpdatekeyTime(deltaTime);
 	this->UpdateInput(deltaTime);
 	if (this->pause == false) { // unpause
 		this->UpdatePlayerInput(deltaTime);
 		this->player->Update(deltaTime);
 	}
-	else { //pause
+	else { //when in pause menu
 		this->pauseMenu->Update(this->mousePosView);
 		this->UpdatePauseMenuButton();
 	}
 }
-
 void GameState::UpdatePauseMenuButton()
 {
+	//in pause menu
 	if (this->pauseMenu->IsButtonPressed("QUIT")) {
 		this->EndState();
 	}
 }
-
 void GameState::Render(RenderTarget* target)
 {
 	if (target == nullptr) {
 		target = this->window;
 	}
+	this->map.Render(*target);
 	this->player->Render(*target);
 
 	if (this->pause == true) {
@@ -105,7 +106,6 @@ void GameState::Render(RenderTarget* target)
 	}
 	
 }
-
 void GameState::UpdatePlayerInput(const float& deltaTime)
 {
 	//player update
@@ -123,3 +123,4 @@ void GameState::UpdatePlayerInput(const float& deltaTime)
 		this->player->Move(deltaTime, 0.0f, 2.0f);
 	}
 }
+//------------------------------------FUNCTION----------------------------------------

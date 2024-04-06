@@ -1,15 +1,4 @@
 #pragma once
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <vector>
-#include <stack>
-#include <map>
-
-using namespace sf;
 
 enum MovingState {IDLE=0,M,M_LEFT,M_RIGHT,M_UP,M_DOWN};
 

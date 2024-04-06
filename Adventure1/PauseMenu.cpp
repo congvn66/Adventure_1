@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "PauseMenu.h"
 
 PauseMenu::PauseMenu(RenderWindow& window, Font& font)
@@ -30,7 +31,7 @@ PauseMenu::~PauseMenu()
 	}
 }
 
-map<string, Button*>& PauseMenu::GetButton()
+map<string, gui::Button*>& PauseMenu::GetButton()
 {
 	// TODO: insert return statement here
 	return this->buttons;
@@ -47,7 +48,7 @@ void PauseMenu::AddButton(const string key, float y, const string text)
 	float width = 120.f;
 	float height = 60.f;
 	float x = this->container.getPosition().x + this->container.getSize().x / 2.f - width / 2.f;
-	this->buttons[key] = new Button(x, y, width, height,
+	this->buttons[key] = new gui::Button(x, y, width, height,
 		&this->font, text, Color::Transparent, Color::Transparent, Color::Transparent, Color::White, Color::Yellow, Color::Yellow);
 }
 

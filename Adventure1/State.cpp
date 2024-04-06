@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "State.h"
 
 State::State(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states)
@@ -7,6 +8,8 @@ State::State(RenderWindow* window, map <string, int>* supportedKeys, stack <Stat
 	this->states = states;
 	this->quit = false;
 	this->pause = false;
+	this->keyTime = 0.f;
+	this->keyTimeMax = 10.f;
 }
 
 State::~State()
@@ -28,10 +31,26 @@ void State::UnpauseState()
 	this->pause = false;
 }
 
+void State::UpdatekeyTime(const float& dt)
+{
+	if (this->keyTime < this->keyTimeMax) {
+		this->keyTime += 100.f * dt;
+	}
+}
+
 const bool& State::GetQuit() const
 {
 	// TODO: insert return statement here
 	return this->quit;
+}
+
+const bool State::GetKeyTime()
+{
+	if (this->keyTime >= this->keyTimeMax) {
+		this->keyTime = 0.f;
+		return true;
+	}
+	return false;
 }
 
 void State::UpdateMousePos()

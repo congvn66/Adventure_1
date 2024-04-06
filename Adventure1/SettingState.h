@@ -1,20 +1,18 @@
 #pragma once
 #include "State.h"
 #include "Gui.h"
-#include "GameState.h"
-#include "EditorState.h"
-#include "SettingState.h"
 
-class MainMenuState :
+class SettingState :
     public State
 {
 private:
-    //menu
+    //setting
     RectangleShape background;
 
     //button elements
     Font font;
     map<string, gui::Button*> buttons;
+    map<string, gui::DropDownList*> dropdownlist;
     Texture texture;
 
     //init
@@ -22,17 +20,15 @@ private:
     void InitBackground();
     void InitKeybinds();
     void InitFont();
-    void InitButton();
+    void InitGui();
 public:
-    //constructor, deconstructor
-    MainMenuState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
-    ~MainMenuState();
+    SettingState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
+    ~SettingState();
 
-    //just look in cpp file.
     void Update(const float& deltaTime);
     void UpdateInput(const float& deltaTime);
-    void UpdateButton();
+    void UpdateGui(const float& deltaTime);
     void Render(RenderTarget* target = nullptr);
-    void RenderButtons(RenderTarget& target);
+    void RenderGui(RenderTarget& target);
 };
 

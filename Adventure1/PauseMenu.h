@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Button.h"
+#include "Gui.h"
 
 using namespace sf;
 
@@ -12,12 +12,12 @@ private:
 	Font& font;
 	Text text;
 
-	map<string, Button*> buttons;
+	map<string, gui::Button*> buttons;
 public:
 	PauseMenu(RenderWindow& window,Font& font);
 	~PauseMenu();
 
-	map<string, Button*>& GetButton();
+	map<string, gui::Button*>& GetButton();
 
 	const bool IsButtonPressed(const string key);
 

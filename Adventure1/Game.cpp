@@ -1,6 +1,5 @@
+#include "stdafx.h"
 #include "Game.h"
-
-
 
 //init func
 void Game::InitWindow()

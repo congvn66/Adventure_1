@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "MainMenuState.h"
 
 MainMenuState::MainMenuState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states)
@@ -45,13 +46,14 @@ void MainMenuState::InitFont()
 void MainMenuState::InitButton()
 {
 	//setting up buttons
-	this->buttons["GAME"] = new Button(850, 436, 120.f, 60.f,
-		&this->font, "New Game", Color::Transparent, Color::Transparent,Color::Transparent,Color::Black,Color::White,Color::White);
-	this->buttons["EDITOR"] = new Button(850, 436 + 60, 120.f, 60.f,
+	this->buttons["GAME"] = new gui::Button(850, 436, 120.f, 60.f,
+		&this->font, "New Game", Color::Transparent, Color::Transparent,Color::Transparent,
+		Color::Black,Color::White,Color::White);
+	this->buttons["EDITOR"] = new gui::Button(850, 436 + 60, 120.f, 60.f,
 		&this->font, "Editor", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
-	this->buttons["OPTION"] = new Button(850, 436 + 120, 120.f, 60.f,
+	this->buttons["OPTION"] = new gui::Button(850, 436 + 120, 120.f, 60.f,
 		&this->font, "Options", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
-	this->buttons["QUIT"] = new Button(850, 436 + 180, 120.f, 60.f,
+	this->buttons["QUIT"] = new gui::Button(850, 436 + 180, 120.f, 60.f,
 		&this->font, "Quit", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
 }
 
@@ -110,6 +112,11 @@ void MainMenuState::UpdateButton()
 	//editor
 	if (this->buttons["EDITOR"]->IsPressed()) {
 		this->states->push(new EditorState(this->window, this->supportedKeys, this->states));
+	}
+
+	//setting
+	if (this->buttons["OPTION"]->IsPressed()) {
+		this->states->push(new SettingState(this->window, this->supportedKeys, this->states));
 	}
 
 	//new game

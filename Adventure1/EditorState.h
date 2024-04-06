@@ -1,15 +1,22 @@
 #pragma once
 #include "State.h"
-#include "Button.h"
+#include "Gui.h"
+#include "PauseMenu.h";
+#include "TileMap.h"
+
+using namespace gui;
 
 class EditorState :
     public State
 {
 private:
-   
+
+    TileMap map;
+
+    PauseMenu* pauseMenu;
     //button elements
     Font font;
-    map<string, Button*> buttons;
+    std::map<string, Button*> buttons;
 
     //init
     void InitVal();
@@ -17,9 +24,10 @@ private:
     void InitFont();
     void InitButton();
     void InitBackground();
+    void InitPauseMenu();
 public:
     //constructor, deconstructor
-    EditorState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
+    EditorState(RenderWindow* window, std::map <string, int>* supportedKeys, stack <State*>* states);
     ~EditorState();
 
     //just look in cpp file.
@@ -28,6 +36,6 @@ public:
     void UpdateButton();
     void Render(RenderTarget* target = nullptr);
     void RenderButtons(RenderTarget& target);
-
+    void UpdatePauseMenuButton();
 };
 
