@@ -6,6 +6,7 @@ State::State(RenderWindow* window, map <string, int>* supportedKeys, stack <Stat
 	this->supportedKeys = supportedKeys;
 	this->states = states;
 	this->quit = false;
+	this->pause = false;
 }
 
 State::~State()
@@ -15,6 +16,16 @@ State::~State()
 void State::EndState()
 {
 	this->quit = true;
+}
+
+void State::PauseState()
+{
+	this->pause = true;
+}
+
+void State::UnpauseState()
+{
+	this->pause = false;
 }
 
 const bool& State::GetQuit() const

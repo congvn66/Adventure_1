@@ -46,13 +46,13 @@ void MainMenuState::InitButton()
 {
 	//setting up buttons
 	this->buttons["GAME"] = new Button(850, 436, 120.f, 60.f,
-		&this->font, "New Game", Color::Transparent, Color::Transparent, Color::Transparent);
+		&this->font, "New Game", Color::Transparent, Color::Transparent,Color::Transparent,Color::Black,Color::White,Color::White);
 	this->buttons["EDITOR"] = new Button(850, 436 + 60, 120.f, 60.f,
-		&this->font, "Editor", Color::Transparent, Color::Transparent, Color::Transparent);
+		&this->font, "Editor", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
 	this->buttons["OPTION"] = new Button(850, 436 + 120, 120.f, 60.f,
-		&this->font, "Options", Color::Transparent, Color::Transparent, Color::Transparent);
+		&this->font, "Options", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
 	this->buttons["QUIT"] = new Button(850, 436 + 180, 120.f, 60.f,
-		&this->font, "Quit", Color::Transparent, Color::Transparent, Color::Transparent);
+		&this->font, "Quit", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
 }
 
 MainMenuState::~MainMenuState()

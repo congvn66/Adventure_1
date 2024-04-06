@@ -6,6 +6,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <map>
 
 using namespace sf;
 using namespace std;
@@ -27,15 +28,19 @@ private:
 	Color idleColor;
 	Color hoverColor;
 	Color activeColor;
+	Color idleTextColor;
+	Color hoverTextColor;
+	Color activeTextColor;
 public:
 	//constructor, deconstructor
 	Button(float x, float y, float width, float height,Font* font, 
-		string text,Color idleColor, Color hoverColor,Color activeColor);
+		string text,Color idleColor, Color hoverColor,Color activeColor, Color idleTextColor,
+		Color hoverTextColor, Color activeTextColor);
 	~Button();
 	
 	//look in cpp file
 	const bool IsPressed() const;
-	void Update(const Vector2f mousePos);
+	void Update(const Vector2f& mousePos);
 	void Render(RenderTarget& target);
 };
 

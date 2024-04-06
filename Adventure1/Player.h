@@ -15,6 +15,9 @@ public:
     //con & de
     Player(float x, float y, Texture& textureSheet);
     ~Player();
+
+    void UpdateAttack();
+    void UpdateAnimation(const float& dt);
     virtual void Update(const float& dt);
 };
 

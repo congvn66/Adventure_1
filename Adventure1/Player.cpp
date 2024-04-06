@@ -23,23 +23,28 @@ Player::Player(float x, float y, Texture& textureSheet)
 	//add animation
 	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 0, 3, 0, 42, 42);
 	this->animationComponent->AddAnimation("WALK", 80.f, 0, 1, 7, 1, 42, 42);
-	this->animationComponent->AddAnimation("ATTACK", 80.f, 0, 3, 9, 3, 80,42);
+	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 3, 9, 3, 80,42);
 }
 
 Player::~Player()
 {
 }
 
-void Player::Update(const float& dt)
+void Player::UpdateAttack()
 {
-	//update pos with movement input
-	this->movementComponent->Update(dt);
+	
+}
 
+void Player::UpdateAnimation(const float& dt)
+{
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 		this->attacking = true;
 	}
 	if (this->attacking) {
 		this->animationComponent->Play("ATTACK", dt, true);
+		if (this->animationComponent->IsDone("ATTACK")) {
+			this->attacking = false;
+		}
 	}
 	//play animation with each state of the player
 	if (this->movementComponent->GetState(IDLE)) {
@@ -49,7 +54,7 @@ void Player::Update(const float& dt)
 	{
 		this->sprite.setOrigin(0.f, 0.f);
 		this->sprite.setScale(4.f, 4.f);
-		this->animationComponent->Play("WALK", dt,this->movementComponent->GetVelocity().x,this->movementComponent->GetMaxSpeed());
+		this->animationComponent->Play("WALK", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 	else if (this->movementComponent->GetState(M_LEFT)) {
 		this->sprite.setOrigin(42.f, 0.f);
@@ -62,6 +67,17 @@ void Player::Update(const float& dt)
 	else if (this->movementComponent->GetState(M_DOWN)) {
 		this->animationComponent->Play("WALK", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
+}
+
+void Player::Update(const float& dt)
+{
+	//update pos with movement input
+	this->movementComponent->Update(dt);
+
+	this->UpdateAttack();
+	
+	this->UpdateAnimation(dt);
+	
 	this->hitboxComponent->Update();
 
 }

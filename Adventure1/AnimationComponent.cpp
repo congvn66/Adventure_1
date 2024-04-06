@@ -14,6 +14,12 @@ AnimationComponent::~AnimationComponent()
 	}
 }
 
+const bool& AnimationComponent::IsDone( const string name)
+{
+	// TODO: insert return statement here
+	return this->animation[name]->IsDone();
+}
+
 void AnimationComponent::AddAnimation(const string name, float animationTimer,
 	int startFrameX, int startFrameY, int frameOnX, int frameOnY, int width, int height)
 {

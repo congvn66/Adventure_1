@@ -10,6 +10,22 @@ void GameState::InitKeybinds()
 	this->keybinds["MOVE_RIGHT"] = this->supportedKeys->at("D");
 
 }
+void GameState::InitFont()
+{
+	//load font
+	if (this->font.loadFromFile("Assets/Font/ARCADECLASSIC.TTF")) {
+		cout << "Game State: Font loaded!" << endl;
+	}
+	else {
+		cout << "Game State: Font failed to load!" << endl;
+	}
+}
+
+void GameState::InitPauseMenu()
+{
+	this->pauseMenu = new PauseMenu(*this->window, this->font);
+	this->pauseMenu->AddButton("QUIT", 800.f, "Quit");
+}
 
 void GameState::InitTexture()
 {
@@ -26,24 +42,55 @@ void GameState::InitPlayer()
 }
 
 GameState::GameState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states)
-	:State(window,supportedKeys, states)
+	:State(window, supportedKeys, states)
 {
 	this->InitKeybinds();
+	this->InitFont();
 	this->InitTexture();
+	this->InitPauseMenu();
 	this->InitPlayer();
 }
 
 GameState::~GameState()
 {
 	delete this->player;
+	delete this->pauseMenu;
+}
+
+void GameState::UpdateInput(const float& dt)
+{
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE")))) {
+		//pause if it not paused already
+		if (this->pause == false) {
+			this->PauseState();
+		}
+		else {
+			if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE")))) {
+				this->UnpauseState();
+			}
+		}
+	}
 }
 
 void GameState::Update(const float& deltaTime)
 {
 	this->UpdateMousePos();
 	this->UpdateInput(deltaTime);
-	this->player->Update(deltaTime);
+	if (this->pause == false) { // unpause
+		this->UpdatePlayerInput(deltaTime);
+		this->player->Update(deltaTime);
+	}
+	else { //pause
+		this->pauseMenu->Update(this->mousePosView);
+		this->UpdatePauseMenuButton();
+	}
+}
 
+void GameState::UpdatePauseMenuButton()
+{
+	if (this->pauseMenu->IsButtonPressed("QUIT")) {
+		this->EndState();
+	}
 }
 
 void GameState::Render(RenderTarget* target)
@@ -52,10 +99,14 @@ void GameState::Render(RenderTarget* target)
 		target = this->window;
 	}
 	this->player->Render(*target);
+
+	if (this->pause == true) {
+		this->pauseMenu->Render(*target);
+	}
 	
 }
 
-void GameState::UpdateInput(const float& deltaTime)
+void GameState::UpdatePlayerInput(const float& deltaTime)
 {
 	//player update
 	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_LEFT")))) {
@@ -70,9 +121,5 @@ void GameState::UpdateInput(const float& deltaTime)
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_DOWN")))) {
 		this->player->Move(deltaTime, 0.0f, 2.0f);
-	}
-
-	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE")))) {
-		this->EndState();
 	}
 }

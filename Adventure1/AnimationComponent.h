@@ -47,8 +47,8 @@ private:
 			this->sprite.setTextureRect(this->startRect);
 			this->sprite.setScale(Vector2f(4, 4));
 		}
-		bool Play(const float& dt) {
-			bool done = false;
+		const bool& Play(const float& dt) {
+			this->done = false;
 			//update timer
 			this->timer += 500.f * dt;
 			if (this->timer > this->animationTimer) {
@@ -63,15 +63,15 @@ private:
 				//reset
 				else {
 					this->curRect.left = this->startRect.left;
-					done = true;
+					this->done = true;
 				}
 				this->sprite.setTextureRect(this->curRect);
 			}
-			return done;
+			return this->done;
 		}
-		bool Play(const float& dt, float mod_percent) {
+		const bool& Play(const float& dt, float mod_percent) {
 			//update timer
-			bool done = false;
+			this -> done = false;
 			if (mod_percent < 0.5f) {
 				mod_percent = 0.5f;
 			}
@@ -88,15 +88,18 @@ private:
 				//reset
 				else {
 					this->curRect.left = this->startRect.left;
-					done = true;
+					this->done = true;
 				}
 				this->sprite.setTextureRect(this->curRect);
 			}
-			return done;
+			return this->done;
 		}
 		void Reset() {
 			this->timer = this->animationTimer;
 			this->curRect = this->startRect;
+		}
+		const bool& IsDone() const {
+			return this->done;
 		}
 	};
 	Sprite& sprite;
@@ -107,6 +110,8 @@ private:
 public:
 	AnimationComponent(Sprite& sprite, Texture& textureSheet);
 	~AnimationComponent();
+
+	const bool& IsDone(const string name);
 
 	void AddAnimation(const string name, float animationTimer,
 		int startFrameX, int startFrameY, int frameOnX, int frameOnY, int width, int height);

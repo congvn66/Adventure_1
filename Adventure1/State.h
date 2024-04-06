@@ -13,6 +13,7 @@ protected:
 	map <string, int> keybinds; // keybinds: what happen if i click this key?
 
 	bool quit; // check to escape this state?
+	bool pause; //check for pause
 
 	//mouse pos
 	Vector2i mousePosScreen;
@@ -26,8 +27,9 @@ public:
 	State(RenderWindow* window, map <string,int>* supportedKeys, stack <State*>* states);
 	~State();
 
-	void EndState();
-	/*virtual void EndStateUpdate() =0;*/ // update end of the state. 
+	void EndState();//end the state
+	void PauseState(); // pause the state
+	void UnpauseState(); // same
 
 	virtual void Update(const float& deltaTime) = 0; //update the state with some input.
 	virtual void Render(RenderTarget* target=nullptr) = 0; // draw the state on window (by default) on sth else if u want

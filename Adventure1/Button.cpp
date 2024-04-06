@@ -1,7 +1,8 @@
 #include "Button.h"
 
 Button::Button(float x, float y, float width, float height, Font* font,
-	string text, Color idleColor, Color hoverColor, Color activeColor)
+	string text, Color idleColor, Color hoverColor, Color activeColor,Color idleTextColor,
+Color hoverTextColor,Color activeTextColor)
 {
 	//basic settings
 	this->buttonState = B_IDLE;
@@ -21,6 +22,10 @@ Button::Button(float x, float y, float width, float height, Font* font,
 	this->hoverColor = hoverColor;
 	this->activeColor = activeColor;
 
+	this->idleTextColor = idleTextColor;
+	this->hoverTextColor = hoverTextColor;
+	this->activeTextColor = activeTextColor;
+
 	this->shape.setFillColor(idleColor);
 }
 
@@ -28,11 +33,11 @@ Button::~Button()
 {
 }
 
-void Button::Update(const Vector2f mousePos)
+void Button::Update(const Vector2f& mousePos)
 {
 	//idle
 	this->buttonState = B_IDLE;
-	this->text.setFillColor(Color::Black);
+	this->text.setFillColor(this->idleTextColor);
 
 	//hover
 	if (this->shape.getGlobalBounds().contains(mousePos)) {
@@ -52,11 +57,11 @@ void Button::Update(const Vector2f mousePos)
 		break;
 	case B_ACTIVATED:
 		this->shape.setFillColor(this->activeColor); 
-		this->text.setFillColor(Color::White);
+		this->text.setFillColor(this->hoverTextColor);
 		break;
 	case B_HOVER:
 		this->shape.setFillColor(this->hoverColor);
-		this->text.setFillColor(Color::White);
+		this->text.setFillColor(this->activeTextColor);
 		break;
 	default:
 		break;
