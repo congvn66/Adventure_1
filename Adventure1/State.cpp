@@ -1,15 +1,17 @@
 #include "stdafx.h"
 #include "State.h"
 
-State::State(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states)
+State::State(StateData* stateData)
 {
-	this->window = window;
-	this->supportedKeys = supportedKeys;
-	this->states = states;
+	this->stateData = stateData;
+	this->window = stateData->window;
+	this->supportedKeys = stateData->supportedKeys;
+	this->states = stateData->states;
 	this->quit = false;
 	this->pause = false;
 	this->keyTime = 0.f;
 	this->keyTimeMax = 10.f;
+	this->gridSize = stateData->gridSize;
 }
 
 State::~State()
@@ -59,4 +61,8 @@ void State::UpdateMousePos()
 	this->mousePosScreen = Mouse::getPosition();
 	this->mousePosWindow = Mouse::getPosition(*this->window);
 	this->mousePosView = this->window->mapPixelToCoords(Mouse::getPosition(*this->window));
+	this->mousePosGrid =
+		Vector2u(static_cast<unsigned>(this->mousePosView.x)/static_cast<unsigned>(this->stateData->gridSize),
+		static_cast<unsigned>(this->mousePosView.y)/ static_cast<unsigned>(this->stateData->gridSize));
+	//this for the index in the grid
 }

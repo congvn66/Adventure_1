@@ -25,7 +25,7 @@ private:
     void InitButton();
 public:
     //constructor, deconstructor
-    MainMenuState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
+    MainMenuState(StateData* stateData);
     ~MainMenuState();
 
     //just look in cpp file.

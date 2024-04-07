@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Gui.h"
-
+//-----------------------------BUTTONS---------------------------------------------------
 gui::Button::Button(float x, float y, float width, float height, Font* font,
 	string text, Color idleColor, Color hoverColor, Color activeColor,Color idleTextColor,
 Color hoverTextColor,Color activeTextColor, Color outlineIdleColor,
@@ -36,11 +36,9 @@ Color outlineHoverColor, Color outlineActiveColor, short unsigned id)
 
 	this->shape.setFillColor(idleColor);
 }
-
 gui::Button::~Button()
 {
 }
-
 void gui::Button::Update(const Vector2f& mousePos)
 {
 	//idle
@@ -78,46 +76,39 @@ void gui::Button::Update(const Vector2f& mousePos)
 		break;
 	}
 }
-
 void gui::Button::Render(RenderTarget& target)
 {
 	target.draw(this->shape);
 	target.draw(this->text);
 }
-
 const bool gui::Button:: IsPressed() const {
 	if (this->buttonState == B_ACTIVATED) {
 		return true;
 	}
 	return false;
 }
-
 const string gui::Button::getText() const
 {
 	return this->text.getString();
 }
-
 const short unsigned& gui::Button::GetId() const
 {
 	// TODO: insert return statement here
 	return this->id;
 }
-
 void gui::Button::setText(const string text)
 {
 	this->text.setString(text);
 }
-
 void gui::Button::SetId(const short unsigned id)
 {
 	this->id = id;
 }
+//-----------------------------BUTTONS---------------------------------------------------
 
-
-//------------------------DROP DOWN LIST--------------------------------------------
-
-
-gui::DropDownList::DropDownList(float x, float y,float width, float height,Font& font, string list[], unsigned nrOfElements, unsigned default_index)
+//------------------------DROP DOWN LIST-------------------------------------------------
+gui::DropDownList::DropDownList(float x, float y,float width, float height,Font& font, 
+	string list[], unsigned nrOfElements, unsigned default_index)
 	:font(font), showList(false),keyTimeMax(1.f), keyTime(0.f)
 {
 	this->activeElement = new Button(x, y, width, height,
@@ -131,8 +122,6 @@ gui::DropDownList::DropDownList(float x, float y,float width, float height,Font&
 	}
 	
 }
-	
-
 gui::DropDownList::~DropDownList()
 {
 	delete this->activeElement;
@@ -140,7 +129,6 @@ gui::DropDownList::~DropDownList()
 		delete this->list[i];
 	}
 }
-
 const bool gui::DropDownList::GetKeyTime()
 {
 	if (this->keyTime >= this->keyTimeMax) {
@@ -149,14 +137,12 @@ const bool gui::DropDownList::GetKeyTime()
 	}
 	return false;
 }
-
 void gui::DropDownList::UpdateKeyTime(const float& dt)
 {
 	if (this->keyTime < this->keyTimeMax) {
 		this->keyTime += 10.f * dt;
 	}
 }
-
 void gui::DropDownList::Update(const Vector2f& mousePos, const float& dt)
 {
 	this->UpdateKeyTime(dt);
@@ -185,7 +171,6 @@ void gui::DropDownList::Update(const Vector2f& mousePos, const float& dt)
 	}
 	
 }
-
 void gui::DropDownList::Render(RenderTarget& target)
 {
 	this->activeElement->Render(target);
@@ -195,3 +180,40 @@ void gui::DropDownList::Render(RenderTarget& target)
 		}
 	}
 }
+//------------------------DROP DOWN LIST-------------------------------------------------
+
+//-------------------------TEXTURE SELECTOR----------------------------------------------
+gui::TextureSelector::TextureSelector(float x, float y, float width, float height,const Texture* textureSheet)
+{
+	this->bound.setSize(Vector2f(width, height));
+	this->bound.setPosition(x, y);
+	this->bound.setFillColor(Color(50, 50, 50, 100));
+	this->bound.setOutlineThickness(2.f);
+	this->bound.setOutlineColor(Color(255, 255, 255, 200));
+	this->sheet.setTexture(*textureSheet);
+	this->sheet.setPosition(x, y);
+
+	if (this->sheet.getGlobalBounds().width > this->bound.getGlobalBounds().width) {
+		this->sheet.setTextureRect(IntRect(0, 0, this->bound.getGlobalBounds().width, 
+			this->bound.getGlobalBounds().height));
+	}
+
+	if (this->sheet.getGlobalBounds().height > this->bound.getGlobalBounds().height) {
+		this->sheet.setTextureRect(IntRect(0, 0, this->bound.getGlobalBounds().height,
+			this->bound.getGlobalBounds().width));
+	}
+}
+
+gui::TextureSelector::~TextureSelector()
+{
+}
+void gui::TextureSelector::Update()
+{
+
+}
+void gui::TextureSelector::Render(RenderTarget& target)
+{
+	target.draw(this->bound);
+	target.draw(this->sheet);
+}
+//-------------------------TEXTURE SELECTOR----------------------------------------------

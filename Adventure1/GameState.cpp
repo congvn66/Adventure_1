@@ -27,6 +27,10 @@ void GameState::InitPauseMenu()
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
 	this->pauseMenu->AddButton("QUIT", 800.f, "Quit");
 }
+void GameState::InitTileMap()
+{
+	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10);
+}
 void GameState::InitTexture()
 {
 	Texture temp;
@@ -42,19 +46,21 @@ void GameState::InitPlayer()
 //--------------------------------INITIALIZE------------------------------------------
 // 
 //---------------------------------CON & DE-------------------------------------------
-GameState::GameState(RenderWindow* window, std::map <string, int>* supportedKeys, stack <State*>* states)
-	:State(window, supportedKeys, states)
+GameState::GameState(StateData* stateData)
+	:State(stateData)
 {
 	this->InitKeybinds();
 	this->InitFont();
 	this->InitTexture();
 	this->InitPauseMenu();
 	this->InitPlayer();
+	this->InitTileMap();
 }
 GameState::~GameState()
 {
 	delete this->player;
 	delete this->pauseMenu;
+	delete this->tileMap;
 }
 //---------------------------------CON & DE-------------------------------------------
 // 
@@ -98,7 +104,7 @@ void GameState::Render(RenderTarget* target)
 	if (target == nullptr) {
 		target = this->window;
 	}
-	this->map.Render(*target);
+	this->tileMap->Render(*target);
 	this->player->Render(*target);
 
 	if (this->pause == true) {

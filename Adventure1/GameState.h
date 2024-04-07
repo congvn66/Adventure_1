@@ -14,15 +14,16 @@ private:
     Font font;
     PauseMenu* pauseMenu;
 
-    TileMap map;
+    TileMap* tileMap;
 
     void InitKeybinds();
     void InitTexture();
     void InitPlayer();
     void InitFont();
     void InitPauseMenu();
+    void InitTileMap();
 public:
-    GameState(RenderWindow* window, std::map <string, int>* supportedKeys, stack <State*>* states);
+    GameState(StateData* stateData);
     ~GameState();
     
     void UpdateInput(const float& dt);

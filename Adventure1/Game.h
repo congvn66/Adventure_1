@@ -10,6 +10,7 @@ class Game
 {
 private:
 	//variables
+	StateData stateData;
 	RenderWindow* window;
 	Event event;
 	float deltaTime;
@@ -17,6 +18,7 @@ private:
 	ContextSettings settings;
 	bool fullscreen;
 	unsigned AALevel;
+	float gridSize;
 
 	vector <VideoMode> videoModes;
 
@@ -32,8 +34,9 @@ private:
 	//init
 	void InitVal();
 	void InitWindow();
-	void InitStates();
 	void InitKeys();
+	void InitStateData();
+	void InitStates();
 
 public:
 	//constructor & deconstructor

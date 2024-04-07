@@ -22,7 +22,7 @@ private:
     void InitFont();
     void InitGui();
 public:
-    SettingState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states);
+    SettingState(StateData* stateData);
     ~SettingState();
 
     void Update(const float& deltaTime);

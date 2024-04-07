@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "SettingState.h"
 
-SettingState::SettingState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states)
-	:State(window, supportedKeys, states)
+SettingState::SettingState(StateData* stateData)
+	:State(stateData)
 {
 	this->InitVal();
 	this->InitFont();

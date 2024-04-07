@@ -50,7 +50,6 @@ namespace gui {
 		void Update(const Vector2f& mousePos);
 		void Render(RenderTarget& target);
 	};
-
 	class DropDownList {
 	private:
 		float keyTime;
@@ -67,5 +66,17 @@ namespace gui {
 		void UpdateKeyTime(const float& dt);
 		void Update(const Vector2f& mousePos, const float& dt);
 		void Render(RenderTarget& target);
+	};
+	class TextureSelector {
+	private:
+		RectangleShape bound;
+		Sprite sheet;
+	public:
+		TextureSelector(float x, float y, float width, float height, const Texture* textureSheet);
+		~TextureSelector();
+
+		void Update();
+		void Render(RenderTarget& target);
+
 	};
 }

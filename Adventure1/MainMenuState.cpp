@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState(RenderWindow* window, map <string, int>* supportedKeys, stack <State*>* states)
-	:State(window,supportedKeys, states)
+MainMenuState::MainMenuState(StateData* stateData)
+	:State(stateData)
 {
 	this->InitVal();
 	this->InitFont();
@@ -111,17 +111,17 @@ void MainMenuState::UpdateButton()
 
 	//editor
 	if (this->buttons["EDITOR"]->IsPressed()) {
-		this->states->push(new EditorState(this->window, this->supportedKeys, this->states));
+		this->states->push(new EditorState(this->stateData));
 	}
 
 	//setting
 	if (this->buttons["OPTION"]->IsPressed()) {
-		this->states->push(new SettingState(this->window, this->supportedKeys, this->states));
+		this->states->push(new SettingState(this->stateData));
 	}
 
 	//new game
 	if (this->buttons["GAME"]->IsPressed()) {
-		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
+		this->states->push(new GameState(this->stateData));
 	}
 }
 

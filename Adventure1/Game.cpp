@@ -23,13 +23,14 @@ void Game::InitVal()
 	this->fullscreen = false;
 	bool verticalSync = false;
 	unsigned AALevel = 0;
+	this->gridSize = 100.f;
 }
 
 void Game::InitStates()
 {
 	//only once per app starts.
 	/*this->states.push(new GameState(this->window, &this->supportedKeys));*/
-	this->states.push(new MainMenuState(this->window,&this->supportedKeys,&this->states));
+	this->states.push(new MainMenuState(&this->stateData));
 }
 
 void Game::InitKeys()
@@ -42,11 +43,20 @@ void Game::InitKeys()
 	this->supportedKeys["ESC"] = Keyboard::Key::Escape;
 }
 
+void Game::InitStateData()
+{
+	this->stateData.window = this->window;
+	this->stateData.supportedKeys = &this->supportedKeys;
+	this->stateData.states = &this->states;
+	this->stateData.gridSize = this->gridSize;
+}
+
 Game::Game()
 {
 	this->InitVal();
 	this->InitWindow();
 	this->InitKeys();
+	this->InitStateData();
 	this->InitStates();
 }
 
