@@ -16,6 +16,7 @@ private:
     IntRect texRect;
     Text cursorText;
     gui::TextureSelector* texSelector;
+    RectangleShape sidebar;
 
     //pmenu
     PauseMenu* pauseMenu;
@@ -40,7 +41,7 @@ public:
     ~EditorState();
 
     //just look in cpp file.
-    void UpdateGui();
+    void UpdateGui(const float& deltaTime);
     void UpdateEditorInput(const float deltaTime);
     void Update(const float& deltaTime);
     void UpdateInput(const float& deltaTime);

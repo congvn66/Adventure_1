@@ -72,6 +72,10 @@ void EditorState::InitPauseMenu()
 }
 void EditorState::InitGui()
 {
+	this->sidebar.setSize(Vector2f(80, 1080));
+	this->sidebar.setFillColor(Color(50, 50, 50, 100));
+	this->sidebar.setOutlineColor(Color(200, 200, 200, 150));
+	this->sidebar.setOutlineThickness(1.f);
 	this->selectorRect.setSize(Vector2f(this->stateData->gridSize, this->stateData->gridSize));
 	this->selectorRect.setFillColor(Color(209, 222, 209,150));
 	this->selectorRect.setOutlineThickness(1.0f);
@@ -82,7 +86,8 @@ void EditorState::InitGui()
 	this->selectorRect.setTextureRect(this->texRect);
 
 	//texture selector
-	this->texSelector = new gui::TextureSelector(20.f, 20.f, 500.f, 500.f, this->tileMap->GetTileSheet());
+	this->texSelector = new gui::TextureSelector(20.f, 20.f, 500.f, 500.f, this->stateData->gridSize, 
+		this->tileMap->GetTileSheet(),this->font,"Hide");
 }
 void EditorState::InitTileMap()
 {
@@ -107,7 +112,7 @@ void EditorState::Update(const float& deltaTime)
 		//update states of buttons
 		this->UpdateButton();
 		//for GUI
-		this->UpdateGui();
+		this->UpdateGui(deltaTime);
 		//for functionalties
 		this->UpdateEditorInput(deltaTime);
 	}
@@ -140,9 +145,12 @@ void EditorState::Render(RenderTarget* target)
 }
 void EditorState::RenderGui(RenderTarget& target)
 {
-	target.draw(this->selectorRect);
+	if (!this->texSelector->GetActive()) {
+		target.draw(this->selectorRect);
+	}
 	this->texSelector->Render(target);
 	target.draw(this->cursorText);
+	target.draw(this->sidebar);
 }
 void EditorState::UpdateInput(const float& deltaTime)
 {
@@ -164,10 +172,16 @@ void EditorState::UpdateButton()
 		it.second->Update(this->mousePosView);
 	}
 }
-void EditorState::UpdateGui()
+void EditorState::UpdateGui(const float& deltaTime)
 {
-	this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize,
-		this->mousePosGrid.y * this->stateData->gridSize); //this for the actual pos
+	//texture selector
+	this->texSelector->Update(this->mousePosWindow,deltaTime);
+	if (!this->texSelector->GetActive()) {
+		//update for the preview tile
+		this->selectorRect.setTextureRect(this->texRect);
+		this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize,
+			this->mousePosGrid.y * this->stateData->gridSize); //this for the actual pos
+	}
 
 	//set pos 4 the below
 	this->cursorText.setPosition(this->mousePosView.x + 100.f, this->mousePosView.y + 50.f);
@@ -179,29 +193,29 @@ void EditorState::UpdateGui()
 		this->texRect.left << " _ " << this->texRect.top;
 	this->cursorText.setString(ss.str());
 
-	//update for the preview tile
-	this->selectorRect.setTextureRect(this->texRect);
-
-	//texture selector
-	this->texSelector->Update();
+	
 }
 void EditorState::UpdateEditorInput(const float deltaTime)
 {
 	//add tiles
 	if (Mouse::isButtonPressed(Mouse::Left) && this->GetKeyTime()) {
-		//add
-		this->tileMap->AddTile(this->mousePosGrid.x, this->mousePosGrid.y,0, this->texRect);
+		if (!this->sidebar.getGlobalBounds().contains(Vector2f(this->mousePosWindow))) {
+			if (!this->texSelector->GetActive()) {
+				//add
+				this->tileMap->AddTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->texRect);
+			}
+			else {
+				this->texRect = this->texSelector->GetTexRect();
+			}
+		}
 	}
 	//remove
 	else if (Mouse::isButtonPressed(Mouse::Right) && this->GetKeyTime()) {
-		//remove
-		this->tileMap->RemoveTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
-	}
-
-	//change texture
-	if (Keyboard::isKeyPressed(Keyboard::Right) && this->GetKeyTime()) {
-		if (this->texRect.left < 100) {
-			this->texRect.left += 100;
+		if (!this->sidebar.getGlobalBounds().contains(Vector2f(this->mousePosWindow))) {
+			if (!this->texSelector->GetActive()) {
+				//remove
+				this->tileMap->RemoveTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
+			}
 		}
 	}
 }

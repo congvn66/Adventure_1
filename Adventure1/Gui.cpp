@@ -183,15 +183,21 @@ void gui::DropDownList::Render(RenderTarget& target)
 //------------------------DROP DOWN LIST-------------------------------------------------
 
 //-------------------------TEXTURE SELECTOR----------------------------------------------
-gui::TextureSelector::TextureSelector(float x, float y, float width, float height,const Texture* textureSheet)
+gui::TextureSelector::TextureSelector(float x, float y, float width, float height, float gridSize,
+	const Texture* textureSheet, Font& font, string text)
+	:keyTime(0.f), keyTimeMax(1.f)
 {
+	this->hidden = false;
+	this->active = false;
+	this->gridSize = gridSize;
+	float offset = 60.f;
 	this->bound.setSize(Vector2f(width, height));
-	this->bound.setPosition(x, y);
+	this->bound.setPosition(x+offset, y);
 	this->bound.setFillColor(Color(50, 50, 50, 100));
 	this->bound.setOutlineThickness(2.f);
 	this->bound.setOutlineColor(Color(255, 255, 255, 200));
 	this->sheet.setTexture(*textureSheet);
-	this->sheet.setPosition(x, y);
+	this->sheet.setPosition(x+offset, y);
 
 	if (this->sheet.getGlobalBounds().width > this->bound.getGlobalBounds().width) {
 		this->sheet.setTextureRect(IntRect(0, 0, this->bound.getGlobalBounds().width, 
@@ -202,18 +208,90 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 		this->sheet.setTextureRect(IntRect(0, 0, this->bound.getGlobalBounds().height,
 			this->bound.getGlobalBounds().width));
 	}
+
+	this->selector.setPosition(x+offset, y);
+	this->selector.setSize(Vector2f(gridSize, gridSize));
+	this->selector.setFillColor(Color::Transparent);
+	this->selector.setOutlineThickness(1.0f);
+	this->selector.setOutlineColor(Color::Cyan);
+
+	this->texRect.width = static_cast<int>(gridSize);
+	this->texRect.height = static_cast<int>(gridSize);
+
+	this->hide = new gui::Button(0, 0, 100.f, 100.f,
+		&font, text, Color::Green, Color::Cyan, Color::Transparent,
+		Color::White, Color::Yellow, Color::Yellow);
 }
 
 gui::TextureSelector::~TextureSelector()
 {
+	delete this->hide;
 }
-void gui::TextureSelector::Update()
+const bool gui::TextureSelector::GetKeyTime()
 {
+	if (this->keyTime >= this->keyTimeMax) {
+		this->keyTime = 0.f;
+		return true;
+	}
+	return false;
+}
+void gui::TextureSelector::UpdateKeyTime(const float& dt)
+{
+	if (this->keyTime < this->keyTimeMax) {
+		this->keyTime += 10.f * dt;
+	}
+}
+const bool& gui::TextureSelector::GetActive() const
+{
+	return this->active;
+}
+const IntRect& gui::TextureSelector::GetTexRect() const
+{
+	return this->texRect;
+}
+void gui::TextureSelector::Update(Vector2i & mousePosWindow,const float& dt)
+{
+	this->UpdateKeyTime(dt);
+	this->hide->Update(static_cast<Vector2f>(mousePosWindow));
+	if (this->hide->IsPressed()&&this->GetKeyTime()) {
+		if (this->hidden) {
+			this->hidden = false;
+		}
+		else {
+			this->hidden = true;
+		}
+	}
+	if (!this -> hidden) {
+		if (this->bound.getGlobalBounds().contains(static_cast<Vector2f>(mousePosWindow))) {
+			this->active = true;
+		}
+		else {
+			this->active = false;
+		}
+		if (this->active) {
+			this->mousePosGrid.x = ((mousePosWindow.x - static_cast<int>(this->bound.getPosition().x)) /
+				static_cast<unsigned>(this->gridSize));
+			this->mousePosGrid.y = ((mousePosWindow.y - static_cast<int>(this->bound.getPosition().y)) /
+				static_cast<unsigned>(this->gridSize));
+			this->selector.setPosition(this->bound.getPosition().x + this->mousePosGrid.x * this->gridSize,
+				this->bound.getPosition().y + this->mousePosGrid.y * this->gridSize);
+		}
 
+		//update texture rect
+		this->texRect.left = static_cast<int>(this->selector.getPosition().x - this->bound.getPosition().x);
+		this->texRect.top = static_cast<int>(this->selector.getPosition().y - this->bound.getPosition().y);
+	}
 }
 void gui::TextureSelector::Render(RenderTarget& target)
 {
-	target.draw(this->bound);
-	target.draw(this->sheet);
+	if (!this->hidden) {
+		target.draw(this->bound);
+		target.draw(this->sheet);
+
+		if (this->active) {
+			target.draw(this->selector);
+		}
+	}
+	this->hide->Render(target);
 }
 //-------------------------TEXTURE SELECTOR----------------------------------------------
