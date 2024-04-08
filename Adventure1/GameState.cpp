@@ -29,7 +29,7 @@ void GameState::InitPauseMenu()
 }
 void GameState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10);
+	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Assets/Map/tilesheettest.png");
 }
 void GameState::InitTexture()
 {

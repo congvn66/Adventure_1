@@ -7,6 +7,8 @@ using namespace sf;
 class TileMap
 {
 private:
+	void Clear();
+	string texFile;
 	float gridSizeF; // grid size
 	unsigned gridSizeU; // for wut :DDDD
 
@@ -18,7 +20,7 @@ private:
 
 	Texture tileSheet;
 public:
-	TileMap(float gridSize, unsigned width, unsigned height);
+	TileMap(float gridSize, unsigned width, unsigned height, string texFile);
 	~TileMap();
 
 	void Update();
@@ -27,8 +29,9 @@ public:
 	const Texture* GetTileSheet() const;
 
 	//for the editor, i mean this class =)
-	void AddTile(const unsigned x, const unsigned y, const unsigned z, const IntRect texRect);
+	void AddTile(const unsigned x, const unsigned y, const unsigned z, const IntRect texRect,const bool& collision, const short& type);
 	void RemoveTile(const unsigned x, const unsigned y, const unsigned z);
-
+	void SaveToFile(const string fileName);
+	void LoadFromFile(const string fileName);
 };
 

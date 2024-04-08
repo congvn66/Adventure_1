@@ -41,10 +41,15 @@ void EditorState::InitVal()
 {
 	this->texRect = IntRect(0, 0, static_cast<int>(this->stateData->gridSize), 
 		static_cast<int>(this->stateData->gridSize));
+	this->collision = false;
+	this->type = TileType::DEFAULT;
 }
 void EditorState::InitKeybinds()
 {
 	this->keybinds["CLOSE"] = this->supportedKeys->at("ESC");
+	this->keybinds["COLLISION"] = this->supportedKeys->at("C");
+	this->keybinds["TYPE+"] = this->supportedKeys->at("UP");
+	this->keybinds["TYPE-"] = this->supportedKeys->at("DOWN");
 }
 void EditorState::InitFont()
 {
@@ -69,6 +74,8 @@ void EditorState::InitPauseMenu()
 {
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
 	this->pauseMenu->AddButton("QUIT", 800.f, "Quit");
+	this->pauseMenu->AddButton("SAVE", 600.f, "Save");
+	this->pauseMenu->AddButton("LOAD", 500.f, "Load");
 }
 void EditorState::InitGui()
 {
@@ -91,7 +98,7 @@ void EditorState::InitGui()
 }
 void EditorState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10);
+	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Assets/Map/tilesheettest.png");
 }
 //--------------------------------INITIALIZE------------------------------------------
 
@@ -190,7 +197,9 @@ void EditorState::UpdateGui(const float& deltaTime)
 	stringstream ss;
 	ss << this->mousePosView.x << " _ " << this->mousePosView.y << endl << //mouse pos with respect to camera
 		this->mousePosGrid.x << " _ " << this->mousePosGrid.y << endl <<
-		this->texRect.left << " _ " << this->texRect.top;
+		this->texRect.left << " _ " << this->texRect.top << endl << 
+		"collision: " << this->collision << endl <<
+		"type: "<<this->type << endl;
 	this->cursorText.setString(ss.str());
 
 	
@@ -202,7 +211,7 @@ void EditorState::UpdateEditorInput(const float deltaTime)
 		if (!this->sidebar.getGlobalBounds().contains(Vector2f(this->mousePosWindow))) {
 			if (!this->texSelector->GetActive()) {
 				//add
-				this->tileMap->AddTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->texRect);
+				this->tileMap->AddTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->texRect, this->collision,this->type);
 			}
 			else {
 				this->texRect = this->texSelector->GetTexRect();
@@ -218,6 +227,25 @@ void EditorState::UpdateEditorInput(const float deltaTime)
 			}
 		}
 	}
+
+	//toggle collision
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("COLLISION"))) && this->GetKeyTime()) {
+		if (this->collision == false) {
+			this->collision = true;
+		}
+		else {
+			this->collision = false;
+		}
+
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("TYPE+"))) && this->GetKeyTime()) {
+		this->type++;
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("TYPE-"))) && this->GetKeyTime()) {
+		if (this->type > 0) {
+			this->type--;	
+		}
+	}
 }
 void EditorState::RenderButtons(RenderTarget& target)
 {
@@ -231,6 +259,12 @@ void EditorState::UpdatePauseMenuButton()
 	//in pause menu
 	if (this->pauseMenu->IsButtonPressed("QUIT")) {
 		this->EndState();
+	}
+	if (this->pauseMenu->IsButtonPressed("SAVE")) {
+		this->tileMap->SaveToFile("text.map");
+	}
+	if (this->pauseMenu->IsButtonPressed("LOAD")) {
+		this->tileMap->LoadFromFile("text.map");
 	}
 }
 //------------------------------------FUNCTION----------------------------------------

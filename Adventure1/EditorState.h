@@ -17,6 +17,8 @@ private:
     Text cursorText;
     gui::TextureSelector* texSelector;
     RectangleShape sidebar;
+    bool collision;
+    short type;
 
     //pmenu
     PauseMenu* pauseMenu;

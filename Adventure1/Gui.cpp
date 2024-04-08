@@ -19,7 +19,7 @@ Color outlineHoverColor, Color outlineActiveColor, short unsigned id)
 	this->text.setFillColor(Color::Black);
 	this->text.setCharacterSize(36);
 	this->text.setPosition(this->shape.getPosition().x +this->shape.getGlobalBounds().width/2.f - this->text.getGlobalBounds().width / 2.f
-		,this->shape.getPosition().y + this->shape.getGlobalBounds().height/ 2.f - this->text.getGlobalBounds().height / 2.f);
+		,this->shape.getPosition().y);
 
 
 	this->idleColor = idleColor;
@@ -190,7 +190,7 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 	this->hidden = false;
 	this->active = false;
 	this->gridSize = gridSize;
-	float offset = 60.f;
+	float offset = 80.f;
 	this->bound.setSize(Vector2f(width, height));
 	this->bound.setPosition(x+offset, y);
 	this->bound.setFillColor(Color(50, 50, 50, 100));
@@ -218,8 +218,8 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 	this->texRect.width = static_cast<int>(gridSize);
 	this->texRect.height = static_cast<int>(gridSize);
 
-	this->hide = new gui::Button(0, 0, 100.f, 100.f,
-		&font, text, Color::Green, Color::Cyan, Color::Transparent,
+	this->hide = new gui::Button(0, 0, 80.f, 80.f,
+		&font, text, Color::Transparent, Color::Transparent, Color::Transparent,
 		Color::White, Color::Yellow, Color::Yellow);
 }
 

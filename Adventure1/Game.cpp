@@ -25,7 +25,6 @@ void Game::InitVal()
 	unsigned AALevel = 0;
 	this->gridSize = 100.f;
 }
-
 void Game::InitStates()
 {
 	//only once per app starts.
@@ -41,6 +40,9 @@ void Game::InitKeys()
 	this->supportedKeys["D"] = Keyboard::Key::D;
 	this->supportedKeys["W"] = Keyboard::Key::W;
 	this->supportedKeys["ESC"] = Keyboard::Key::Escape;
+	this->supportedKeys["UP"] = Keyboard::Key::Up;
+	this->supportedKeys["DOWN"] = Keyboard::Key::Down;
+	this->supportedKeys["C"] = Keyboard::Key::C;
 }
 
 void Game::InitStateData()

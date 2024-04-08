@@ -51,8 +51,8 @@ void MainMenuState::InitButton()
 		Color::Black,Color::White,Color::White);
 	this->buttons["EDITOR"] = new gui::Button(850, 436 + 60, 120.f, 60.f,
 		&this->font, "Editor", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
-	this->buttons["OPTION"] = new gui::Button(850, 436 + 120, 120.f, 60.f,
-		&this->font, "Options", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
+	this->buttons["DUMDUM"] = new gui::Button(850, 436 + 120, 120.f, 60.f,
+		&this->font, "Dum Dum", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
 	this->buttons["QUIT"] = new gui::Button(850, 436 + 180, 120.f, 60.f,
 		&this->font, "Quit", Color::Transparent, Color::Transparent, Color::Transparent, Color::Black, Color::White, Color::White);
 }
@@ -115,7 +115,7 @@ void MainMenuState::UpdateButton()
 	}
 
 	//setting
-	if (this->buttons["OPTION"]->IsPressed()) {
+	if (this->buttons["DUMDUM"]->IsPressed()) {
 		this->states->push(new SettingState(this->stateData));
 	}
 
