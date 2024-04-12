@@ -13,7 +13,6 @@ State::State(StateData* stateData)
 	this->keyTimeMax = 10.f;
 	this->gridSize = stateData->gridSize;
 }
-
 State::~State()
 {
 }
@@ -22,30 +21,25 @@ void State::EndState()
 {
 	this->quit = true;
 }
-
 void State::PauseState()
 {
 	this->pause = true;
 }
-
 void State::UnpauseState()
 {
 	this->pause = false;
 }
-
 void State::UpdatekeyTime(const float& dt)
 {
 	if (this->keyTime < this->keyTimeMax) {
 		this->keyTime += 100.f * dt;
 	}
 }
-
 const bool& State::GetQuit() const
 {
 	// TODO: insert return statement here
 	return this->quit;
 }
-
 const bool State::GetKeyTime()
 {
 	if (this->keyTime >= this->keyTimeMax) {
@@ -54,15 +48,18 @@ const bool State::GetKeyTime()
 	}
 	return false;
 }
-
-void State::UpdateMousePos()
+void State::UpdateMousePos(View* view)
 {
 	//get mouse pos
 	this->mousePosScreen = Mouse::getPosition();
 	this->mousePosWindow = Mouse::getPosition(*this->window);
+	if (view) {
+		this->window->setView(*view);
+	}
 	this->mousePosView = this->window->mapPixelToCoords(Mouse::getPosition(*this->window));
 	this->mousePosGrid =
 		Vector2u(static_cast<unsigned>(this->mousePosView.x)/static_cast<unsigned>(this->stateData->gridSize),
 		static_cast<unsigned>(this->mousePosView.y)/ static_cast<unsigned>(this->stateData->gridSize));
 	//this for the index in the grid
+	this->window->setView(this->window->getDefaultView());
 }

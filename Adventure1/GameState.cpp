@@ -88,7 +88,7 @@ void GameState::Update(const float& deltaTime)
 		this->player->Update(deltaTime);
 	}
 	else { //when in pause menu
-		this->pauseMenu->Update(this->mousePosView);
+		this->pauseMenu->Update(this->mousePosWindow);
 		this->UpdatePauseMenuButton();
 	}
 }

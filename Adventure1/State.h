@@ -55,6 +55,6 @@ public:
 	virtual void UpdatekeyTime(const float& dt);
 	virtual void Render(RenderTarget* target=nullptr) = 0; // draw the state on window (by default) on sth else if u want
 	virtual void UpdateInput(const float& deltaTime) = 0;
-	virtual void UpdateMousePos();
+	virtual void UpdateMousePos(View* view = nullptr);
 };
 

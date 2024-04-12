@@ -19,6 +19,8 @@ private:
     RectangleShape sidebar;
     bool collision;
     short type;
+    View view;
+    float camSpeed;
 
     //pmenu
     PauseMenu* pauseMenu;
@@ -28,6 +30,7 @@ private:
     std::map<string, Button*> buttons;
 
     //init
+    void InitView();
     void InitText();
     void InitVal();
     void InitKeybinds();

@@ -107,7 +107,7 @@ void SettingState::UpdateGui(const float& deltaTime)
 	//this how to loop thru all elements in a map?
 	//Update mouse
 	for (auto& it : this->buttons) {
-		it.second->Update(this->mousePosView);
+		it.second->Update(this->mousePosWindow);
 	}
 	
 	//----------------BUTTONS-----------------
@@ -123,7 +123,7 @@ void SettingState::UpdateGui(const float& deltaTime)
 
 	//-------------------DROP DOWN-------------
 	for (auto& it : this->dropdownlist) {
-		it.second->Update(this->mousePosView, deltaTime);
+		it.second->Update(this->mousePosWindow, deltaTime);
 	}
 	//-------------------DROP DOWN-------------
 }

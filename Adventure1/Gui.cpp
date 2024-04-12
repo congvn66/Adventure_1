@@ -39,13 +39,13 @@ Color outlineHoverColor, Color outlineActiveColor, short unsigned id)
 gui::Button::~Button()
 {
 }
-void gui::Button::Update(const Vector2f& mousePos)
+void gui::Button::Update(const Vector2i& mousePosWindow)
 {
 	//idle
 	this->buttonState = B_IDLE;
 
 	//hover
-	if (this->shape.getGlobalBounds().contains(mousePos)) {
+	if (this->shape.getGlobalBounds().contains(static_cast<Vector2f>(mousePosWindow))) {
 		this->buttonState = B_HOVER;
 
 		//press
@@ -143,10 +143,10 @@ void gui::DropDownList::UpdateKeyTime(const float& dt)
 		this->keyTime += 10.f * dt;
 	}
 }
-void gui::DropDownList::Update(const Vector2f& mousePos, const float& dt)
+void gui::DropDownList::Update(const Vector2i& mousePosWindow, const float& dt)
 {
 	this->UpdateKeyTime(dt);
-	this->activeElement->Update(mousePos);
+	this->activeElement->Update(mousePosWindow);
 
 	//show & hide the list
 	if (this->activeElement->IsPressed()&&this->GetKeyTime()) {
@@ -159,7 +159,7 @@ void gui::DropDownList::Update(const Vector2f& mousePos, const float& dt)
 	}
 	if (this->showList) {
 		for (auto& i : this->list) {
-			i->Update(mousePos);
+			i->Update(mousePosWindow);
 
 			//update the chosen one
 			if (i->IsPressed() && this->GetKeyTime()) {
@@ -252,7 +252,7 @@ const IntRect& gui::TextureSelector::GetTexRect() const
 void gui::TextureSelector::Update(Vector2i & mousePosWindow,const float& dt)
 {
 	this->UpdateKeyTime(dt);
-	this->hide->Update(static_cast<Vector2f>(mousePosWindow));
+	this->hide->Update(mousePosWindow);
 	if (this->hide->IsPressed()&&this->GetKeyTime()) {
 		if (this->hidden) {
 			this->hidden = false;

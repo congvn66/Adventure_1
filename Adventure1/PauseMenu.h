@@ -22,7 +22,7 @@ public:
 	const bool IsButtonPressed(const string key);
 
 	void AddButton(const string key,float y, const string text);
-	void Update(const Vector2f& mousePos);
+	void Update(const Vector2i& mousePosWindow);
 	void Render(RenderTarget& target);
 };
 

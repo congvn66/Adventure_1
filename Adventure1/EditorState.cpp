@@ -5,6 +5,7 @@ EditorState::EditorState(StateData* stateData)
 	:State(stateData)
 {
 	this->InitVal();
+	this->InitView();
 	this->InitBackground();
 	this->InitFont();
 	this->InitText();
@@ -30,6 +31,11 @@ EditorState::~EditorState()
 //---------------------------------CON & DE-------------------------------------------
 
 //--------------------------------INITIALIZE------------------------------------------
+void EditorState::InitView()
+{
+	this->view.setSize(Vector2f(1920, 1080));
+	this->view.setCenter(1920 / 2.f, 1080 / 2.f);
+}
 void EditorState::InitText()
 {
 	this->cursorText.setFont(this->font);
@@ -39,6 +45,7 @@ void EditorState::InitText()
 }
 void EditorState::InitVal()
 {
+	this->camSpeed = 100.f;
 	this->texRect = IntRect(0, 0, static_cast<int>(this->stateData->gridSize), 
 		static_cast<int>(this->stateData->gridSize));
 	this->collision = false;
@@ -50,6 +57,10 @@ void EditorState::InitKeybinds()
 	this->keybinds["COLLISION"] = this->supportedKeys->at("C");
 	this->keybinds["TYPE+"] = this->supportedKeys->at("UP");
 	this->keybinds["TYPE-"] = this->supportedKeys->at("DOWN");
+	this->keybinds["CAM_UP"] = this->supportedKeys->at("W");
+	this->keybinds["CAM_DOWN"] = this->supportedKeys->at("S");
+	this->keybinds["CAM_LEFT"] = this->supportedKeys->at("A");
+	this->keybinds["CAM_RIGHT"] = this->supportedKeys->at("D");
 }
 void EditorState::InitFont()
 {
@@ -106,7 +117,7 @@ void EditorState::InitTileMap()
 void EditorState::Update(const float& deltaTime)
 {
 	//it is w it is
-	this->UpdateMousePos();
+	this->UpdateMousePos(&this->view);
 
 	//for pause menu
 	this->UpdatekeyTime(deltaTime);
@@ -124,7 +135,7 @@ void EditorState::Update(const float& deltaTime)
 		this->UpdateEditorInput(deltaTime);
 	}
 	else { //when in pause menu
-		this->pauseMenu->Update(this->mousePosView);
+		this->pauseMenu->Update(this->mousePosWindow);
 		this->UpdatePauseMenuButton();
 	}
 
@@ -135,10 +146,12 @@ void EditorState::Render(RenderTarget* target)
 	if (target == nullptr) {
 		target = this->window;
 	}
+	target->setView(this->view);
 
 	//render map things
 	this->tileMap->Render(*target);
 	
+	target->setView(this->window->getDefaultView());
 
 	//render GUI things
 	this->RenderButtons(*target);
@@ -176,7 +189,7 @@ void EditorState::UpdateButton()
 	//this how to loop thru all elements in a map?
 	//Update mouse
 	for (auto& it : this->buttons) {
-		it.second->Update(this->mousePosView);
+		it.second->Update(this->mousePosWindow);
 	}
 }
 void EditorState::UpdateGui(const float& deltaTime)
@@ -206,6 +219,24 @@ void EditorState::UpdateGui(const float& deltaTime)
 }
 void EditorState::UpdateEditorInput(const float deltaTime)
 {
+	//camera movement
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CAM_RIGHT"))))
+	{
+		this->view.move(this->camSpeed*deltaTime,0.f);
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CAM_LEFT"))))
+	{
+		this->view.move(-this->camSpeed * deltaTime, 0.f);
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CAM_UP"))))
+	{
+		this->view.move(0.f,-this->camSpeed * deltaTime);
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CAM_DOWN"))))
+	{
+		this->view.move(0.f, this->camSpeed * deltaTime);
+	}
+
 	//add tiles
 	if (Mouse::isButtonPressed(Mouse::Left) && this->GetKeyTime()) {
 		if (!this->sidebar.getGlobalBounds().contains(Vector2f(this->mousePosWindow))) {

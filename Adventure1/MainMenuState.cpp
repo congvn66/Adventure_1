@@ -101,7 +101,7 @@ void MainMenuState::UpdateButton()
 	//this how to loop thru all elements in a map?
 	//Update mouse
 	for (auto &it : this->buttons) {
-		it.second->Update(this->mousePosView);
+		it.second->Update(this->mousePosWindow);
 	}
 
 	//check for quit?
