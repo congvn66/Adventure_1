@@ -82,7 +82,7 @@ void Game::UpdateDeltaTime()
 void Game::Update()
 {
 	this->UpdateSFMLEvent();
-	if (!this->states.empty()) {
+	if (!this->states.empty()&&this->window->hasFocus()) {
 		/*cout << this->states.size() << endl;*/
 		this->states.top()->Update(this->deltaTime);
 

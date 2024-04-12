@@ -20,6 +20,14 @@ Entity::~Entity()
 	delete this->hitboxComponent;
 }
 
+const Vector2f& Entity::GetPos() const
+{
+	if (this->hitboxComponent) {
+		return this->hitboxComponent->GetPosition();
+	}
+	return this->sprite.getPosition();
+}
+
 void Entity::CreateHitboxComponent(Sprite& sprite, float offsetX, float offsetY, float width, float height)
 {
 	this->hitboxComponent = new HitboxComponent(sprite, offsetX, offsetY,width, height);
@@ -43,7 +51,13 @@ void Entity::SetTexture(Texture& texture)
 
 void Entity::SetPos(const float x, const float y)
 {
-	this->sprite.setPosition(x,y);
+	if (this->hitboxComponent) {
+		this->hitboxComponent->SetPosition(x,y);
+	}
+	else
+	{
+		this->sprite.setPosition(x,y);
+	}
 }
 
 void Entity::Move(const float& deltaTime,const float dirX, const float dirY)

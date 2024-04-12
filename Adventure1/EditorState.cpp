@@ -106,6 +106,7 @@ void EditorState::InitGui()
 	//texture selector
 	this->texSelector = new gui::TextureSelector(20.f, 20.f, 500.f, 500.f, this->stateData->gridSize, 
 		this->tileMap->GetTileSheet(),this->font,"Hide");
+
 }
 void EditorState::InitTileMap()
 {
@@ -146,13 +147,12 @@ void EditorState::Render(RenderTarget* target)
 	if (target == nullptr) {
 		target = this->window;
 	}
-	target->setView(this->view);
 
 	//render map things
+	target->setView(this->view);
 	this->tileMap->Render(*target);
 	
 	target->setView(this->window->getDefaultView());
-
 	//render GUI things
 	this->RenderButtons(*target);
 	this->RenderGui(*target);
@@ -160,17 +160,25 @@ void EditorState::Render(RenderTarget* target)
 	//=======================================
 	//pause
 	if (this->pause == true) {  
+		target->setView(this->window->getDefaultView());
 		this->pauseMenu->Render(*target);
 	}
 }
 void EditorState::RenderGui(RenderTarget& target)
 {
 	if (!this->texSelector->GetActive()) {
+		//texture selector
+		target.setView(this->view);
 		target.draw(this->selectorRect);
 	}
+	target.setView(this->window->getDefaultView());
 	this->texSelector->Render(target);
-	target.draw(this->cursorText);
+	//sidebar
 	target.draw(this->sidebar);
+
+	//cursor text
+	target.setView(this->view);
+	target.draw(this->cursorText);
 }
 void EditorState::UpdateInput(const float& deltaTime)
 {

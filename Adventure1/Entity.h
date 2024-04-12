@@ -27,6 +27,7 @@ public:
 	~Entity();
 
 	//it is w it is
+	virtual const Vector2f& GetPos() const;
 	void CreateHitboxComponent(Sprite& sprite, float offsetX, float offsetY, float width, float height);
 	void CreateMovementComponent(const float maxSpeed, const float acceleration, 
 		const float deceleration);

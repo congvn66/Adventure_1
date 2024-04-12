@@ -16,6 +16,17 @@ Tile::~Tile()
 {
 }
 
+const bool& Tile::GetCollision() const
+{
+	// TODO: insert return statement here
+	return this->collision;
+}
+
+const Vector2f& Tile::GetPos() const
+{
+	return this->shape.getPosition();
+}
+
 const string Tile::GetAsString() const
 {
 	stringstream ss;

@@ -9,6 +9,10 @@ class GameState :
     public State
 {
 private:
+    View view;
+    RenderTexture renderTexture; //actual canvas avoiding screen tearing
+    Sprite renderSprite;
+
     Player* player;
 
     Font font;
@@ -16,6 +20,9 @@ private:
 
     TileMap* tileMap;
 
+    //init
+    void InitDeferredRender();
+    void InitView();
     void InitKeybinds();
     void InitTexture();
     void InitPlayer();
@@ -26,9 +33,11 @@ public:
     GameState(StateData* stateData);
     ~GameState();
     
+    void UpdateView(const float& deltaTime);
     void UpdateInput(const float& dt);
     void Update(const float& deltaTime);
     void UpdatePauseMenuButton();
+    void UpdateTileMap(const float& dt);
     void Render(RenderTarget* target = nullptr);
     void UpdatePlayerInput(const float& deltaTime);
 };

@@ -2,6 +2,17 @@
 #include "GameState.h"
 
 //--------------------------------INITIALIZE------------------------------------------
+void GameState::InitDeferredRender()
+{
+	this->renderTexture.create(static_cast<unsigned>(1920), static_cast<unsigned>(1080));
+	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	this->renderSprite.setTextureRect(IntRect(0, 0,1920,1080));
+}
+void GameState::InitView()
+{
+	this->view.setSize(Vector2f(1920.f, 1080.f));
+	this->view.setCenter(Vector2f(1920.f / 2.f, 1080.f / 2.f));
+}
 void GameState::InitKeybinds()
 {
 	//map added supported keys into funtion name (in fact just map with an int)
@@ -30,6 +41,7 @@ void GameState::InitPauseMenu()
 void GameState::InitTileMap()
 {
 	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Assets/Map/tilesheettest.png");
+	this->tileMap->LoadFromFile("text.map");
 }
 void GameState::InitTexture()
 {
@@ -41,7 +53,7 @@ void GameState::InitTexture()
 }
 void GameState::InitPlayer()
 {
-	this->player = new Player(100, 100, this->textures["PLAYER_SHEET"]);
+	this->player = new Player(0, 0, this->textures["PLAYER_SHEET"]);
 }
 //--------------------------------INITIALIZE------------------------------------------
 // 
@@ -49,10 +61,13 @@ void GameState::InitPlayer()
 GameState::GameState(StateData* stateData)
 	:State(stateData)
 {
+	this->InitDeferredRender();
+	this->InitView();
 	this->InitKeybinds();
 	this->InitFont();
 	this->InitTexture();
 	this->InitPauseMenu();
+
 	this->InitPlayer();
 	this->InitTileMap();
 }
@@ -65,6 +80,10 @@ GameState::~GameState()
 //---------------------------------CON & DE-------------------------------------------
 // 
 //------------------------------------FUNCTION----------------------------------------
+void GameState::UpdateView(const float& deltaTime)
+{
+	this->view.setCenter(floor(this->player->GetPos().x), floor(this->player->GetPos().y));
+}
 void GameState::UpdateInput(const float& dt)
 {
 	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CLOSE"))) && this->GetKeyTime()) {
@@ -80,12 +99,14 @@ void GameState::UpdateInput(const float& dt)
 void GameState::Update(const float& deltaTime)
 {
 	//update in main game
-	this->UpdateMousePos();
+	this->UpdateMousePos(&this->view);
 	this->UpdatekeyTime(deltaTime);
 	this->UpdateInput(deltaTime);
-	if (this->pause == false) { // unpause
+	if (!this->pause) { // unpause
+		this->UpdateView(deltaTime);
 		this->UpdatePlayerInput(deltaTime);
 		this->player->Update(deltaTime);
+		this->UpdateTileMap(deltaTime);
 	}
 	else { //when in pause menu
 		this->pauseMenu->Update(this->mousePosWindow);
@@ -99,18 +120,34 @@ void GameState::UpdatePauseMenuButton()
 		this->EndState();
 	}
 }
+void GameState::UpdateTileMap(const float& dt)
+{
+	this->tileMap->Update();
+	this->tileMap->UpdateCollision(this->player);
+}
 void GameState::Render(RenderTarget* target)
 {
 	if (target == nullptr) {
 		target = this->window;
 	}
-	this->tileMap->Render(*target);
-	this->player->Render(*target);
+	this->renderTexture.clear();
+	//map
+	this->renderTexture.setView(this->view);
+	this->tileMap->Render(this->renderTexture);
 
-	if (this->pause == true) {
-		this->pauseMenu->Render(*target);
+	//player
+	this->player->Render(this->renderTexture);
+
+	//pmenu
+	if (this->pause) {
+		this->renderTexture.setView(this->renderTexture.getDefaultView());
+		this->pauseMenu->Render(this->renderTexture);
 	}
 	
+	//final
+	this->renderTexture.display();
+	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	target->draw(this->renderSprite);
 }
 void GameState::UpdatePlayerInput(const float& deltaTime)
 {

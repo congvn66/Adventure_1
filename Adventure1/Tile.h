@@ -14,6 +14,8 @@ public:
 	Tile(unsigned grid_x, unsigned grid_y, float gridSizeF,Texture& tileSheet,const IntRect& texRect, bool collision=false, short type=TileType::DEFAULT);
 	~Tile();
 
+	const bool& GetCollision() const;
+	const Vector2f& GetPos() const;
 	const string GetAsString() const;
 	void Update();
 	void Render(RenderTarget& target);

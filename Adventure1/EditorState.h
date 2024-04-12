@@ -14,12 +14,13 @@ private:
     TileMap* tileMap;
     RectangleShape selectorRect; // cursor in editor?
     IntRect texRect;
-    Text cursorText;
-    gui::TextureSelector* texSelector;
-    RectangleShape sidebar;
+    Text cursorText; //i4
+    gui::TextureSelector* texSelector; //tile list
+    RectangleShape sidebar; //sidebar
+    View view;//cam
+    
     bool collision;
     short type;
-    View view;
     float camSpeed;
 
     //pmenu

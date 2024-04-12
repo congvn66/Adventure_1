@@ -16,7 +16,24 @@ HitboxComponent::~HitboxComponent()
 {
 }
 
-bool HitboxComponent::CheckIntersect(const FloatRect& frect)
+const Vector2f& HitboxComponent::GetPosition() const
+{
+	return this->hitbox.getPosition();
+}
+
+void HitboxComponent::SetPosition(Vector2f& position)
+{
+	this->hitbox.setPosition(position);
+	this->sprite.setPosition(position.x - this->offsetX, position.y - this->offsetY);
+}
+
+void HitboxComponent::SetPosition(const float x, const float y)
+{
+	this->hitbox.setPosition(x,y);
+	this->sprite.setPosition(x - this->offsetX, y - this->offsetY);
+}
+
+bool HitboxComponent::Intersect(const FloatRect& frect)
 {
 	return this->hitbox.getGlobalBounds().intersects(frect);
 }
