@@ -22,6 +22,12 @@ private:
 	Vector2f maxSizeWorldF;
 
 	Texture tileSheet;
+
+	unsigned fromX;
+	unsigned fromY;
+	unsigned toX;
+	unsigned toY;
+	unsigned layer;
 public:
 	TileMap(float gridSize, unsigned width, unsigned height, string texFile);
 	~TileMap();

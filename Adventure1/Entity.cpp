@@ -20,6 +20,25 @@ Entity::~Entity()
 	delete this->hitboxComponent;
 }
 
+const Vector2u Entity::getGridPos(const unsigned gridSizeU) const
+{
+	if (this->hitboxComponent) {
+		return Vector2u(static_cast<unsigned>(this->hitboxComponent->GetPosition().x)/gridSizeU,
+				static_cast<unsigned>(this->hitboxComponent->GetPosition().y) / gridSizeU);
+	}
+	return Vector2u(static_cast<unsigned>(this->sprite.getPosition().x) / gridSizeU,
+		static_cast<unsigned>(this->sprite.getPosition().y) / gridSizeU);
+}
+
+const FloatRect Entity::GetGlobalBounds() const
+{
+	if (this->hitboxComponent)
+	{
+		return this->hitboxComponent->GetGlobalBounds();
+	}
+	return this->sprite.getGlobalBounds();
+}
+
 const Vector2f& Entity::GetPos() const
 {
 	if (this->hitboxComponent) {
@@ -66,6 +85,7 @@ void Entity::Move(const float& deltaTime,const float dirX, const float dirY)
 		this->movementComponent->Move(dirX, dirY,deltaTime);// set velocity
 	}
 	
+	
 }
 
 void Entity::Update(const float& deltaTime)
@@ -75,8 +95,29 @@ void Entity::Update(const float& deltaTime)
 
 void Entity::Render(RenderTarget& target)
 {
-	target.draw(this->sprite);
-	if (this->hitboxComponent) {
-		this->hitboxComponent->Render(target);
+	
+}
+
+void Entity::Stop()
+{
+	if (this->movementComponent)
+	{
+		this->movementComponent->Stop();
+	}
+}
+
+void Entity::StopX()
+{
+	if (this->movementComponent)
+	{
+		this->movementComponent->StopX();
+	}
+}
+
+void Entity::StopY()
+{
+	if (this->movementComponent)
+	{
+		this->movementComponent->StopY();
 	}
 }

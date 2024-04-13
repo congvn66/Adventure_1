@@ -13,13 +13,11 @@ MovementComponent::~MovementComponent()
 
 const float& MovementComponent::GetMaxSpeed() const
 {
-	// TODO: insert return statement here
 	return this->maxSpeed;
 }
 
 const Vector2f& MovementComponent::GetVelocity() const
 {
-	// TODO: insert return statement here
 	return this->velocity;
 }
 
@@ -117,4 +115,23 @@ void MovementComponent::Update(const float& dt)
 	}
 	//final
 	this->sprite.move(this->velocity * dt);
+}
+
+void MovementComponent::Stop()
+{
+	//reset velocity to 0.
+	this->velocity.x = 0;
+	this->velocity.y = 0;
+}
+
+void MovementComponent::StopX()
+{
+	//reset velocity x 
+	this->velocity.x = 0;
+}
+
+void MovementComponent::StopY()
+{
+	//reset velocity y
+	this->velocity.y = 0;
 }

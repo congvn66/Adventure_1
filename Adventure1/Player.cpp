@@ -82,3 +82,9 @@ void Player::Update(const float& dt)
 	this->hitboxComponent->Update();
 
 }
+
+void Player::Render(RenderTarget& target)
+{
+	target.draw(this->sprite);
+	this->hitboxComponent->Render(target);
+}

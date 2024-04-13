@@ -30,6 +30,12 @@ TileMap::TileMap(float gridSize, unsigned width, unsigned height, string texFile
 	//Assets/Map/tilesheettest.png
 	this->texFile = texFile;
 
+	this->fromX = 0;
+	this->fromY = 0;
+	this->toX = 0;
+	this->toY = 0;
+	this->layer = 0;
+
 	this->map.resize(this->maxSizeGrid.x, vector<vector<Tile*>>());
 	// add to column (x axis)
 	for (size_t x = 0; x < this->maxSizeGrid.x; x++) {
@@ -55,7 +61,7 @@ TileMap::TileMap(float gridSize, unsigned width, unsigned height, string texFile
 	this->collisionBox.setSize(Vector2f(gridSize, gridSize));
 	this->collisionBox.setFillColor(Color(255, 0, 0, 50));
 	this->collisionBox.setOutlineColor(Color::Red);
-	this->collisionBox.setOutlineThickness(1.f);
+	this->collisionBox.setOutlineThickness(2.f);
 }
 TileMap::~TileMap()
 {
@@ -93,23 +99,70 @@ void TileMap::UpdateCollision(Entity* entity)
 	if (entity->GetPos().x < 0.f) // left border
 	{
 		entity->SetPos(0.f, entity->GetPos().y);
+		entity->StopX();
 	}
-	else if (entity->GetPos().x > this->maxSizeWorldF.x) // right border
+	else if (entity->GetPos().x +entity->GetGlobalBounds().width> this->maxSizeWorldF.x) // right border
 	{
-		entity->SetPos(this->maxSizeWorldF.x, entity->GetPos().y);
+		entity->SetPos(this->maxSizeWorldF.x- entity->GetGlobalBounds().width, entity->GetPos().y);
+		entity->StopX();
 	}
 
 	if (entity->GetPos().y < 0.f) // up border
 	{
 		entity->SetPos(entity->GetPos().x, 0.f);
+		entity->StopY();
 	}
-	else if (entity->GetPos().y > this->maxSizeWorldF.y) //down border
+	else if (entity->GetPos().y+entity->GetGlobalBounds().height > this->maxSizeWorldF.y) //down border
 	{
-		entity->SetPos(entity->GetPos().x, this->maxSizeWorldF.y);
+		entity->SetPos(entity->GetPos().x, this->maxSizeWorldF.y- entity->GetGlobalBounds().height);
+		entity->StopY();
 	}
 
 
 	//check if encounter collisive tiles
+	// check tiles around players
+	this->fromX = entity->getGridPos(this->gridSizeU).x -2;
+	if (this->fromX < 0)
+	{
+		this->fromX = 0;
+	}
+	else if (this->fromX >= this->maxSizeGrid.x)
+	{
+		this->fromX = this->maxSizeGrid.x - 1;
+	}
+	this->toX = entity->getGridPos(this->gridSizeU).x +1; 
+	if (this->toX < 0)
+	{
+		this->toX = 0;
+	}
+	else if (this->toX >= this->maxSizeGrid.x)
+	{
+		this->toX = this->maxSizeGrid.x - 1;
+	}
+	this->fromY = entity->getGridPos(this->gridSizeU).y - 2;
+	if (this->fromY < 0)
+	{
+		this->fromY = 0;
+	}
+	else if (this->fromY >= this->maxSizeGrid.y)
+	{
+		this->fromY = this->maxSizeGrid.y - 1;
+	}
+	this->toY = entity->getGridPos(this->gridSizeU).y + 1;
+	if (this->toY < 0)
+	{
+		this->toY = 0;
+	}
+	else if (this->toY >= this->maxSizeGrid.y)
+	{
+		this->toY = this->maxSizeGrid.y - 1;
+	}
+
+	for (size_t x = this->fromX; x < this->toX; x++) {
+		for (size_t y = this->fromY; y < this->toY; y++) {
+			
+		}
+	}
 
 }
 void TileMap::AddTile(const unsigned x, const unsigned y, const unsigned z, const IntRect texRect, const bool& collision, const short& type) //indexes

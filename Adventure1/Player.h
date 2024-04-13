@@ -19,5 +19,6 @@ public:
     void UpdateAttack();
     void UpdateAnimation(const float& dt);
     virtual void Update(const float& dt);
+    virtual void Render(RenderTarget& target);
 };
 

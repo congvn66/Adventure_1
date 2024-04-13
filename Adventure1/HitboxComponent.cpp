@@ -5,15 +5,30 @@ HitboxComponent::HitboxComponent(Sprite& sprite, float offsetX,
 	float offsetY, float width, float height)
 	:sprite(sprite), offsetX(offsetX), offsetY(offsetY)
 {
+	//next pos init
+	this->nextPos.left = 0.f;
+	this->nextPos.top = 0.f;
+	this->nextPos.height = height;
+	this->nextPos.width = width;
+
+	//hitbox
 	this->hitbox.setPosition(this->sprite.getPosition().x+offsetX, this->sprite.getPosition().y + offsetY);
 	this->hitbox.setSize(Vector2f(width, height));
 	this->hitbox.setFillColor(Color::Transparent);
 	this->hitbox.setOutlineThickness(1.0f);
 	this->hitbox.setOutlineColor(Color::Green);
+
 }
 
 HitboxComponent::~HitboxComponent()
 {
+}
+
+const FloatRect& HitboxComponent::GetNextPos(const Vector2f& velocity)
+{
+	this->nextPos.left = this->hitbox.getPosition().x + velocity.x; // x axis
+	this->nextPos.top = this->hitbox.getPosition().y + velocity.y; // y axis
+	return this->nextPos;
 }
 
 const Vector2f& HitboxComponent::GetPosition() const
@@ -21,6 +36,10 @@ const Vector2f& HitboxComponent::GetPosition() const
 	return this->hitbox.getPosition();
 }
 
+const FloatRect HitboxComponent::GetGlobalBounds() const
+{
+	return this->hitbox.getGlobalBounds();
+}
 void HitboxComponent::SetPosition(Vector2f& position)
 {
 	this->hitbox.setPosition(position);

@@ -23,5 +23,8 @@ public:
 
 	void Move(const float dirX, const float dirY, const float& dt);
 	void Update(const float& dt);
+	void Stop();
+	void StopX();
+	void StopY();
 };
 
