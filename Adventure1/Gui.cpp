@@ -114,7 +114,7 @@ gui::DropDownList::DropDownList(float x, float y,float width, float height,Font&
 	this->activeElement = new Button(x, y, width, height,
 		&this->font, list[default_index], Color::Black, Color::White, Color::White,
 		Color::White, Color::Black, Color::Black,Color(255,255,255,200), Color(255,255,255,255), Color(20,20,20,50));
-	for (size_t i = 0; i < nrOfElements; i++) {
+	for (unsigned i = 0; i < nrOfElements; i++) {
 		this->list.push_back(new gui::Button(x, y+(i+1)*height, width, height,
 			&this->font, list[i], Color::Black, Color::White, Color::White,
 			Color::White, Color::Black, Color::Black, 

@@ -27,6 +27,7 @@ public:
 	~Entity();
 
 	//it is w it is
+	virtual const FloatRect& GetNextPosBounds(const float& deltaTime) const;
 	virtual const Vector2u getGridPos(const unsigned gridSizeU) const;
 	virtual const FloatRect GetGlobalBounds() const;
 	virtual const Vector2f& GetPos() const;

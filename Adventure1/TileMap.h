@@ -12,33 +12,32 @@ private:
 	string texFile;
 	RectangleShape collisionBox; //walls, borders, etc,...
 	float gridSizeF; // grid size
-	unsigned gridSizeU; // for wut :DDDD
-
-	unsigned layers; // for 2.5D
+	int gridSizeI; // for wut :DDDD
+	int layers; // for 2.5D
 
 	vector<vector<vector<Tile*>>> map; //2d vector, each factor has a vector in it
 
-	Vector2u maxSizeGrid; // size of the grid
+	Vector2i maxSizeGrid; // size of the grid
 	Vector2f maxSizeWorldF;
 
 	Texture tileSheet;
 
-	unsigned fromX;
-	unsigned fromY;
-	unsigned toX;
-	unsigned toY;
-	unsigned layer;
+	int fromX;
+	int fromY;
+	int toX;
+	int toY;
+	int layer;
 public:
-	TileMap(float gridSize, unsigned width, unsigned height, string texFile);
+	TileMap(float gridSize, int width, int height, string texFile);
 	~TileMap();
 
 	//for the editor, i mean this class =)
 	void Update();
 	void Render(RenderTarget& target, Entity* entity = nullptr);
 	const Texture* GetTileSheet() const;
-	void UpdateCollision(Entity* entity);
-	void AddTile(const unsigned x, const unsigned y, const unsigned z, const IntRect texRect,const bool& collision, const short& type);
-	void RemoveTile(const unsigned x, const unsigned y, const unsigned z);
+	void UpdateCollision(Entity* entity, const float& deltaTime);
+	void AddTile(const int x, const int y, const int z, const IntRect texRect,const bool& collision, const short& type);
+	void RemoveTile(const int x, const int y, const int z);
 	void SaveToFile(const string fileName);
 	void LoadFromFile(const string fileName);
 };

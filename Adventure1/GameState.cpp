@@ -105,8 +105,8 @@ void GameState::Update(const float& deltaTime)
 	if (!this->pause) { // unpause
 		this->UpdateView(deltaTime);
 		this->UpdatePlayerInput(deltaTime);
-		this->player->Update(deltaTime);
 		this->UpdateTileMap(deltaTime);
+		this->player->Update(deltaTime);
 	}
 	else { //when in pause menu
 		this->pauseMenu->Update(this->mousePosWindow);
@@ -123,7 +123,7 @@ void GameState::UpdatePauseMenuButton()
 void GameState::UpdateTileMap(const float& dt)
 {
 	this->tileMap->Update();
-	this->tileMap->UpdateCollision(this->player);
+	this->tileMap->UpdateCollision(this->player,dt);
 }
 void GameState::Render(RenderTarget* target)
 {
@@ -133,7 +133,7 @@ void GameState::Render(RenderTarget* target)
 	this->renderTexture.clear();
 	//map
 	this->renderTexture.setView(this->view);
-	this->tileMap->Render(this->renderTexture);
+	this->tileMap->Render(this->renderTexture,this->player);
 
 	//player
 	this->player->Render(this->renderTexture);

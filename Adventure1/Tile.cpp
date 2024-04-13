@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Tile.h"
-Tile::Tile(unsigned grid_x, unsigned grid_y, float gridSizeF, Texture& tileSheet, const IntRect& texRect, bool collision, short type)
+Tile::Tile(int grid_x, int grid_y, float gridSizeF, Texture& tileSheet, const IntRect& texRect, bool collision, short type)
 {
 	this->collision = collision;
 	this->type = type;
@@ -8,7 +8,7 @@ Tile::Tile(unsigned grid_x, unsigned grid_y, float gridSizeF, Texture& tileSheet
 	/*this->shape.setFillColor(Color(31, 75, 110,100));*/
 	//this->shape.setOutlineThickness(1.0f);
 	//this->shape.setOutlineColor(Color::Black);
-	this->shape.setPosition(grid_x*gridSizeF, grid_y*gridSizeF);
+	this->shape.setPosition(static_cast<float>(grid_x)*gridSizeF, static_cast<float>(grid_y)*gridSizeF);
 	this->shape.setTexture(&tileSheet);
 	this->shape.setTextureRect(texRect);
 }
@@ -25,6 +25,16 @@ const bool& Tile::GetCollision() const
 const Vector2f& Tile::GetPos() const
 {
 	return this->shape.getPosition();
+}
+
+const bool Tile::Intersects(FloatRect bounds) const
+{
+	return this->shape.getGlobalBounds().intersects(bounds);
+}
+
+const FloatRect Tile::GetGlobalBounds() const
+{
+	return this->shape.getGlobalBounds();
 }
 
 const string Tile::GetAsString() const
