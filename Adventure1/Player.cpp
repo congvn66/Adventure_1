@@ -14,10 +14,11 @@ Player::Player(float x, float y, Texture& textureSheet)
 {
 	this->InitVal();
 	//create abilities????
-	this->CreateHitboxComponent(this->sprite,42.f*1.5,10.f, 42.f ,42.f*4-20);
-	this->CreateMovementComponent(350.f,1500.f,500.f);
-	this->CreateAnimationComponent(textureSheet);
 	this->InitComponents();
+	this->CreateHitboxComponent(this->sprite,42.f*1.5,10.f, 42.f ,42.f*4-20); //hitbox
+	this->CreateMovementComponent(350.f,1500.f,500.f); //move
+	this->CreateAnimationComponent(textureSheet);     //animation
+	this->CreateAttributeComponent(1);				//stats
 
 	this->SetPos(x, y);
 
@@ -29,6 +30,46 @@ Player::Player(float x, float y, Texture& textureSheet)
 
 Player::~Player()
 {
+}
+
+AttributeComponent* Player::GetAttributeComponent()
+{
+	return this->attributeComponent;
+}
+
+void Player::LoseHP(const unsigned hp)
+{
+	this->attributeComponent->hp -= hp;
+
+	if (this->attributeComponent->hp < 0)
+	{
+		this->attributeComponent->hp = 0;
+	}
+}
+
+void Player::LoseEXP(const unsigned exp)
+{
+	this->attributeComponent->exp -= exp;
+
+	if (this->attributeComponent->exp < 0)
+	{
+		this->attributeComponent->exp = 0;
+	}
+}
+
+void Player::GainHP(const unsigned hp)
+{
+	this->attributeComponent->hp += hp;
+
+	if (this->attributeComponent->hp > this->attributeComponent->hpMax)
+	{
+		this->attributeComponent->hp = this->attributeComponent->hpMax;
+	}
+}
+
+void Player::GainEXP(const unsigned exp)
+{
+	this->attributeComponent->GainExp(exp);
 }
 
 void Player::UpdateAttack()
@@ -72,6 +113,7 @@ void Player::UpdateAnimation(const float& dt)
 
 void Player::Update(const float& dt)
 {
+
 	//update pos with movement input
 	this->movementComponent->Update(dt);
 

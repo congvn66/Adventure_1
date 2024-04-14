@@ -38,6 +38,10 @@ void GameState::InitPauseMenu()
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
 	this->pauseMenu->AddButton("QUIT", 800.f, "Quit");
 }
+void GameState::InitPlayerGUI()
+{
+	this->playerGUI = new PlayerGUI(this->player);
+}
 void GameState::InitTileMap()
 {
 	this->tileMap = new TileMap(this->stateData->gridSize, 50, 50, "Assets/Map/tilesheettest.png");
@@ -69,10 +73,12 @@ GameState::GameState(StateData* stateData)
 	this->InitPauseMenu();
 
 	this->InitPlayer();
+	this->InitPlayerGUI();
 	this->InitTileMap();
 }
 GameState::~GameState()
 {
+	delete this->playerGUI;
 	delete this->player;
 	delete this->pauseMenu;
 	delete this->tileMap;
@@ -96,6 +102,10 @@ void GameState::UpdateInput(const float& dt)
 		}
 	}
 }
+void GameState::UpdatePlayerGUI(const float& deltaTime)
+{
+	this->playerGUI->Update(deltaTime);
+}
 void GameState::Update(const float& deltaTime)
 {
 	//update in main game
@@ -107,6 +117,7 @@ void GameState::Update(const float& deltaTime)
 		this->UpdatePlayerInput(deltaTime);
 		this->UpdateTileMap(deltaTime);
 		this->player->Update(deltaTime);
+		this->UpdatePlayerGUI(deltaTime);
 	}
 	else { //when in pause menu
 		this->pauseMenu->Update(this->mousePosWindow);
@@ -141,9 +152,13 @@ void GameState::Render(RenderTarget* target)
 	//render upper layers of the map
 	this->tileMap->RenderDefered(this->renderTexture);
 
+	//player Gui
+	this->renderTexture.setView(this->renderTexture.getDefaultView());
+	this->playerGUI->Render(this->renderTexture);
+
 	//pmenu
 	if (this->pause) {
-		this->renderTexture.setView(this->renderTexture.getDefaultView());
+		//this->renderTexture.setView(this->renderTexture.getDefaultView());
 		this->pauseMenu->Render(this->renderTexture);
 	}
 	

@@ -63,9 +63,9 @@ void Entity::CreateAnimationComponent(Texture& textureSheet)
 {
 	this->animationComponent = new AnimationComponent(this->sprite, textureSheet);
 }
-void Entity::CreateAttributeComponent()
+void Entity::CreateAttributeComponent(const unsigned level)
 {
-	this->attributeComponent = new AttributeComponent();
+	this->attributeComponent = new AttributeComponent(level);
 }
 void Entity::SetTexture(Texture& texture)
 {

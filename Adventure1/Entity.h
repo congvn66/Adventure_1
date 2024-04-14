@@ -36,7 +36,7 @@ public:
 	void CreateMovementComponent(const float maxSpeed, const float acceleration, 
 		const float deceleration);
 	void CreateAnimationComponent(Texture& textureSheet);
-	void CreateAttributeComponent();
+	void CreateAttributeComponent(const unsigned level);
 
 	virtual const FloatRect GetNextPosBounds(const float& deltaTime) const;
 	virtual const Vector2i getGridPos(const int gridSizeI) const;

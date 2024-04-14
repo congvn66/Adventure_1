@@ -1,8 +1,9 @@
 #pragma once
-#include "Player.h"
+
 #include "State.h"
 #include "PauseMenu.h"
 #include "TileMap.h"
+#include "PlayerGUI.h"
 
 //state of the window when we in the game
 class GameState :
@@ -14,6 +15,7 @@ private:
     Sprite renderSprite;
 
     Player* player;
+    PlayerGUI* playerGUI;
 
     Font font;
     PauseMenu* pauseMenu;
@@ -28,17 +30,19 @@ private:
     void InitPlayer();
     void InitFont();
     void InitPauseMenu();
+    void InitPlayerGUI();
     void InitTileMap();
 public:
     GameState(StateData* stateData);
     ~GameState();
     
+    void Update(const float& deltaTime);
     void UpdateView(const float& deltaTime);
     void UpdateInput(const float& dt);
-    void Update(const float& deltaTime);
+    void UpdatePlayerGUI(const float& deltaTime);
     void UpdatePauseMenuButton();
     void UpdateTileMap(const float& dt);
-    void Render(RenderTarget* target = nullptr);
     void UpdatePlayerInput(const float& deltaTime);
+    void Render(RenderTarget* target = nullptr);
 };
 

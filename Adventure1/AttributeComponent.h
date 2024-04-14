@@ -12,12 +12,11 @@ public:
 	unsigned attributePoint;
 
 	//attributes
-	unsigned vitality; //max health
-	unsigned strength; //crush the tomato
-	unsigned dexterity;//dodge the tomato
-	unsigned intelligence;//knowing the tomato?
-	unsigned constitution; //eat the rotten tomato
-	unsigned agility; // run
+	int vitality; //max health
+	int strength; //crush the tomato
+	int dexterity;//dodge the tomato
+	int intelligence;//knowing the tomato?
+	int agility; // run
 
 	//stats
 	int hp;
@@ -33,9 +32,9 @@ public:
 	~AttributeComponent();
 
 	//func
-	void CalulateExpNext();
-	void UpdateStats();
-	void LevelUp();
+	void GainExp(const unsigned exp);
+	void UpdateStats(const bool reset);
 	void Update();
+	void UpdateLevel();
 };
 
