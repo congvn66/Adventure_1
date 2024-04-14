@@ -35,7 +35,7 @@ protected:
 	Vector2i mousePosScreen;
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
-	Vector2u mousePosGrid; // which grid are u on?
+	Vector2i mousePosGrid; // which grid are u on?
 
 	map <string,Texture> textures; //the textures that this state contain
 

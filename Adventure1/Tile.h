@@ -1,6 +1,6 @@
 #pragma once
 
-enum TileType {DEFAULT = 0, DAMAGING};
+enum TileType {DEFAULT = 0, DAMAGING, ABOVE};
 
 class Tile
 {
@@ -14,6 +14,7 @@ public:
 	Tile(int grid_x, int grid_y, float gridSizeF,Texture& tileSheet,const IntRect& texRect, bool collision=false, short type=TileType::DEFAULT);
 	~Tile();
 
+	const short& GetType() const;
 	const bool& GetCollision() const;
 	const Vector2f& GetPos() const;
 	const bool Intersects(FloatRect bounds) const;

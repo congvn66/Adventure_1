@@ -15,7 +15,7 @@ Player::Player(float x, float y, Texture& textureSheet)
 	this->InitVal();
 	//create abilities????
 	this->CreateHitboxComponent(this->sprite,42.f*1.5,10.f, 42.f ,42.f*4-20);
-	this->CreateMovementComponent(350.f,15.f,5.f);
+	this->CreateMovementComponent(350.f,1500.f,500.f);
 	this->CreateAnimationComponent(textureSheet);
 	this->InitComponents();
 

@@ -22,6 +22,7 @@ private:
     bool collision;
     short type;
     float camSpeed;
+    int layer;
 
     //pmenu
     PauseMenu* pauseMenu;

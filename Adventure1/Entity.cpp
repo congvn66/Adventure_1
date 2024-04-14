@@ -10,6 +10,7 @@ Entity::~Entity()
 	delete this->movementComponent; 
 	delete this->animationComponent;
 	delete this->hitboxComponent;
+	delete this->attributeComponent;
 }
 
 void Entity::InitVal()
@@ -18,22 +19,22 @@ void Entity::InitVal()
 	this->animationComponent = nullptr;
 	this->hitboxComponent = nullptr;
 }
-const FloatRect& Entity::GetNextPosBounds(const float& deltaTime) const
+const FloatRect Entity::GetNextPosBounds(const float& deltaTime) const
 {
 	if (this->hitboxComponent && this->movementComponent)
 	{
 		return this->hitboxComponent->GetNextPos(this->movementComponent->GetVelocity()*deltaTime);
 	}
-	return FloatRect();
+	return FloatRect(-1.f, -1.f,-1.f,-1.f);
 }
-const Vector2u Entity::getGridPos(const unsigned gridSizeU) const
+const Vector2i Entity::getGridPos(const int gridSizeI) const
 {
 	if (this->hitboxComponent) {
-		return Vector2u(static_cast<unsigned>(this->hitboxComponent->GetPosition().x)/gridSizeU,
-				static_cast<unsigned>(this->hitboxComponent->GetPosition().y) / gridSizeU);
+		return Vector2i(static_cast<int>(this->hitboxComponent->GetPosition().x)/gridSizeI,
+				static_cast<int>(this->hitboxComponent->GetPosition().y) / gridSizeI);
 	}
-	return Vector2u(static_cast<unsigned>(this->sprite.getPosition().x) / gridSizeU,
-		static_cast<unsigned>(this->sprite.getPosition().y) / gridSizeU);
+	return Vector2i(static_cast<int>(this->sprite.getPosition().x) / gridSizeI,
+		static_cast<int>(this->sprite.getPosition().y) / gridSizeI);
 }
 const FloatRect Entity::GetGlobalBounds() const
 {
@@ -61,6 +62,10 @@ void Entity::CreateMovementComponent(const float maxSpeed,const float accelerati
 void Entity::CreateAnimationComponent(Texture& textureSheet)
 {
 	this->animationComponent = new AnimationComponent(this->sprite, textureSheet);
+}
+void Entity::CreateAttributeComponent()
+{
+	this->attributeComponent = new AttributeComponent();
 }
 void Entity::SetTexture(Texture& texture)
 {

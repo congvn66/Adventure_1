@@ -45,7 +45,8 @@ void EditorState::InitText()
 }
 void EditorState::InitVal()
 {
-	this->camSpeed = 100.f;
+	this->layer = 0;
+	this->camSpeed = 300.f;
 	this->texRect = IntRect(0, 0, static_cast<int>(this->stateData->gridSize), 
 		static_cast<int>(this->stateData->gridSize));
 	this->collision = false;
@@ -110,7 +111,7 @@ void EditorState::InitGui()
 }
 void EditorState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Assets/Map/tilesheettest.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 50, 50, "Assets/Map/tilesheettest.png");
 }
 //--------------------------------INITIALIZE------------------------------------------
 
@@ -150,7 +151,8 @@ void EditorState::Render(RenderTarget* target)
 
 	//render map things
 	target->setView(this->view);
-	this->tileMap->Render(*target);
+	this->tileMap->Render(*target, this->mousePosGrid);
+	this->tileMap->RenderDefered(*target);
 	
 	target->setView(this->window->getDefaultView());
 	//render GUI things
@@ -217,10 +219,11 @@ void EditorState::UpdateGui(const float& deltaTime)
 	//show coordinates & index of the tiles on the tilesheet
 	stringstream ss;
 	ss << this->mousePosView.x << " _ " << this->mousePosView.y << endl << //mouse pos with respect to camera
-		this->mousePosGrid.x << " _ " << this->mousePosGrid.y << endl <<
+		this->mousePosGrid.x << " _ " << this->mousePosGrid.y << endl <<	//mouse pos with respect to grid
 		this->texRect.left << " _ " << this->texRect.top << endl << 
 		"collision: " << this->collision << endl <<
-		"type: "<<this->type << endl;
+		"type: "<<this->type << endl<<
+		"tiles: "<< this->tileMap->GetLayerSize(mousePosGrid.x,this->mousePosGrid.y, this->layer);
 	this->cursorText.setString(ss.str());
 
 	

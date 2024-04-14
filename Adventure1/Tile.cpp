@@ -16,6 +16,11 @@ Tile::~Tile()
 {
 }
 
+const short& Tile::GetType() const
+{
+	return this->type;
+}
+
 const bool& Tile::GetCollision() const
 {
 	// TODO: insert return statement here

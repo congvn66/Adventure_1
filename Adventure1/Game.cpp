@@ -4,7 +4,7 @@
 //init func
 void Game::InitWindow()
 {
-	this->fullscreen = false;
+	this->fullscreen = true;
 	this->settings.antialiasingLevel = this->AALevel;
 	if (this->fullscreen) {
 		this->window = new RenderWindow(VideoMode(1920, 1080), "Adventure 1", Style::Fullscreen, settings);
@@ -82,16 +82,19 @@ void Game::UpdateDeltaTime()
 void Game::Update()
 {
 	this->UpdateSFMLEvent();
-	if (!this->states.empty()&&this->window->hasFocus()) {
-		/*cout << this->states.size() << endl;*/
-		this->states.top()->Update(this->deltaTime);
+	if (!this->states.empty()) { 
+		if(this->window->hasFocus())
+		{ 
+			this->states.top()->Update(this->deltaTime);
 
-		//check 4 quit
-		if (this->states.top()->GetQuit()) {
-			this->states.top()->EndState();
-			delete this->states.top();
-			this->states.pop();
+			//check 4 quit
+			if (this->states.top()->GetQuit()) {
+				this->states.top()->EndState();
+				delete this->states.top();
+				this->states.pop();
+			}
 		}
+		
 	}
 	//close application
 	else {

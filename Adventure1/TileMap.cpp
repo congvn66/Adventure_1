@@ -1,14 +1,20 @@
 #include "stdafx.h"
 #include "TileMap.h"
 
+//changes reminder: the index "k" just stack the tiles up on tiles
+
 void TileMap::Clear()
 {
 	//avoid memory leak
 	for (size_t x = 0; x < this->maxSizeGrid.x; x++) {
 		for (size_t y = 0; y < this->maxSizeGrid.y; y++) {
 			for (size_t z = 0; z < this->layers; z++) {
-				delete this->map[x][y][z];
-				this->map[x][y][z] = nullptr;
+				for (size_t k = 0; k < this->map[x][y][z].size(); k++)
+				{
+					delete this->map[x][y][z][k];
+					this->map[x][y][z][k] = nullptr;
+				}
+				this->map[x][y][z].clear();
 			}
 			this->map[x][y].clear();
 		}
@@ -36,17 +42,17 @@ TileMap::TileMap(float gridSize, int width, int height, string texFile)
 	this->toY = 0;
 	this->layer = 0;
 
-	this->map.resize(this->maxSizeGrid.x, vector<vector<Tile*>>());
+	this->map.resize(this->maxSizeGrid.x, vector<vector<vector<Tile*>>>());
 	// add to column (x axis)
 	for (int x = 0; x < this->maxSizeGrid.x; x++) {
 		for (int y = 0; y < this->maxSizeGrid.y; y++) {
 			//add in component for the "x factor" (y axis based on x axis)
-			this->map[x].resize(this->maxSizeGrid.x, vector<Tile*>());
+			this->map[x].resize(this->maxSizeGrid.x, vector<vector<Tile*>>());
 
 			//add in component for the [x][y] factor (2.5D?)
 			for (int z = 0; z < this->layers; z++) {
 				//create slots
-				this->map[x][y].resize(this->layers,nullptr);
+				this->map[x][y].resize(this->layers, vector<Tile*>());
 			}
 		}
 	}
@@ -68,76 +74,80 @@ TileMap::~TileMap()
 	this->Clear();
 }
 
-void TileMap::Update()
+const int TileMap::GetLayerSize(const int x, const int y, const int z)
 {
-}
-void TileMap::Render(RenderTarget& target, Entity* entity)
-{
-	if (entity)
+	if (x >= 0 && x < this->map.size())
 	{
-		this->layer = 0;
-		this->fromX = entity->getGridPos(this->gridSizeI).x - 3;
-		if (this->fromX < 0)
+		if (y >= 0 && y < this->map[x].size())
 		{
-			this->fromX = 0;
-		}
-		else if (this->fromX >= this->maxSizeGrid.x)
-		{
-			this->fromX = this->maxSizeGrid.x;
-		}
-		this->toX = entity->getGridPos(this->gridSizeI).x + 8;
-		if (this->toX < 0)
-		{
-			this->toX = 0;
-		}
-		else if (this->toX >= this->maxSizeGrid.x)
-		{
-			this->toX = this->maxSizeGrid.x;
-		}
-		this->fromY = entity->getGridPos(this->gridSizeI).y - 3;
-		if (this->fromY < 0)
-		{
-			this->fromY = 0;
-		}
-		else if (this->fromY >= this->maxSizeGrid.y)
-		{
-			this->fromY = this->maxSizeGrid.y;
-		}
-		this->toY = entity->getGridPos(this->gridSizeI).y + 8;
-		if (this->toY < 0)
-		{
-			this->toY = 0;
-		}
-		else if (this->toY >= this->maxSizeGrid.y)
-		{
-			this->toY = this->maxSizeGrid.y;
-		}
-
-		for (int x = this->fromX; x < this->toX; x++) {
-			for (int y = this->fromY; y < this->toY; y++) {
-				this->map[x][y][this->layer]->Render(target);                                  //
-				if (this->map[x][y][this->layer]->GetCollision()) {							   //  only render tiles around player!
-					this->collisionBox.setPosition(this->map[x][y][this->layer]->GetPos());    //
-					target.draw(this->collisionBox);
-				}
+			if (z >= 0 && z < this->map[x][y].size())
+			{
+				return this->map[x][y][z].size();
 			}
 		}
 	}
-	else
+	return -1;
+}
+void TileMap::Update()
+{
+}
+void TileMap::Render(RenderTarget& target, const Vector2i& gridPos)
+{
+	this->layer = 0;
+	this->fromX = gridPos.x - 4;
+	if (this->fromX < 0)
 	{
-		for (auto &x : this->map) {
-			for (auto &y : x) {
-				for (auto* z : y) {
-				//only render if there is a tile
-					if (z != nullptr) {
-						z->Render(target);
-						if (z->GetCollision())
-						{
-							this->collisionBox.setPosition(z->GetPos());
-							target.draw(this->collisionBox);
-						}
-					}
-				}	
+		this->fromX = 0;
+	}
+	else if (this->fromX >= this->maxSizeGrid.x)
+	{
+		this->fromX = this->maxSizeGrid.x;
+	}
+	this->toX = gridPos.x + 5;
+	if (this->toX < 0)
+	{
+		this->toX = 0;
+	}
+	else if (this->toX >= this->maxSizeGrid.x)
+	{
+		this->toX = this->maxSizeGrid.x;
+	}
+	this->fromY = gridPos.y - 3;
+	if (this->fromY < 0)
+	{
+		this->fromY = 0;
+	}
+	else if (this->fromY >= this->maxSizeGrid.y)
+	{
+		this->fromY = this->maxSizeGrid.y;
+	}
+	this->toY = gridPos.y + 5;
+	if (this->toY < 0)
+	{
+		this->toY = 0;
+	}
+	else if (this->toY >= this->maxSizeGrid.y)
+	{
+		this->toY = this->maxSizeGrid.y;
+	}
+
+	//  only render tiles around player!
+	for (int x = this->fromX; x < this->toX; x++) {
+		for (int y = this->fromY; y < this->toY; y++) {
+			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++)
+			{
+				if (this->map[x][y][this->layer][k]->GetType()==TileType::ABOVE)
+				{
+					this->deferedRenderStack.push(this->map[x][y][this->layer][k]);
+				}
+				else
+				{
+					this->map[x][y][this->layer][k]->Render(target);                                  
+				}
+				if (this->map[x][y][this->layer][k]->GetCollision()) {							  
+					this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());    
+					target.draw(this->collisionBox);
+				}
 			}
 		}
 	}
@@ -213,42 +223,44 @@ void TileMap::UpdateCollision(Entity* entity, const float& deltaTime)
 
 	for (int x = this->fromX; x < this->toX; x++) {
 		for (int y = this->fromY; y < this->toY; y++) {
-			FloatRect playerBounds = entity->GetGlobalBounds();
-			FloatRect wallBounds = this->map[x][y][this->layer]->GetGlobalBounds();
-			FloatRect nextPositionBounds = entity->GetNextPosBounds(deltaTime);
-			if (this->map[x][y][this->layer]->Intersects(nextPositionBounds)&& this->map[x][y][this->layer]->GetCollision())
-			{
-				//bottom collision
-				if (playerBounds.top < wallBounds.top
-					&& playerBounds.top + playerBounds.height < wallBounds.top +wallBounds.height
-					&& playerBounds.left < wallBounds.left + wallBounds.width
-					&& playerBounds.left + playerBounds.width > wallBounds.left) {
-					entity->StopY();
-					entity->SetPos(playerBounds.left, wallBounds.top - playerBounds.height);
-				}
-				//top collision
-				else if (playerBounds.top > wallBounds.top
-					&& playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height
-					&& playerBounds.left < wallBounds.left + wallBounds.width
-					&& playerBounds.left + playerBounds.width > wallBounds.left) {
-					entity->StopY();
-					entity->SetPos(playerBounds.left, wallBounds.top + wallBounds.height);
-				}
-				//right collision
-				if (playerBounds.left < wallBounds.left
-					&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width
-					&& playerBounds.top < wallBounds.top + wallBounds.height
-					&& playerBounds.top + playerBounds.height > wallBounds.top) {
-					entity->StopX();
-					entity->SetPos(wallBounds.left - playerBounds.width, playerBounds.top);
-				}
-				//left collision
-				else if (playerBounds.left > wallBounds.left
-					&& playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width
-					&& playerBounds.top < wallBounds.top + wallBounds.height
-					&& playerBounds.top + playerBounds.height > wallBounds.top) {
-					entity->StopX();
-					entity->SetPos(wallBounds.left + wallBounds.width, playerBounds.top);
+			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++) {
+				FloatRect playerBounds = entity->GetGlobalBounds();
+				FloatRect wallBounds = this->map[x][y][this->layer][k]->GetGlobalBounds();
+				FloatRect nextPositionBounds = entity->GetNextPosBounds(deltaTime);
+				if (this->map[x][y][this->layer][k]->Intersects(nextPositionBounds) && this->map[x][y][this->layer][k]->GetCollision())
+				{
+					//bottom collision
+					if (playerBounds.top < wallBounds.top
+						&& playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height
+						&& playerBounds.left < wallBounds.left + wallBounds.width
+						&& playerBounds.left + playerBounds.width > wallBounds.left) {
+						entity->StopY();
+						entity->SetPos(playerBounds.left, wallBounds.top - playerBounds.height);
+					}
+					//top collision
+					else if (playerBounds.top > wallBounds.top
+						&& playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height
+						&& playerBounds.left < wallBounds.left + wallBounds.width
+						&& playerBounds.left + playerBounds.width > wallBounds.left) {
+						entity->StopY();
+						entity->SetPos(playerBounds.left, wallBounds.top + wallBounds.height);
+					}
+					//right collision
+					if (playerBounds.left < wallBounds.left
+						&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width
+						&& playerBounds.top < wallBounds.top + wallBounds.height
+						&& playerBounds.top + playerBounds.height > wallBounds.top) {
+						entity->StopX();
+						entity->SetPos(wallBounds.left - playerBounds.width, playerBounds.top);
+					}
+					//left collision
+					else if (playerBounds.left > wallBounds.left
+						&& playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width
+						&& playerBounds.top < wallBounds.top + wallBounds.height
+						&& playerBounds.top + playerBounds.height > wallBounds.top) {
+						entity->StopX();
+						entity->SetPos(wallBounds.left + wallBounds.width, playerBounds.top);
+					}
 				}
 			}
 		}
@@ -264,10 +276,8 @@ void TileMap::AddTile(const int x, const int y, const int z, const IntRect texRe
 	if (x < this->maxSizeGrid.x && x>=0
 		&& y>=0 &&this->maxSizeGrid.y
 		&& z<this->layers &&z>=0) {
-		if (this->map[x][y][z] == nullptr) { //if has nothing
-			this->map[x][y][z] = new Tile(x, y , this->gridSizeF, this->tileSheet, texRect,collision,type);
-			cout << "added Tiles!" << endl;
-		}
+		this->map[x][y][z].push_back(new Tile(x, y , this->gridSizeF, this->tileSheet, texRect,collision,type));
+		/*cout << "added Tiles!" << endl;*/
 	}
 }
 void TileMap::RemoveTile(const int x, const int y, const int z)
@@ -279,10 +289,10 @@ void TileMap::RemoveTile(const int x, const int y, const int z)
 	if (x < this->maxSizeGrid.x && x >= 0
 		&& y >= 0 && this->maxSizeGrid.y
 		&& z < this->layers && z >= 0) {
-		if (this->map[x][y][z] != nullptr) { //if has something
-			delete this->map[x][y][z];
-			this->map[x][y][z] = nullptr;
-			cout << "remove Tiles!" << endl;
+		if (!this->map[x][y][z].empty()) { //if has something
+			delete this->map[x][y][z][this->map[x][y][z].size()-1]; // delete the top
+			this->map[x][y][z].pop_back();
+			/*cout << "remove Tiles!" << endl;*/
 		}
 	}
 }
@@ -313,8 +323,11 @@ void TileMap::SaveToFile(const string fileName)
 		for (int x = 0; x < this->maxSizeGrid.x; x++) {
 			for (int y = 0; y < this->maxSizeGrid.y; y++) {
 				for (int z = 0; z < this->layers; z++) {
-					if (this->map[x][y][z] != nullptr) {
-						outFile << x << " " << y << " " << z << " " << this->map[x][y][z]->GetAsString() << " ";//there's still a space =)
+					if (!this->map[x][y][z].empty()) {
+						for (size_t k = 0; k < this->map[x][y][z].size(); k++)
+						{
+							outFile << x << " " << y << " " << z << " " << this->map[x][y][z][k]->GetAsString() << " ";//there's still a space =)
+						}
 					}
 				}
 			}
@@ -352,23 +365,23 @@ void TileMap::LoadFromFile(const string fileName)
 		this->Clear();
 
 		//specific initializing
-		int x = 0;				// |
-		int y = 0;				// |
-		int z = 0;             // |   
-		int trX = 0;			// |     CONTAINER FOR SPECIFIC!
-		int trY = 0;			// |
+		int x = 0;				    // |
+		int y = 0;				    // |
+		int z = 0;                  // |   
+		int trX = 0;			    // |     CONTAINER FOR SPECIFIC!
+		int trY = 0;			    // |
 		bool collision = false;		// |
 		short type = 0;				// |
-		this->map.resize(this->maxSizeGrid.x, vector<vector<Tile*>>());               // |
-		// add to column (x axis)												  // |
-		for (int x = 0; x < this->maxSizeGrid.x; x++) {							  // |
-			for (int y = 0; y < this->maxSizeGrid.y; y++) {						  // |
-				//add in component for the "x factor" (y axis based on x axis)    // |     CREATE SLOTS FOR LOADING MAP!
-				this->map[x].resize(this->maxSizeGrid.x, vector<Tile*>());			  // |	
-				//add in component for the [x][y] factor (2.5D?)				  // |		
-				for (int z = 0; z < this->layers; z++) {                       // |
-					//create slots                                                // |
-					this->map[x][y].resize(this->layers, nullptr);                // |
+		this->map.resize(this->maxSizeGrid.x, vector<vector<vector<Tile*>>>());         // |
+		// add to column (x axis)												        // |
+		for (int x = 0; x < this->maxSizeGrid.x; x++) {							        // |
+			for (int y = 0; y < this->maxSizeGrid.y; y++) {						        // |
+				//add in component for the "x factor" (y axis based on x axis)			// |     CREATE SLOTS FOR LOADING MAP!
+				this->map[x].resize(this->maxSizeGrid.x, vector<vector<Tile*>>());		// |	
+				//add in component for the [x][y] factor (2.5D?)						// |		
+				for (int z = 0; z < this->layers; z++) {								// |
+					//create slots														// |
+					this->map[x][y].resize(this->layers, vector<Tile*>());              // |
 				}
 			}
 		}
@@ -381,8 +394,17 @@ void TileMap::LoadFromFile(const string fileName)
 
 		//information taking
 		while (inFile >> x >> y >> z >> trX >> trY >> collision >> type) {
-			this->map[x][y][z] = new Tile(x, y, this->gridSizeF, this->tileSheet, IntRect(trX, trY, gridSizeI, gridSizeI), collision, type);
+			this->map[x][y][z].push_back(new Tile(x, y, this->gridSizeF, this->tileSheet, IntRect(trX, trY, gridSizeI, gridSizeI), collision, type));
 		}
 	}
 	inFile.close();
+}
+
+void TileMap::RenderDefered(RenderTarget& target)
+{
+	while (!this->deferedRenderStack.empty())
+	{
+		deferedRenderStack.top()->Render(target); // render the lower layer first
+		deferedRenderStack.pop();
+	}
 }

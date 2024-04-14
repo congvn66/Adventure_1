@@ -40,7 +40,7 @@ void GameState::InitPauseMenu()
 }
 void GameState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Assets/Map/tilesheettest.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 50, 50, "Assets/Map/tilesheettest.png");
 	this->tileMap->LoadFromFile("text.map");
 }
 void GameState::InitTexture()
@@ -133,10 +133,13 @@ void GameState::Render(RenderTarget* target)
 	this->renderTexture.clear();
 	//map
 	this->renderTexture.setView(this->view);
-	this->tileMap->Render(this->renderTexture,this->player);
+	this->tileMap->Render(this->renderTexture,this->player->getGridPos(static_cast<int>(this->stateData->gridSize)));
 
 	//player
 	this->player->Render(this->renderTexture);
+
+	//render upper layers of the map
+	this->tileMap->RenderDefered(this->renderTexture);
 
 	//pmenu
 	if (this->pause) {
@@ -146,7 +149,7 @@ void GameState::Render(RenderTarget* target)
 	
 	//final
 	this->renderTexture.display();
-	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	//this->renderSprite.setTexture(this->renderTexture.getTexture());
 	target->draw(this->renderSprite);
 }
 void GameState::UpdatePlayerInput(const float& deltaTime)

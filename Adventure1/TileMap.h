@@ -15,7 +15,8 @@ private:
 	int gridSizeI; // for wut :DDDD
 	int layers; // for 2.5D
 
-	vector<vector<vector<Tile*>>> map; //2d vector, each factor has a vector in it
+	vector<vector<vector<vector<Tile*>>>> map; //4d vector (now the fourth dimension access each tile that appear in 1 layer)
+	stack<Tile*> deferedRenderStack;
 
 	Vector2i maxSizeGrid; // size of the grid
 	Vector2f maxSizeWorldF;
@@ -32,13 +33,15 @@ public:
 	~TileMap();
 
 	//for the editor, i mean this class =)
+	const int GetLayerSize(const int x, const int y, const int z);
 	void Update();
-	void Render(RenderTarget& target, Entity* entity = nullptr);
+	void Render(RenderTarget& target, const Vector2i& gridPos);
 	const Texture* GetTileSheet() const;
 	void UpdateCollision(Entity* entity, const float& deltaTime);
 	void AddTile(const int x, const int y, const int z, const IntRect texRect,const bool& collision, const short& type);
 	void RemoveTile(const int x, const int y, const int z);
 	void SaveToFile(const string fileName);
 	void LoadFromFile(const string fileName);
+	void RenderDefered(RenderTarget& target	);
 };
 

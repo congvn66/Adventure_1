@@ -32,7 +32,7 @@ void SettingState::InitVal()
 
 void SettingState::InitBackground()
 {
-	this->background.setSize(Vector2f(this->window->getSize().x, this->window->getSize().y));
+	this->background.setSize(Vector2f(static_cast<float>(this->window->getSize().x), static_cast<float>(this->window->getSize().y)));
 	if (this->texture.loadFromFile("Assets/Image/Background/mainmenubackground.jpg")) {
 		cout << "SettingState: background loaded!" << endl;
 		this->background.setTexture(&this->texture);

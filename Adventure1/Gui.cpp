@@ -200,13 +200,13 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 	this->sheet.setPosition(x+offset, y);
 
 	if (this->sheet.getGlobalBounds().width > this->bound.getGlobalBounds().width) {
-		this->sheet.setTextureRect(IntRect(0, 0, this->bound.getGlobalBounds().width, 
-			this->bound.getGlobalBounds().height));
+		this->sheet.setTextureRect(IntRect(0, 0, static_cast<int>(this->bound.getGlobalBounds().width), 
+			static_cast<int>(this->bound.getGlobalBounds().height)));
 	}
 
 	if (this->sheet.getGlobalBounds().height > this->bound.getGlobalBounds().height) {
-		this->sheet.setTextureRect(IntRect(0, 0, this->bound.getGlobalBounds().height,
-			this->bound.getGlobalBounds().width));
+		this->sheet.setTextureRect(IntRect(0, 0, static_cast<int>(this->bound.getGlobalBounds().height),
+			static_cast<int>(this->bound.getGlobalBounds().width)));
 	}
 
 	this->selector.setPosition(x+offset, y);
