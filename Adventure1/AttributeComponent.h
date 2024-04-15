@@ -6,10 +6,10 @@ class AttributeComponent
 {
 public:
 	//leveling
-	unsigned level;
-	unsigned exp;
-	unsigned expNext;
-	unsigned attributePoint;
+	int level;
+	int exp;
+	int expNext;
+	int attributePoint;
 
 	//attributes
 	int vitality; //max health
@@ -28,11 +28,11 @@ public:
 	int luck;
 
 	//con & de
-	AttributeComponent(unsigned level);
+	AttributeComponent(int level);
 	~AttributeComponent();
 
 	//func
-	void GainExp(const unsigned exp);
+	void GainExp(const int exp);
 	void UpdateStats(const bool reset);
 	void Update();
 	void UpdateLevel();

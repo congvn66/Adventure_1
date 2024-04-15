@@ -190,7 +190,7 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 	this->hidden = false;
 	this->active = false;
 	this->gridSize = gridSize;
-	float offset = 80.f;
+	float offset = gridSize;
 	this->bound.setSize(Vector2f(width, height));
 	this->bound.setPosition(x+offset, y);
 	this->bound.setFillColor(Color(50, 50, 50, 100));

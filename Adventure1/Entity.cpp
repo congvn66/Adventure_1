@@ -70,7 +70,6 @@ void Entity::CreateAttributeComponent(const unsigned level)
 void Entity::SetTexture(Texture& texture)
 {
 	this->sprite.setTexture(texture);
-	this->sprite.scale(Vector2f(4, 4));
 }
 void Entity::SetPos(const float x, const float y)
 {
@@ -94,7 +93,7 @@ void Entity::Update(const float& deltaTime)
 {
 
 }
-void Entity::Render(RenderTarget& target)
+void Entity::Render(RenderTarget& target, const bool showHitbox)
 {
 	
 }

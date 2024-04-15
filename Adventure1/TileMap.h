@@ -35,7 +35,7 @@ public:
 	//for the editor, i mean this class =)
 	const int GetLayerSize(const int x, const int y, const int z);
 	void Update();
-	void Render(RenderTarget& target, const Vector2i& gridPos);
+	void Render(RenderTarget& target, const Vector2i& gridPos,const bool show_collision = false);
 	const Texture* GetTileSheet() const;
 	void UpdateCollision(Entity* entity, const float& deltaTime);
 	void AddTile(const int x, const int y, const int z, const IntRect texRect,const bool& collision, const short& type);

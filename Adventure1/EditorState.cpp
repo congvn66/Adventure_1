@@ -105,13 +105,13 @@ void EditorState::InitGui()
 	this->selectorRect.setTextureRect(this->texRect);
 
 	//texture selector
-	this->texSelector = new gui::TextureSelector(20.f, 20.f, 500.f, 500.f, this->stateData->gridSize, 
+	this->texSelector = new gui::TextureSelector(20.f, 20.f, 1600.f, 800.f, this->stateData->gridSize, 
 		this->tileMap->GetTileSheet(),this->font,"Hide");
 
 }
 void EditorState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 50, 50, "Assets/Map/tilesheettest.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 1000, 1000, "Assets/Map/newtilesheet.png");
 }
 //--------------------------------INITIALIZE------------------------------------------
 
@@ -151,7 +151,7 @@ void EditorState::Render(RenderTarget* target)
 
 	//render map things
 	target->setView(this->view);
-	this->tileMap->Render(*target, this->mousePosGrid);
+	this->tileMap->Render(*target, this->mousePosGrid, true);
 	this->tileMap->RenderDefered(*target);
 	
 	target->setView(this->window->getDefaultView());

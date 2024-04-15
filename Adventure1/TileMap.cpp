@@ -6,10 +6,10 @@
 void TileMap::Clear()
 {
 	//avoid memory leak
-	for (size_t x = 0; x < this->maxSizeGrid.x; x++) {
-		for (size_t y = 0; y < this->maxSizeGrid.y; y++) {
-			for (size_t z = 0; z < this->layers; z++) {
-				for (size_t k = 0; k < this->map[x][y][z].size(); k++)
+	for (int x = 0; x < this->maxSizeGrid.x; x++) {
+		for (int y = 0; y < this->maxSizeGrid.y; y++) {
+			for (int z = 0; z < this->layers; z++) {
+				for (int k = 0; k < this->map[x][y][z].size(); k++)
 				{
 					delete this->map[x][y][z][k];
 					this->map[x][y][z][k] = nullptr;
@@ -47,7 +47,7 @@ TileMap::TileMap(float gridSize, int width, int height, string texFile)
 	for (int x = 0; x < this->maxSizeGrid.x; x++) {
 		for (int y = 0; y < this->maxSizeGrid.y; y++) {
 			//add in component for the "x factor" (y axis based on x axis)
-			this->map[x].resize(this->maxSizeGrid.x, vector<vector<Tile*>>());
+			this->map[x].resize(this->maxSizeGrid.y, vector<vector<Tile*>>());
 
 			//add in component for the [x][y] factor (2.5D?)
 			for (int z = 0; z < this->layers; z++) {
@@ -76,7 +76,7 @@ TileMap::~TileMap()
 
 const int TileMap::GetLayerSize(const int x, const int y, const int z)
 {
-	if (x >= 0 && x < this->map.size())
+	if (x >= 0 && x < (int)this->map.size())
 	{
 		if (y >= 0 && y < this->map[x].size())
 		{
@@ -91,7 +91,7 @@ const int TileMap::GetLayerSize(const int x, const int y, const int z)
 void TileMap::Update()
 {
 }
-void TileMap::Render(RenderTarget& target, const Vector2i& gridPos)
+void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision)
 {
 	this->layer = 0;
 	this->fromX = gridPos.x - 4;
@@ -144,9 +144,12 @@ void TileMap::Render(RenderTarget& target, const Vector2i& gridPos)
 				{
 					this->map[x][y][this->layer][k]->Render(target);                                  
 				}
-				if (this->map[x][y][this->layer][k]->GetCollision()) {							  
-					this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());    
-					target.draw(this->collisionBox);
+				if (show_collision)
+				{
+					if (this->map[x][y][this->layer][k]->GetCollision()) {
+						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
+						target.draw(this->collisionBox);
+					}
 				}
 			}
 		}

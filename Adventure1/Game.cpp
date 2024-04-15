@@ -23,7 +23,7 @@ void Game::InitVal()
 	this->fullscreen = false;
 	bool verticalSync = false;
 	unsigned AALevel = 0;
-	this->gridSize = 100.f;
+	this->gridSize = 64.f;
 }
 void Game::InitStates()
 {

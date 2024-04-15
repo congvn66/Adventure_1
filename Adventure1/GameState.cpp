@@ -44,20 +44,20 @@ void GameState::InitPlayerGUI()
 }
 void GameState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 50, 50, "Assets/Map/tilesheettest.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 1000, 1000, "Assets/Map/tilesheettest.png");
 	this->tileMap->LoadFromFile("text.map");
 }
 void GameState::InitTexture()
 {
 	Texture temp;
-	if (temp.loadFromFile("Assets/Player/Texture/Player_sheet.png")) {
+	if (temp.loadFromFile("Assets/Player/Texture/Player_sheet2.png")) {
 		cout << "GameState: Player sheet loaded!" << endl;
 	}
 	this->textures["PLAYER_SHEET"] = temp;
 }
 void GameState::InitPlayer()
 {
-	this->player = new Player(0, 0, this->textures["PLAYER_SHEET"]);
+	this->player = new Player(300,200, this->textures["PLAYER_SHEET"]);
 }
 //--------------------------------INITIALIZE------------------------------------------
 // 
@@ -88,7 +88,8 @@ GameState::~GameState()
 //------------------------------------FUNCTION----------------------------------------
 void GameState::UpdateView(const float& deltaTime)
 {
-	this->view.setCenter(floor(this->player->GetPos().x), floor(this->player->GetPos().y));
+	this->view.setCenter(floor(this->player->GetPos().x + (static_cast<float>(this->mousePosWindow.x)-static_cast<float>(1920/2)) / 5.f),
+		floor(this->player->GetPos().y + (static_cast<float>(this->mousePosWindow.y) - static_cast<float>(1080 / 2)) / 5.f));
 }
 void GameState::UpdateInput(const float& dt)
 {
@@ -144,10 +145,10 @@ void GameState::Render(RenderTarget* target)
 	this->renderTexture.clear();
 	//map
 	this->renderTexture.setView(this->view);
-	this->tileMap->Render(this->renderTexture,this->player->getGridPos(static_cast<int>(this->stateData->gridSize)));
+	this->tileMap->Render(this->renderTexture,this->player->getGridPos(static_cast<int>(this->stateData->gridSize)),false);
 
 	//player
-	this->player->Render(this->renderTexture);
+	this->player->Render(this->renderTexture, false);
 
 	//render upper layers of the map
 	this->tileMap->RenderDefered(this->renderTexture);
@@ -164,7 +165,7 @@ void GameState::Render(RenderTarget* target)
 	
 	//final
 	this->renderTexture.display();
-	//this->renderSprite.setTexture(this->renderTexture.getTexture());
+	this->renderSprite.setTexture(this->renderTexture.getTexture());
 	target->draw(this->renderSprite);
 }
 void GameState::UpdatePlayerInput(const float& deltaTime)
@@ -172,7 +173,6 @@ void GameState::UpdatePlayerInput(const float& deltaTime)
 	//player update
 	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_LEFT")))) {
 		this->player->Move(deltaTime, -2.0f, 0.0f);
-
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_RIGHT")))) {
 		this->player->Move(deltaTime, 2.0f, 0.0f);

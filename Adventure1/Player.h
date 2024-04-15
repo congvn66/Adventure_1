@@ -17,13 +17,13 @@ public:
     ~Player();
 
     AttributeComponent* GetAttributeComponent();
-    void LoseHP(const unsigned hp);
-    void LoseEXP(const unsigned exp);
-    void GainHP(const unsigned hp);
-    void GainEXP(const unsigned exp);
+    void LoseHP(const int hp);
+    void LoseEXP(const int exp);
+    void GainHP(const int hp);
+    void GainEXP(const int exp);
     void UpdateAttack();
     void UpdateAnimation(const float& dt);
     virtual void Update(const float& dt);
-    virtual void Render(RenderTarget& target);
+    virtual void Render(RenderTarget& target,const bool showHitBox=false);
 };
 

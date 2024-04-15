@@ -15,73 +15,38 @@ Player::Player(float x, float y, Texture& textureSheet)
 	this->InitVal();
 	//create abilities????
 	this->InitComponents();
-	this->CreateHitboxComponent(this->sprite,42.f*1.5,10.f, 42.f ,42.f*4-20); //hitbox
-	this->CreateMovementComponent(350.f,1500.f,500.f); //move
+	this->CreateHitboxComponent(this->sprite,40,10, 12*4,26*4); //hitbox
+	this->CreateMovementComponent(350.f,1500.f,900.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);				//stats
 
 	this->SetPos(x, y);
 
 	//add animation
-	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 0, 3, 0, 42, 42);
-	this->animationComponent->AddAnimation("WALK", 80.f, 0, 1, 7, 1, 42, 42);
-	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 3, 9, 3, 80,42);
+	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 8, 4, 8, 32, 32);
+	this->animationComponent->AddAnimation("WALK_LEFT", 80.f, 0, 2, 4, 2, 32, 32);
+	this->animationComponent->AddAnimation("WALK_RIGHT", 80.f, 0, 3, 4, 3, 32, 32);
+	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 1, 4, 1, 32, 32);
+	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 0, 4, 0, 32, 32);
+	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 32,32);
 }
 
 Player::~Player()
 {
 }
 
-AttributeComponent* Player::GetAttributeComponent()
-{
-	return this->attributeComponent;
-}
 
-void Player::LoseHP(const unsigned hp)
-{
-	this->attributeComponent->hp -= hp;
-
-	if (this->attributeComponent->hp < 0)
-	{
-		this->attributeComponent->hp = 0;
-	}
-}
-
-void Player::LoseEXP(const unsigned exp)
-{
-	this->attributeComponent->exp -= exp;
-
-	if (this->attributeComponent->exp < 0)
-	{
-		this->attributeComponent->exp = 0;
-	}
-}
-
-void Player::GainHP(const unsigned hp)
-{
-	this->attributeComponent->hp += hp;
-
-	if (this->attributeComponent->hp > this->attributeComponent->hpMax)
-	{
-		this->attributeComponent->hp = this->attributeComponent->hpMax;
-	}
-}
-
-void Player::GainEXP(const unsigned exp)
-{
-	this->attributeComponent->GainExp(exp);
-}
 
 void Player::UpdateAttack()
 {
-	
+	if (Mouse::isButtonPressed(Mouse::Left))
+	{
+		//this->attacking = true;
+	}
 }
-
 void Player::UpdateAnimation(const float& dt)
 {
-	if (Mouse::isButtonPressed(Mouse::Left)) {
-		this->attacking = true;
-	}
+	this->UpdateAttack();
 	if (this->attacking) {
 		this->animationComponent->Play("ATTACK", dt, true);
 		if (this->animationComponent->IsDone("ATTACK")) {
@@ -90,25 +55,61 @@ void Player::UpdateAnimation(const float& dt)
 	}
 	//play animation with each state of the player
 	if (this->movementComponent->GetState(IDLE)) {
+		this->sprite.setScale(4.f, 4.f);
 		this->animationComponent->Play("IDLE", dt);
 	}
 	else if (this->movementComponent->GetState(M_RIGHT))
 	{
-		this->sprite.setOrigin(0.f, 0.f);
 		this->sprite.setScale(4.f, 4.f);
-		this->animationComponent->Play("WALK", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
+		this->animationComponent->Play("WALK_RIGHT", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 	else if (this->movementComponent->GetState(M_LEFT)) {
-		this->sprite.setOrigin(42.f, 0.f);
-		this->sprite.setScale(-4.f, 4.f);
-		this->animationComponent->Play("WALK", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
+		this->sprite.setScale(4.f, 4.f);
+		this->animationComponent->Play("WALK_LEFT", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 	else if (this->movementComponent->GetState(M_UP)) {
-		this->animationComponent->Play("WALK", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
+		this->sprite.setScale(4.f, 4.f);
+		this->animationComponent->Play("WALK_UP", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 	else if (this->movementComponent->GetState(M_DOWN)) {
-		this->animationComponent->Play("WALK", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
+		this->sprite.setScale(4.f, 4.f);
+		this->animationComponent->Play("WALK_DOWN", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
+}
+AttributeComponent* Player::GetAttributeComponent()
+{
+	return this->attributeComponent;
+}
+void Player::LoseHP(const int hp)
+{
+	this->attributeComponent->hp -= hp;
+
+	if (this->attributeComponent->hp < 0)
+	{
+		this->attributeComponent->hp = 0;
+	}
+}
+void Player::LoseEXP(const int exp)
+{
+	this->attributeComponent->exp -= exp;
+
+	if (this->attributeComponent->exp < 0)
+	{
+		this->attributeComponent->exp = 0;
+	}
+}
+void Player::GainHP(const int hp)
+{
+	this->attributeComponent->hp += hp;
+
+	if (this->attributeComponent->hp > this->attributeComponent->hpMax)
+	{
+		this->attributeComponent->hp = this->attributeComponent->hpMax;
+	}
+}
+void Player::GainEXP(const int exp)
+{
+	this->attributeComponent->GainExp(exp);
 }
 
 void Player::Update(const float& dt)
@@ -125,8 +126,11 @@ void Player::Update(const float& dt)
 
 }
 
-void Player::Render(RenderTarget& target)
+void Player::Render(RenderTarget& target, const bool showHitBox)
 {
 	target.draw(this->sprite);
-	this->hitboxComponent->Render(target);
+	if (showHitBox)
+	{
+		this->hitboxComponent->Render(target);
+	}
 }
