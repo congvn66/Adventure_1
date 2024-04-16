@@ -32,6 +32,9 @@ public:
 	~AttributeComponent();
 
 	//func
+	void LoseHP(const int hp);
+	void LoseEXP(const int exp);
+	void GainHP(const int hp);
 	void GainExp(const int exp);
 	void UpdateStats(const bool reset);
 	void Update();

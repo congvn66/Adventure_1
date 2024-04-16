@@ -29,13 +29,21 @@ Player::Player(float x, float y, Texture& textureSheet)
 	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 1, 4, 1, 32, 32);
 	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 0, 4, 0, 32, 32);
 	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 32,32);
+
+
+	//weapon
+	if (this->weapon_texture.loadFromFile("Assets/Player/Texture/pixswords.png"))
+	{
+		cout << "GameState: sword is ready!"<< endl;
+	}
+	this->weapon.setTexture(weapon_texture);
+	this->weapon.setScale(1.f,1.f);
+	this->weapon.setOrigin(this->weapon.getGlobalBounds().width / 2.f , this->weapon.getGlobalBounds().height);
 }
 
 Player::~Player()
 {
 }
-
-
 
 void Player::UpdateAttack()
 {
@@ -82,37 +90,22 @@ AttributeComponent* Player::GetAttributeComponent()
 }
 void Player::LoseHP(const int hp)
 {
-	this->attributeComponent->hp -= hp;
-
-	if (this->attributeComponent->hp < 0)
-	{
-		this->attributeComponent->hp = 0;
-	}
+	this->attributeComponent->LoseHP(hp);
 }
 void Player::LoseEXP(const int exp)
 {
-	this->attributeComponent->exp -= exp;
-
-	if (this->attributeComponent->exp < 0)
-	{
-		this->attributeComponent->exp = 0;
-	}
+	this->attributeComponent->LoseEXP(exp);
 }
 void Player::GainHP(const int hp)
 {
-	this->attributeComponent->hp += hp;
-
-	if (this->attributeComponent->hp > this->attributeComponent->hpMax)
-	{
-		this->attributeComponent->hp = this->attributeComponent->hpMax;
-	}
+	this->attributeComponent->GainHP(hp);
 }
 void Player::GainEXP(const int exp)
 {
 	this->attributeComponent->GainExp(exp);
 }
 
-void Player::Update(const float& dt)
+void Player::Update(const float& dt, Vector2f& mousePosView)
 {
 
 	//update pos with movement input
@@ -124,7 +117,16 @@ void Player::Update(const float& dt)
 	
 	this->hitboxComponent->Update();
 
+	this->weapon.setPosition(this->GetCenterPos());
+	float dX = mousePosView.x - this->weapon.getPosition().x;
+	float dY = mousePosView.y - this->weapon.getPosition().y;
+
+	const float PI = 3.14159625;
+	float deg = atan2(dY, dX) * 180 / PI;
+
+	this->weapon.setRotation(deg+90.f);
 }
+
 
 void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 {
@@ -138,6 +140,7 @@ void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 	else
 	{
 		target.draw(this->sprite);
+		target.draw(this->weapon);
 	}
 
 	if (showHitBox)

@@ -96,7 +96,7 @@ void Entity::Move(const float& deltaTime,const float dirX, const float dirY)
 	
 	
 }
-void Entity::Update(const float& deltaTime)
+void Entity::Update(const float& deltaTime, Vector2f& mousePosView)
 {
 
 }

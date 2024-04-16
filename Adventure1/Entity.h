@@ -45,7 +45,7 @@ public:
 	virtual const Vector2f GetCenterPos() const;
 	virtual void SetPos(const float x, const float y);
 	virtual void Move(const float& deltaTime, const float dirX, const float dirY);
-	virtual void Update(const float& deltaTime)=0;
+	virtual void Update(const float& deltaTime, Vector2f& mousePosView)=0;
 	virtual void Render(RenderTarget& target,Shader* shader, const bool showHitbox= false)=0;
 	virtual void Stop();
 	virtual void StopX();

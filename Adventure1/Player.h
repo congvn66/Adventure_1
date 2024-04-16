@@ -6,6 +6,8 @@ class Player :
 private:
     //val
     bool attacking;
+    Sprite weapon;
+    Texture weapon_texture;
 
     //init
     void InitVal();
@@ -23,7 +25,7 @@ public:
     void GainEXP(const int exp);
     void UpdateAttack();
     void UpdateAnimation(const float& dt);
-    virtual void Update(const float& dt);
+    virtual void Update(const float& dt,Vector2f& mousePosView);
     virtual void Render(RenderTarget& target, Shader* shader=nullptr,const bool showHitBox=false);
 };
 

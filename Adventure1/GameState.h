@@ -13,6 +13,7 @@ private:
     View view;
     RenderTexture renderTexture; //actual canvas avoiding screen tearing
     Sprite renderSprite;
+    Vector2i viewGridPos;
 
     Player* player;
     PlayerGUI* playerGUI;

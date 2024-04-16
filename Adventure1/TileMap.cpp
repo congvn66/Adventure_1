@@ -74,6 +74,16 @@ TileMap::~TileMap()
 	this->Clear();
 }
 
+const Vector2i& TileMap::GetMaxSizeGrid() const
+{
+	return this->maxSizeGrid;
+}
+
+const Vector2f& TileMap::GetMaxSizeF() const
+{
+	return this->maxSizeWorldF;
+}
+
 const int TileMap::GetLayerSize(const int x, const int y, const int z)
 {
 	if (x >= 0 && x < (int)this->map.size())

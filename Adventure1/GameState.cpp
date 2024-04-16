@@ -100,8 +100,31 @@ GameState::~GameState()
 //------------------------------------FUNCTION----------------------------------------
 void GameState::UpdateView(const float& deltaTime)
 {
-	this->view.setCenter(floor(this->player->GetPos().x + (static_cast<float>(this->mousePosWindow.x)-static_cast<float>(1920/2)) / 5.f),
-		floor(this->player->GetPos().y + (static_cast<float>(this->mousePosWindow.y) - static_cast<float>(1080 / 2)) / 5.f));
+	this->view.setCenter(floor(this->player->GetPos().x + (static_cast<float>(this->mousePosWindow.x)-static_cast<float>(1920/2)) / 10.f),
+		floor(this->player->GetPos().y + (static_cast<float>(this->mousePosWindow.y) - static_cast<float>(1080 / 2)) / 10.f));
+
+
+	//make sure the camera wont go out the screen
+	if (this->view.getCenter().x - this->view.getSize().x / 2.f < 0.f) //left most part of view pass the screen
+	{
+		this->view.setCenter(0.f + this->view.getSize().x / 2.f, this->view.getCenter().y);
+	}
+	else if (this->view.getCenter().x - this->view.getSize().x / 2.f > 3000.f)//right most part of view pass the screen
+	{
+		this->view.setCenter(3000.f - this->view.getSize().x / 2.f, this->view.getCenter().y);
+	}
+
+	if (this->view.getCenter().y - this->view.getSize().y / 2.f < 0.f)//up most part of view pass the screen
+	{
+		this->view.setCenter(this->view.getCenter().x, 0.f + this->view.getSize().y / 2.f);
+	}
+	else if (this->view.getCenter().y - this->view.getSize().y / 2.f > 3000.f)//down most part of view pass the screen
+	{
+		this->view.setCenter(this->view.getCenter().x, 3000.f - this->view.getSize().y / 2.f);
+	}
+
+	this->viewGridPos.x = static_cast<int> (this->view.getCenter().x) / static_cast<int>(this->stateData->gridSize);
+	this->viewGridPos.y = static_cast<int> (this->view.getCenter().y) / static_cast<int>(this->stateData->gridSize);
 }
 void GameState::UpdateInput(const float& dt)
 {
@@ -129,7 +152,7 @@ void GameState::Update(const float& deltaTime)
 		this->UpdateView(deltaTime);
 		this->UpdatePlayerInput(deltaTime);
 		this->UpdateTileMap(deltaTime);
-		this->player->Update(deltaTime);
+		this->player->Update(deltaTime,this->mousePosView);
 		this->UpdatePlayerGUI(deltaTime);
 	}
 	else { //when in pause menu
@@ -157,7 +180,7 @@ void GameState::Render(RenderTarget* target)
 	this->renderTexture.clear();
 	//map
 	this->renderTexture.setView(this->view);
-	this->tileMap->Render(this->renderTexture,this->player->getGridPos(static_cast<int>(this->stateData->gridSize)),false);
+	this->tileMap->Render(this->renderTexture,this->viewGridPos,false);
 
 	//player
 	this->player->Render(this->renderTexture,nullptr,false);

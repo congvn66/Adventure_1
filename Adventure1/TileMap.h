@@ -33,6 +33,8 @@ public:
 	~TileMap();
 
 	//for the editor, i mean this class =)
+	const Vector2i& GetMaxSizeGrid() const;
+	const Vector2f& GetMaxSizeF() const;
 	const int GetLayerSize(const int x, const int y, const int z);
 	void Update();
 	void Render(RenderTarget& target, const Vector2i& gridPos,const bool show_collision = false, const Vector2f playerPos = Vector2f(), Shader* shader = nullptr);
