@@ -51,6 +51,13 @@ const Vector2f& Entity::GetPos() const
 	}
 	return this->sprite.getPosition();
 }
+const Vector2f Entity::GetCenterPos() const
+{
+	if (this->hitboxComponent) {
+		return this->hitboxComponent->GetPosition()+ Vector2f(this->hitboxComponent->GetGlobalBounds().width/2.f,this->hitboxComponent->GetGlobalBounds().height/2.f);
+	}
+	return this->sprite.getPosition()+ Vector2f(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
+}
 void Entity::CreateHitboxComponent(Sprite& sprite, float offsetX, float offsetY, float width, float height)
 {
 	this->hitboxComponent = new HitboxComponent(sprite, offsetX, offsetY,width, height);
@@ -93,7 +100,7 @@ void Entity::Update(const float& deltaTime)
 {
 
 }
-void Entity::Render(RenderTarget& target, const bool showHitbox)
+void Entity::Render(RenderTarget& target,Shader* shader, const bool showHitbox)
 {
 	
 }

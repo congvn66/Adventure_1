@@ -7,7 +7,7 @@ class Tile
 private:
 
 protected:
-	RectangleShape shape;
+	Sprite shape;
 	short type;
 	bool collision;
 public:
@@ -21,6 +21,6 @@ public:
 	const FloatRect GetGlobalBounds() const;
 	const string GetAsString() const;
 	void Update();
-	void Render(RenderTarget& target);
+	void Render(RenderTarget& target,const Vector2f playerPos=Vector2f(), Shader* shader = nullptr);
 };
 

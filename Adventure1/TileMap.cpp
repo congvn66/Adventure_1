@@ -82,7 +82,7 @@ const int TileMap::GetLayerSize(const int x, const int y, const int z)
 		{
 			if (z >= 0 && z < this->map[x][y].size())
 			{
-				return this->map[x][y][z].size();
+				return (int)this->map[x][y][z].size();
 			}
 		}
 	}
@@ -91,10 +91,10 @@ const int TileMap::GetLayerSize(const int x, const int y, const int z)
 void TileMap::Update()
 {
 }
-void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision)
+void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const Vector2f playerPos, Shader* shader)
 {
 	this->layer = 0;
-	this->fromX = gridPos.x - 4;
+	this->fromX = gridPos.x - 15;
 	if (this->fromX < 0)
 	{
 		this->fromX = 0;
@@ -103,7 +103,7 @@ void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool s
 	{
 		this->fromX = this->maxSizeGrid.x;
 	}
-	this->toX = gridPos.x + 5;
+	this->toX = gridPos.x + 16;
 	if (this->toX < 0)
 	{
 		this->toX = 0;
@@ -112,7 +112,7 @@ void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool s
 	{
 		this->toX = this->maxSizeGrid.x;
 	}
-	this->fromY = gridPos.y - 3;
+	this->fromY = gridPos.y - 9;
 	if (this->fromY < 0)
 	{
 		this->fromY = 0;
@@ -121,7 +121,7 @@ void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool s
 	{
 		this->fromY = this->maxSizeGrid.y;
 	}
-	this->toY = gridPos.y + 5;
+	this->toY = gridPos.y + 10;
 	if (this->toY < 0)
 	{
 		this->toY = 0;
@@ -142,7 +142,14 @@ void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool s
 				}
 				else
 				{
-					this->map[x][y][this->layer][k]->Render(target);                                  
+					if (shader)
+					{
+						this->map[x][y][this->layer][k]->Render(target, playerPos, shader);
+					}
+					else
+					{
+						this->map[x][y][this->layer][k]->Render(target);
+					}
 				}
 				if (show_collision)
 				{
@@ -403,11 +410,18 @@ void TileMap::LoadFromFile(const string fileName)
 	inFile.close();
 }
 
-void TileMap::RenderDefered(RenderTarget& target)
+void TileMap::RenderDefered(RenderTarget& target,const Vector2f playerPos, Shader* shader)
 {
 	while (!this->deferedRenderStack.empty())
 	{
-		deferedRenderStack.top()->Render(target); // render the lower layer first
+		if (shader)
+		{
+			deferedRenderStack.top()->Render(target, playerPos, shader); // render the lower layer first
+		}
+		else
+		{
+			deferedRenderStack.top()->Render(target);
+		}
 		deferedRenderStack.pop();
 	}
 }

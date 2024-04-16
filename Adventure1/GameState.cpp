@@ -38,13 +38,24 @@ void GameState::InitPauseMenu()
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
 	this->pauseMenu->AddButton("QUIT", 800.f, "Quit");
 }
+void GameState::InitShader()
+{
+	if (!this->coreShader.loadFromFile("vertex_shader.vert", "fragmentshader.frag"))
+	{
+		cout << "GameState: failed to load shader!" << endl;
+	}
+	else
+	{
+		cout << "GameState: shader loaded!" << endl;
+	}
+}
 void GameState::InitPlayerGUI()
 {
 	this->playerGUI = new PlayerGUI(this->player);
 }
 void GameState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 1000, 1000, "Assets/Map/tilesheettest.png");
+	this->tileMap = new TileMap(this->stateData->gridSize, 1000, 1000, "Assets/Map/newtilesheet.png");
 	this->tileMap->LoadFromFile("text.map");
 }
 void GameState::InitTexture()
@@ -70,6 +81,7 @@ GameState::GameState(StateData* stateData)
 	this->InitKeybinds();
 	this->InitFont();
 	this->InitTexture();
+	this->InitShader();
 	this->InitPauseMenu();
 
 	this->InitPlayer();
@@ -148,7 +160,7 @@ void GameState::Render(RenderTarget* target)
 	this->tileMap->Render(this->renderTexture,this->player->getGridPos(static_cast<int>(this->stateData->gridSize)),false);
 
 	//player
-	this->player->Render(this->renderTexture, false);
+	this->player->Render(this->renderTexture,nullptr,false);
 
 	//render upper layers of the map
 	this->tileMap->RenderDefered(this->renderTexture);

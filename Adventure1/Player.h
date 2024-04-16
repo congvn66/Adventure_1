@@ -24,6 +24,6 @@ public:
     void UpdateAttack();
     void UpdateAnimation(const float& dt);
     virtual void Update(const float& dt);
-    virtual void Render(RenderTarget& target,const bool showHitBox=false);
+    virtual void Render(RenderTarget& target, Shader* shader=nullptr,const bool showHitBox=false);
 };
 

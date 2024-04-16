@@ -17,6 +17,8 @@ private:
     Player* player;
     PlayerGUI* playerGUI;
 
+    Shader coreShader;
+
     Font font;
     PauseMenu* pauseMenu;
 
@@ -30,6 +32,7 @@ private:
     void InitPlayer();
     void InitFont();
     void InitPauseMenu();
+    void InitShader();
     void InitPlayerGUI();
     void InitTileMap();
 public:

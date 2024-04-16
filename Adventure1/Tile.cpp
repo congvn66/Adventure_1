@@ -4,12 +4,11 @@ Tile::Tile(int grid_x, int grid_y, float gridSizeF, Texture& tileSheet, const In
 {
 	this->collision = collision;
 	this->type = type;
-	this->shape.setSize(Vector2f(gridSizeF, gridSizeF));
 	/*this->shape.setFillColor(Color(31, 75, 110,100));*/
 	//this->shape.setOutlineThickness(1.0f);
 	//this->shape.setOutlineColor(Color::Black);
 	this->shape.setPosition(static_cast<float>(grid_x)*gridSizeF, static_cast<float>(grid_y)*gridSizeF);
-	this->shape.setTexture(&tileSheet);
+	this->shape.setTexture(tileSheet);
 	this->shape.setTextureRect(texRect);
 }
 Tile::~Tile()
@@ -52,9 +51,19 @@ const string Tile::GetAsString() const
 void Tile::Update()
 {
 }
-void Tile::Render(RenderTarget& target)
+void Tile::Render(RenderTarget& target, const Vector2f playerPos, Shader* shader)
 {
-	target.draw(this->shape);
+	if (shader)
+	{
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPos", playerPos);
+		target.draw(this->shape, shader);
+	}
+	else
+	{
+		target.draw(this->shape);
+	}
+	
 }
 
 

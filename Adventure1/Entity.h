@@ -42,10 +42,11 @@ public:
 	virtual const Vector2i getGridPos(const int gridSizeI) const;
 	virtual const FloatRect GetGlobalBounds() const;
 	virtual const Vector2f& GetPos() const;
+	virtual const Vector2f GetCenterPos() const;
 	virtual void SetPos(const float x, const float y);
 	virtual void Move(const float& deltaTime, const float dirX, const float dirY);
 	virtual void Update(const float& deltaTime)=0;
-	virtual void Render(RenderTarget& target, const bool showHitbox= false)=0;
+	virtual void Render(RenderTarget& target,Shader* shader, const bool showHitbox= false)=0;
 	virtual void Stop();
 	virtual void StopX();
 	virtual void StopY();
