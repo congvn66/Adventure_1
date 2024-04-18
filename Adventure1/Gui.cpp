@@ -262,24 +262,20 @@ void gui::TextureSelector::Update(Vector2i & mousePosWindow,const float& dt)
 		}
 	}
 	if (!this -> hidden) {
+		this->active = false;
 		if (this->bound.getGlobalBounds().contains(static_cast<Vector2f>(mousePosWindow))) {
 			this->active = true;
-		}
-		else {
-			this->active = false;
-		}
-		if (this->active) {
 			this->mousePosGrid.x = ((mousePosWindow.x - static_cast<int>(this->bound.getPosition().x)) /
 				static_cast<unsigned>(this->gridSize));
 			this->mousePosGrid.y = ((mousePosWindow.y - static_cast<int>(this->bound.getPosition().y)) /
 				static_cast<unsigned>(this->gridSize));
 			this->selector.setPosition(this->bound.getPosition().x + this->mousePosGrid.x * this->gridSize,
 				this->bound.getPosition().y + this->mousePosGrid.y * this->gridSize);
-		}
 
-		//update texture rect
-		this->texRect.left = static_cast<int>(this->selector.getPosition().x - this->bound.getPosition().x);
-		this->texRect.top = static_cast<int>(this->selector.getPosition().y - this->bound.getPosition().y);
+			//update texture rect
+			this->texRect.left = static_cast<int>(this->selector.getPosition().x - this->bound.getPosition().x);
+			this->texRect.top = static_cast<int>(this->selector.getPosition().y - this->bound.getPosition().y);
+		}
 	}
 }
 void gui::TextureSelector::Render(RenderTarget& target)

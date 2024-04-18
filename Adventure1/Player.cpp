@@ -19,6 +19,7 @@ Player::Player(float x, float y, Texture& textureSheet)
 	this->CreateMovementComponent(350.f,1500.f,900.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);				//stats
+	this->CreateSkillComponent();
 
 	this->SetPos(x, y);
 
@@ -30,15 +31,6 @@ Player::Player(float x, float y, Texture& textureSheet)
 	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 0, 4, 0, 32, 32);
 	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 32,32);
 
-
-	//weapon
-	if (this->weapon_texture.loadFromFile("Assets/Player/Texture/pixswords.png"))
-	{
-		cout << "GameState: sword is ready!"<< endl;
-	}
-	this->weapon.setTexture(weapon_texture);
-	this->weapon.setScale(1.f,1.f);
-	this->weapon.setOrigin(this->weapon.getGlobalBounds().width / 2.f , this->weapon.getGlobalBounds().height);
 }
 
 Player::~Player()
@@ -117,14 +109,7 @@ void Player::Update(const float& dt, Vector2f& mousePosView)
 	
 	this->hitboxComponent->Update();
 
-	this->weapon.setPosition(this->GetCenterPos());
-	float dX = mousePosView.x - this->weapon.getPosition().x;
-	float dY = mousePosView.y - this->weapon.getPosition().y;
-
-	const float PI = 3.14159625;
-	float deg = atan2(dY, dX) * 180 / PI;
-
-	this->weapon.setRotation(deg+90.f);
+	this->sword.Update(this->GetCenterPos(), mousePosView);
 }
 
 
@@ -140,7 +125,7 @@ void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 	else
 	{
 		target.draw(this->sprite);
-		target.draw(this->weapon);
+		this->sword.Render(target);
 	}
 
 	if (showHitBox)

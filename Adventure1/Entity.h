@@ -5,6 +5,7 @@
 #include "AnimationComponent.h"
 #include "HitboxComponent.h"
 #include "AttributeComponent.h"
+#include "SkillComponent.h"
 
 using namespace std;
 using namespace sf;
@@ -25,6 +26,7 @@ protected:
 	HitboxComponent* hitboxComponent;	//hitbox	
 	MovementComponent* movementComponent;// move 
 	AnimationComponent* animationComponent;//animate
+	SkillComponent* skillComponent;
 public:
 	//con & de
 	Entity();
@@ -32,6 +34,7 @@ public:
 
 	//it is w it is
 	//component stuffs
+	void CreateSkillComponent();
 	void CreateHitboxComponent(Sprite& sprite, float offsetX, float offsetY, float width, float height);
 	void CreateMovementComponent(const float maxSpeed, const float acceleration, 
 		const float deceleration);

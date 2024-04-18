@@ -11,6 +11,7 @@ Entity::~Entity()
 	delete this->animationComponent;
 	delete this->hitboxComponent;
 	delete this->attributeComponent;
+	delete this->skillComponent;
 }
 
 void Entity::InitVal()
@@ -18,6 +19,7 @@ void Entity::InitVal()
 	this->movementComponent = nullptr;
 	this->animationComponent = nullptr;
 	this->hitboxComponent = nullptr;
+	this->skillComponent = nullptr;
 }
 const FloatRect Entity::GetNextPosBounds(const float& deltaTime) const
 {
@@ -58,6 +60,10 @@ const Vector2f Entity::GetCenterPos() const
 	}
 	return this->sprite.getPosition()+ Vector2f(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 }
+void Entity::CreateSkillComponent()
+{
+	this->skillComponent = new SkillComponent();
+}
 void Entity::CreateHitboxComponent(Sprite& sprite, float offsetX, float offsetY, float width, float height)
 {
 	this->hitboxComponent = new HitboxComponent(sprite, offsetX, offsetY,width, height);
@@ -94,6 +100,10 @@ void Entity::Move(const float& deltaTime,const float dirX, const float dirY)
 		this->movementComponent->Move(dirX, dirY,deltaTime);// set velocity
 	}
 	
+	if (this->skillComponent)
+	{
+		this->skillComponent->GainExp(SKILLS::ENDURANCE, 1);
+	}
 	
 }
 void Entity::Update(const float& deltaTime, Vector2f& mousePosView)

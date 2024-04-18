@@ -1,13 +1,13 @@
 #pragma once
 #include "Entity.h"
+#include "Sword.h"
 class Player :
     public Entity
 {
 private:
     //val
     bool attacking;
-    Sprite weapon;
-    Texture weapon_texture;
+    Sword sword;
 
     //init
     void InitVal();

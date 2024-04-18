@@ -15,7 +15,6 @@ void Game::InitWindow()
 	this->window->setFramerateLimit(120);
 	this->window->setVerticalSyncEnabled(false);
 }
-
 void Game::InitVal()
 {
 	//only once per app starts.
@@ -31,7 +30,6 @@ void Game::InitStates()
 	/*this->states.push(new GameState(this->window, &this->supportedKeys));*/
 	this->states.push(new MainMenuState(&this->stateData));
 }
-
 void Game::InitKeys()
 {
 	//add supported keys
@@ -43,6 +41,7 @@ void Game::InitKeys()
 	this->supportedKeys["UP"] = Keyboard::Key::Up;
 	this->supportedKeys["DOWN"] = Keyboard::Key::Down;
 	this->supportedKeys["C"] = Keyboard::Key::C;
+	this->supportedKeys["Z"] = Keyboard::Key::Z;
 }
 
 void Game::InitStateData()

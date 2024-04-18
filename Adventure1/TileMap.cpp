@@ -5,22 +5,25 @@
 
 void TileMap::Clear()
 {
-	//avoid memory leak
-	for (int x = 0; x < this->maxSizeGrid.x; x++) {
-		for (int y = 0; y < this->maxSizeGrid.y; y++) {
-			for (int z = 0; z < this->layers; z++) {
-				for (int k = 0; k < this->map[x][y][z].size(); k++)
-				{
-					delete this->map[x][y][z][k];
-					this->map[x][y][z][k] = nullptr;
+	if (!this->map.empty())
+	{
+		//avoid memory leak
+		for (int x = 0; x < this->maxSizeGrid.x; x++) {
+			for (int y = 0; y < this->maxSizeGrid.y; y++) {
+				for (int z = 0; z < this->layers; z++) {
+					for (int k = 0; k < this->map[x][y][z].size(); k++)
+					{
+						delete this->map[x][y][z][k];
+						this->map[x][y][z][k] = nullptr;
+					}
+					this->map[x][y][z].clear();
 				}
-				this->map[x][y][z].clear();
+				this->map[x][y].clear();
 			}
-			this->map[x][y].clear();
+			this->map[x].clear();
 		}
-		this->map[x].clear();
+		this->map.clear();
 	}
-	this->map.clear();
 }
 
 TileMap::TileMap(float gridSize, int width, int height, string texFile)
@@ -69,9 +72,34 @@ TileMap::TileMap(float gridSize, int width, int height, string texFile)
 	this->collisionBox.setOutlineColor(Color::Red);
 	this->collisionBox.setOutlineThickness(2.f);
 }
+TileMap::TileMap(const string fileName)
+{
+	this->fromX = 0;
+	this->fromY = 0;
+	this->toX = 0;
+	this->toY = 0;
+	this->layer = 0;
+
+	this->LoadFromFile(fileName);
+
+	//collision box
+	this->collisionBox.setSize(Vector2f(this->gridSizeF, this->gridSizeF));
+	this->collisionBox.setFillColor(Color(255, 0, 0, 50));
+	this->collisionBox.setOutlineColor(Color::Red);
+	this->collisionBox.setOutlineThickness(2.f);
+}
 TileMap::~TileMap()
 {
 	this->Clear();
+}
+
+const bool TileMap::TileEmpty(const int x, const int y, const int z) const
+{
+	if (x >= 0 && x < this->maxSizeGrid.x && y >= 0 && y < this->maxSizeGrid.y && z >= 0 && z < this->layers)
+	{
+		return this->map[x][y][z].empty(); // true if empty
+	}
+	return false;
 }
 
 const Vector2i& TileMap::GetMaxSizeGrid() const
@@ -377,6 +405,8 @@ void TileMap::LoadFromFile(const string fileName)
 		this->gridSizeI = gridSize;
 		this->maxSizeGrid.x = size.x;
 		this->maxSizeGrid.y = size.y;
+		this->maxSizeWorldF.x = static_cast<float>(size.x * gridSize);
+		this->maxSizeWorldF.y = static_cast<float>(size.y * gridSize);
 		this->layers = layers;
 
 		//Assets/Map/tilesheettest.png

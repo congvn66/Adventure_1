@@ -31,6 +31,15 @@
     <Filter Include="Map">
       <UniqueIdentifier>{a7ba1de3-1bb4-4739-b73d-b18f15adc5dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{586de038-4d3a-46e3-b146-a263d43148cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items\Melee">
+      <UniqueIdentifier>{9a9fc913-c6e4-475e-9145-add55380f576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items\Range">
+      <UniqueIdentifier>{dbf22d89-7f11-4c71-9e4d-74861705c76f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,6 +99,24 @@
     <ClCompile Include="PlayerGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Melee.cpp">
+      <Filter>Items\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="Sword.cpp">
+      <Filter>Items\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="Ranged.cpp">
+      <Filter>Items\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="Bow.cpp">
+      <Filter>Items\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -145,6 +172,24 @@
     </ClInclude>
     <ClInclude Include="PlayerGUI.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Melee.h">
+      <Filter>Items\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="Sword.h">
+      <Filter>Items\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="Ranged.h">
+      <Filter>Items\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="Bow.h">
+      <Filter>Items\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

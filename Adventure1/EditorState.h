@@ -19,10 +19,12 @@ private:
     RectangleShape sidebar; //sidebar
     View view;//cam
     
+    
     bool collision;
     short type;
     float camSpeed;
     int layer;
+    bool tileAddLock;
 
     //pmenu
     PauseMenu* pauseMenu;

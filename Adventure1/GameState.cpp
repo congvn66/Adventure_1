@@ -55,8 +55,7 @@ void GameState::InitPlayerGUI()
 }
 void GameState::InitTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 1000, 1000, "Assets/Map/newtilesheet.png");
-	this->tileMap->LoadFromFile("text.map");
+	this->tileMap = new TileMap("text.map");
 }
 void GameState::InitTexture()
 {
@@ -105,23 +104,30 @@ void GameState::UpdateView(const float& deltaTime)
 
 
 	//make sure the camera wont go out the screen
-	if (this->view.getCenter().x - this->view.getSize().x / 2.f < 0.f) //left most part of view pass the screen
+	if (this->view.getSize().x <= this->tileMap->GetMaxSizeF().x)
 	{
-		this->view.setCenter(0.f + this->view.getSize().x / 2.f, this->view.getCenter().y);
-	}
-	else if (this->view.getCenter().x - this->view.getSize().x / 2.f > 3000.f)//right most part of view pass the screen
-	{
-		this->view.setCenter(3000.f - this->view.getSize().x / 2.f, this->view.getCenter().y);
+		if (this->view.getCenter().x - this->view.getSize().x / 2.f < 0.f) //left most part of view pass the screen
+		{
+			this->view.setCenter(0.f + this->view.getSize().x / 2.f, this->view.getCenter().y);
+		}
+		else if (this->view.getCenter().x - this->view.getSize().x / 2.f > this->tileMap->GetMaxSizeF().x)//right most part of view pass the screen
+		{
+			this->view.setCenter(this->tileMap->GetMaxSizeF().x - this->view.getSize().x / 2.f, this->view.getCenter().y);
+		}
 	}
 
-	if (this->view.getCenter().y - this->view.getSize().y / 2.f < 0.f)//up most part of view pass the screen
+	if (this->view.getSize().y <= this->tileMap->GetMaxSizeF().y)
 	{
-		this->view.setCenter(this->view.getCenter().x, 0.f + this->view.getSize().y / 2.f);
+		if (this->view.getCenter().y - this->view.getSize().y / 2.f < 0.f)//up most part of view pass the screen
+		{
+			this->view.setCenter(this->view.getCenter().x, 0.f + this->view.getSize().y / 2.f);
+		}
+		else if (this->view.getCenter().y - this->view.getSize().y / 2.f > this->tileMap->GetMaxSizeF().y)//down most part of view pass the screen
+		{
+			this->view.setCenter(this->view.getCenter().x, this->tileMap->GetMaxSizeF().y - this->view.getSize().y / 2.f);
+		}
 	}
-	else if (this->view.getCenter().y - this->view.getSize().y / 2.f > 3000.f)//down most part of view pass the screen
-	{
-		this->view.setCenter(this->view.getCenter().x, 3000.f - this->view.getSize().y / 2.f);
-	}
+	
 
 	this->viewGridPos.x = static_cast<int> (this->view.getCenter().x) / static_cast<int>(this->stateData->gridSize);
 	this->viewGridPos.y = static_cast<int> (this->view.getCenter().y) / static_cast<int>(this->stateData->gridSize);

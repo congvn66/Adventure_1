@@ -4,6 +4,7 @@
 #include "PauseMenu.h"
 #include "TileMap.h"
 #include "PlayerGUI.h"
+#include "Sword.h"
 
 //state of the window when we in the game
 class GameState :
@@ -24,6 +25,7 @@ private:
     PauseMenu* pauseMenu;
 
     TileMap* tileMap;
+
 
     //init
     void InitDeferredRender();

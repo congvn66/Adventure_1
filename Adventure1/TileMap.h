@@ -30,9 +30,11 @@ private:
 	int layer;
 public:
 	TileMap(float gridSize, int width, int height, string texFile);
+	TileMap(const string fileName);
 	~TileMap();
 
 	//for the editor, i mean this class =)
+	const bool TileEmpty(const int x, const int y, const int z) const;
 	const Vector2i& GetMaxSizeGrid() const;
 	const Vector2f& GetMaxSizeF() const;
 	const int GetLayerSize(const int x, const int y, const int z);
