@@ -22,9 +22,6 @@
     <Filter Include="Component">
       <UniqueIdentifier>{8ab33075-7f87-441c-a3a3-b48862d53b99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tile">
-      <UniqueIdentifier>{b871d431-e738-4984-9ee2-63d87d25177b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{ae14709d-21cf-4df9-9fd8-19733893f7fd}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="Items\Range">
       <UniqueIdentifier>{dbf22d89-7f11-4c71-9e4d-74861705c76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\Tile">
+      <UniqueIdentifier>{b871d431-e738-4984-9ee2-63d87d25177b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -76,7 +76,7 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Tile.cpp">
-      <Filter>Tile</Filter>
+      <Filter>Map\Tile</Filter>
     </ClCompile>
     <ClCompile Include="PauseMenu.cpp">
       <Filter>GUI</Filter>
@@ -115,7 +115,13 @@
       <Filter>Items\Range</Filter>
     </ClCompile>
     <ClCompile Include="SkillComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>Map\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +156,7 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
-      <Filter>Tile</Filter>
+      <Filter>Map\Tile</Filter>
     </ClInclude>
     <ClInclude Include="PauseMenu.h">
       <Filter>GUI</Filter>
@@ -188,8 +194,14 @@
     <ClInclude Include="Bow.h">
       <Filter>Items\Range</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
     <ClInclude Include="SkillComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpawner.h">
+      <Filter>Map\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

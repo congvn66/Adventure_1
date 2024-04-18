@@ -18,6 +18,8 @@ public:
     Player(float x, float y, Texture& textureSheet);
     ~Player();
 
+
+    void InitAnimation();
     AttributeComponent* GetAttributeComponent();
     void LoseHP(const int hp);
     void LoseEXP(const int exp);

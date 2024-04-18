@@ -22,8 +22,8 @@ void Sword::Update(const Vector2f centerPos, const Vector2f& mousePosView)
 	float dX = mousePosView.x - this->weaponSprite.getPosition().x;
 	float dY = mousePosView.y - this->weaponSprite.getPosition().y;
 
-	const float PI = 3.14159625;
-	float deg = atan2(dY, dX) * 180 / PI;
+	const float PI = 3.14159625f;
+	float deg = atan2(dY, dX) * 180.f / PI;
 
 	this->weaponSprite.setRotation(deg + 90.f);
 }

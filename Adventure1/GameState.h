@@ -5,27 +5,28 @@
 #include "TileMap.h"
 #include "PlayerGUI.h"
 #include "Sword.h"
+#include "Enemy.h"
 
 //state of the window when we in the game
 class GameState :
     public State
 {
 private:
+    //view things
     View view;
     RenderTexture renderTexture; //actual canvas avoiding screen tearing
     Sprite renderSprite;
     Vector2i viewGridPos;
+    Shader coreShader;
+    TileMap* tileMap;
 
+    //player things
     Player* player;
     PlayerGUI* playerGUI;
 
-    Shader coreShader;
-
+    //pmenu
     Font font;
     PauseMenu* pauseMenu;
-
-    TileMap* tileMap;
-
 
     //init
     void InitDeferredRender();

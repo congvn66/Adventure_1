@@ -50,6 +50,7 @@ const string Tile::GetAsString() const
 }
 void Tile::Update()
 {
+	
 }
 void Tile::Render(RenderTarget& target, const Vector2f playerPos, Shader* shader)
 {

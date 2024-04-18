@@ -93,9 +93,10 @@ GameState::~GameState()
 	delete this->player;
 	delete this->pauseMenu;
 	delete this->tileMap;
+
 }
 //---------------------------------CON & DE-------------------------------------------
-// 
+
 //------------------------------------FUNCTION----------------------------------------
 void GameState::UpdateView(const float& deltaTime)
 {
@@ -160,6 +161,8 @@ void GameState::Update(const float& deltaTime)
 		this->UpdateTileMap(deltaTime);
 		this->player->Update(deltaTime,this->mousePosView);
 		this->UpdatePlayerGUI(deltaTime);
+		
+		
 	}
 	else { //when in pause menu
 		this->pauseMenu->Update(this->mousePosWindow);
@@ -175,8 +178,8 @@ void GameState::UpdatePauseMenuButton()
 }
 void GameState::UpdateTileMap(const float& dt)
 {
-	this->tileMap->Update();
-	this->tileMap->UpdateCollision(this->player,dt);
+	this->tileMap->Update(this->player,dt);
+	
 }
 void GameState::Render(RenderTarget* target)
 {
@@ -190,6 +193,8 @@ void GameState::Render(RenderTarget* target)
 
 	//player
 	this->player->Render(this->renderTexture,nullptr,false);
+
+
 
 	//render upper layers of the map
 	this->tileMap->RenderDefered(this->renderTexture);

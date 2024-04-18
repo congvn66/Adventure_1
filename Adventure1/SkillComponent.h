@@ -84,7 +84,7 @@ private:
 						if (this->level < this->levelLim)
 						{
 							this->level++;
-							this->expNext = pow(this->level, 2) + this->level * 12;
+							this->expNext = static_cast<int>(pow(this->level, 2) + this->level * 12);
 						}
 
 					}
@@ -99,7 +99,7 @@ private:
 						if (this->level > 0)
 						{
 							this->level--;
-							this->expNext = pow(this->level, 2) + this->level * 12;
+							this->expNext = static_cast<int>(pow(this->level, 2) + this->level * 12);
 						}
 
 					}

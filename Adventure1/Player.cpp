@@ -19,17 +19,11 @@ Player::Player(float x, float y, Texture& textureSheet)
 	this->CreateMovementComponent(350.f,1500.f,900.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);				//stats
-	this->CreateSkillComponent();
+	this->CreateSkillComponent(); // skill attribute
 
 	this->SetPos(x, y);
-
-	//add animation
-	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 8, 4, 8, 32, 32);
-	this->animationComponent->AddAnimation("WALK_LEFT", 80.f, 0, 2, 4, 2, 32, 32);
-	this->animationComponent->AddAnimation("WALK_RIGHT", 80.f, 0, 3, 4, 3, 32, 32);
-	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 1, 4, 1, 32, 32);
-	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 0, 4, 0, 32, 32);
-	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 32,32);
+	this->InitAnimation();
+	
 
 }
 
@@ -76,6 +70,16 @@ void Player::UpdateAnimation(const float& dt)
 		this->animationComponent->Play("WALK_DOWN", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 }
+void Player::InitAnimation()
+{
+	//add animation
+	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 8, 4, 8, 32, 32);
+	this->animationComponent->AddAnimation("WALK_LEFT", 80.f, 0, 2, 4, 2, 32, 32);
+	this->animationComponent->AddAnimation("WALK_RIGHT", 80.f, 0, 3, 4, 3, 32, 32);
+	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 1, 4, 1, 32, 32);
+	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 0, 4, 0, 32, 32);
+	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 32, 32);
+}
 AttributeComponent* Player::GetAttributeComponent()
 {
 	return this->attributeComponent;
@@ -96,7 +100,6 @@ void Player::GainEXP(const int exp)
 {
 	this->attributeComponent->GainExp(exp);
 }
-
 void Player::Update(const float& dt, Vector2f& mousePosView)
 {
 
@@ -111,8 +114,6 @@ void Player::Update(const float& dt, Vector2f& mousePosView)
 
 	this->sword.Update(this->GetCenterPos(), mousePosView);
 }
-
-
 void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 {
 	

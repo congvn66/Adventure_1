@@ -126,9 +126,7 @@ const int TileMap::GetLayerSize(const int x, const int y, const int z)
 	}
 	return -1;
 }
-void TileMap::Update()
-{
-}
+
 void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const Vector2f playerPos, Shader* shader)
 {
 	this->layer = 0;
@@ -204,7 +202,7 @@ const Texture* TileMap::GetTileSheet() const
 {
 	return &this->tileSheet;
 }
-void TileMap::UpdateCollision(Entity* entity, const float& deltaTime)
+void TileMap::Update(Entity* entity, const float& deltaTime)
 {
 	//check if pass the border
 	if (entity->GetPos().x < 0.f) // left border
@@ -275,6 +273,7 @@ void TileMap::UpdateCollision(Entity* entity, const float& deltaTime)
 				FloatRect playerBounds = entity->GetGlobalBounds();
 				FloatRect wallBounds = this->map[x][y][this->layer][k]->GetGlobalBounds();
 				FloatRect nextPositionBounds = entity->GetNextPosBounds(deltaTime);
+				this->map[x][y][this->layer][k]->Update();
 				if (this->map[x][y][this->layer][k]->Intersects(nextPositionBounds) && this->map[x][y][this->layer][k]->GetCollision())
 				{
 					//bottom collision
