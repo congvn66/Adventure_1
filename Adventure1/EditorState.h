@@ -4,9 +4,12 @@
 #include "PauseMenu.h"
 #include "TileMap.h"
 #include "EditorMode.h"
+#include "DefaultMode.h"
 
 class EditorMode;
 class StateData;
+class EditorStateData;
+class DefaultMode;
 
 enum EditorModes {DEFAULT_MODE=0, ENEMY_MODE};
 
@@ -16,6 +19,7 @@ class EditorState :
     public State
 {
 private:
+    EditorStateData editorStateData;
     //tile shit
     View view;//cam
     TileMap* tileMap;
@@ -32,6 +36,7 @@ private:
 
     //init
     void InitView();
+    void InitEditorStateData();
     void InitVal();
     void InitKeybinds();
     void InitFont();
@@ -52,6 +57,8 @@ public:
     void Update(const float& deltaTime);
     void UpdateInput(const float& deltaTime);
     void UpdateButton();
+    void UpdateModes(const float& deltaTime);
+    void RenderModes(RenderTarget& target);
     void Render(RenderTarget* target = nullptr);
     void RenderGui(RenderTarget& target);
     void RenderButtons(RenderTarget& target);

@@ -26,14 +26,14 @@ private:
     void InitVal();
     void InitGui();
 public:
-    DefaultMode(StateData* stateData, TileMap* tileMap, Font* font);
+    DefaultMode(StateData* stateData, TileMap* tileMap, EditorStateData* editorStateData);
     ~DefaultMode();
 
     void UpdateInput(const float& deltaTime);
     void UpdateGui(const float& deltaTime);
     void Update(const float& deltaTime);
 
-    void Render(RenderTarget* target = nullptr) ;
+    void Render(RenderTarget& target) ;
     void RenderGui(RenderTarget& target) ;
 };
 

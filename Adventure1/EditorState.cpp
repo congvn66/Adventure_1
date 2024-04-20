@@ -5,6 +5,7 @@ EditorState::EditorState(StateData* stateData)
 	:State(stateData)
 {
 	this->InitVal();
+	this->InitEditorStateData();
 	this->InitView();
 	this->InitFont();	
 	this->InitKeybinds();
@@ -37,6 +38,18 @@ void EditorState::InitView()
 {
 	this->view.setSize(Vector2f(1920, 1080));
 	this->view.setCenter(1920 / 2.f, 1080 / 2.f);
+}
+void EditorState::InitEditorStateData()
+{
+	this->editorStateData.keyTime = &this->keyTime;
+	this->editorStateData.view = &this->view;
+	this->editorStateData.font = &this->font;
+	this->editorStateData.keyTimeMax = &this->keyTimeMax;
+	this->editorStateData.keybinds = &this->keybinds;
+	this->editorStateData.mousePosGrid = &this->mousePosGrid;
+	this->editorStateData.mousePosScreen = &this->mousePosScreen;
+	this->editorStateData.mousePosView = &this->mousePosView;
+	this->editorStateData.mousePosWindow = &this->mousePosWindow;
 }
 void EditorState::InitVal()
 {
@@ -87,7 +100,7 @@ void EditorState::InitTileMap()
 }
 void EditorState::InitMode()
 {
-
+	this->modes.push_back(new DefaultMode(this->stateData, this->tileMap, &this->editorStateData));
 }
 //--------------------------------INITIALIZE------------------------------------------
 
@@ -111,6 +124,8 @@ void EditorState::Update(const float& deltaTime)
 		this->UpdateGui(deltaTime);
 		//for functionalties
 		this->UpdateEditorInput(deltaTime);
+		//for modes
+		this->UpdateModes(deltaTime);
 	}
 	else { //when in pause menu
 		this->pauseMenu->Update(this->mousePosWindow);
@@ -134,7 +149,7 @@ void EditorState::Render(RenderTarget* target)
 	//render GUI things
 	this->RenderButtons(*target);
 	this->RenderGui(*target);
-
+	this->RenderModes(*target);
 	//=======================================
 	//pause
 	if (this->pause == true) {  
@@ -165,6 +180,14 @@ void EditorState::UpdateButton()
 	for (auto& it : this->buttons) {
 		it.second->Update(this->mousePosWindow);
 	}
+}
+void EditorState::UpdateModes(const float& deltaTime)
+{
+	this->modes[EditorModes::DEFAULT_MODE]->Update(deltaTime);
+}
+void EditorState::RenderModes(RenderTarget& target)
+{
+	this->modes[EditorModes::DEFAULT_MODE]->Render(target);
 }
 void EditorState::UpdateGui(const float& deltaTime)
 {
