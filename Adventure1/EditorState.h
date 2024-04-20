@@ -3,6 +3,12 @@
 #include "Gui.h"
 #include "PauseMenu.h"
 #include "TileMap.h"
+#include "EditorMode.h"
+
+class EditorMode;
+class StateData;
+
+enum EditorModes {DEFAULT_MODE=0, ENEMY_MODE};
 
 using namespace gui;
 
@@ -11,39 +17,30 @@ class EditorState :
 {
 private:
     //tile shit
-    TileMap* tileMap;
-    RectangleShape selectorRect; // cursor in editor?
-    IntRect texRect;
-    Text cursorText; //i4
-    gui::TextureSelector* texSelector; //tile list
-    RectangleShape sidebar; //sidebar
     View view;//cam
+    TileMap* tileMap;
     
-    
-    bool collision;
-    short type;
-    float camSpeed;
-    int layer;
-    bool tileAddLock;
-
     //pmenu
     PauseMenu* pauseMenu;
+    Font font;
 
     //button elements
-    Font font;
     std::map<string, Button*> buttons;
+
+    vector <EditorMode*> modes; 
+    float camSpeed;
 
     //init
     void InitView();
-    void InitText();
     void InitVal();
     void InitKeybinds();
     void InitFont();
     void InitButton();
-    void InitBackground();
     void InitPauseMenu();
     void InitGui();
     void InitTileMap();
+
+    void InitMode();
 public:
     //constructor, deconstructor
     EditorState(StateData* stateData);

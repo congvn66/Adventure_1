@@ -6,14 +6,13 @@ EditorState::EditorState(StateData* stateData)
 {
 	this->InitVal();
 	this->InitView();
-	this->InitBackground();
-	this->InitFont();
-	this->InitText();
+	this->InitFont();	
 	this->InitKeybinds();
 	this->InitPauseMenu();
 	this->InitTileMap();
 	this->InitButton();
 	this->InitGui();
+	this->InitMode();
 }
 EditorState::~EditorState()
 {
@@ -25,8 +24,11 @@ EditorState::~EditorState()
 	}
 	//delete pmenu
 	delete this->pauseMenu;
-	//delete texture selector
-	delete this->texSelector;
+
+	for (size_t i = 0; i < this->modes.size(); i++)
+	{
+		delete this->modes[i];
+	}
 }
 //---------------------------------CON & DE-------------------------------------------
 
@@ -36,22 +38,9 @@ void EditorState::InitView()
 	this->view.setSize(Vector2f(1920, 1080));
 	this->view.setCenter(1920 / 2.f, 1080 / 2.f);
 }
-void EditorState::InitText()
-{
-	this->cursorText.setFont(this->font);
-	this->cursorText.setCharacterSize(20);
-	this->cursorText.setFillColor(Color::White);
-	
-}
 void EditorState::InitVal()
 {
-	this->layer = 0;
-	this->camSpeed = 300.f;
-	this->texRect = IntRect(0, 0, static_cast<int>(this->stateData->gridSize), 
-		static_cast<int>(this->stateData->gridSize));
-	this->collision = false;
-	this->type = TileType::DEFAULT;
-	this->tileAddLock = false;
+	this->camSpeed = 500.f;
 }
 void EditorState::InitKeybinds()
 {
@@ -80,10 +69,6 @@ void EditorState::InitButton()
 	//setting up buttons
 	
 }
-void EditorState::InitBackground()
-{
-
-}
 void EditorState::InitPauseMenu()
 {
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
@@ -93,27 +78,16 @@ void EditorState::InitPauseMenu()
 }
 void EditorState::InitGui()
 {
-	this->sidebar.setSize(Vector2f(80, 1080));
-	this->sidebar.setFillColor(Color(50, 50, 50, 100));
-	this->sidebar.setOutlineColor(Color(200, 200, 200, 150));
-	this->sidebar.setOutlineThickness(1.f);
-	this->selectorRect.setSize(Vector2f(this->stateData->gridSize, this->stateData->gridSize));
-	this->selectorRect.setFillColor(Color(209, 222, 209,150));
-	this->selectorRect.setOutlineThickness(1.0f);
-	this->selectorRect.setOutlineColor(Color::Green);
-
-	//preview
-	this->selectorRect.setTexture(this->tileMap->GetTileSheet());
-	this->selectorRect.setTextureRect(this->texRect);
-
-	//texture selector
-	this->texSelector = new gui::TextureSelector(20.f, 20.f, 1600.f, 800.f, this->stateData->gridSize, 
-		this->tileMap->GetTileSheet(),this->font,"Hide");
+	
 
 }
 void EditorState::InitTileMap()
 {
 	this->tileMap = new TileMap(this->stateData->gridSize, 200, 200, "Assets/Map/newtilesheet.png");
+}
+void EditorState::InitMode()
+{
+
 }
 //--------------------------------INITIALIZE------------------------------------------
 
@@ -170,19 +144,7 @@ void EditorState::Render(RenderTarget* target)
 }
 void EditorState::RenderGui(RenderTarget& target)
 {
-	if (!this->texSelector->GetActive()) {
-		//texture selector
-		target.setView(this->view);
-		target.draw(this->selectorRect);
-	}
-	target.setView(this->window->getDefaultView());
-	this->texSelector->Render(target);
-	//sidebar
-	target.draw(this->sidebar);
-
-	//cursor text
-	target.setView(this->view);
-	target.draw(this->cursorText);
+	
 }
 void EditorState::UpdateInput(const float& deltaTime)
 {
@@ -206,29 +168,7 @@ void EditorState::UpdateButton()
 }
 void EditorState::UpdateGui(const float& deltaTime)
 {
-	//texture selector
-	this->texSelector->Update(this->mousePosWindow, deltaTime);
-	if (!this->texSelector->GetActive()) {
-		//update for the preview tile
-		this->selectorRect.setTextureRect(this->texRect);
-		this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize,
-			this->mousePosGrid.y * this->stateData->gridSize); //this for the actual pos
-	}
-
-	//set pos 4 the below
-	this->cursorText.setPosition(this->mousePosView.x + 100.f, this->mousePosView.y + 50.f);
-
-	//show coordinates & index of the tiles on the tilesheet
-	stringstream ss;
-	ss << this->mousePosView.x << "/" << this->mousePosView.y << endl << //mouse pos with respect to camera
-		this->mousePosGrid.x << "/" << this->mousePosGrid.y << endl <<	//mouse pos with respect to grid
-		this->texRect.left << "/" << this->texRect.top << endl <<
-		"col: " << this->collision << endl <<
-		"type: " << this->type << endl <<
-		"tiles: " << this->tileMap->GetLayerSize(mousePosGrid.x, this->mousePosGrid.y, this->layer) << endl <<
-		"tile lock: " << this->tileAddLock;
-	this->cursorText.setString(ss.str());
-
+	
 
 }
 void EditorState::UpdateEditorInput(const float deltaTime)
@@ -249,69 +189,6 @@ void EditorState::UpdateEditorInput(const float deltaTime)
 	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CAM_DOWN"))))
 	{
 		this->view.move(0.f, this->camSpeed * deltaTime);
-	}
-
-	//add tiles
-	if (Mouse::isButtonPressed(Mouse::Left) && this->GetKeyTime()) {
-		if (!this->sidebar.getGlobalBounds().contains(Vector2f(this->mousePosWindow))) {
-			if (!this->texSelector->GetActive()) {
-				//add
-				if (this->tileAddLock) // this dont let user put a tile on a tile.
-				{
-					if (this->tileMap->TileEmpty(this->mousePosGrid.x, this->mousePosGrid.y, 0))
-					{
-						this->tileMap->AddTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->texRect, this->collision, this->type);
-					}
-				}
-				else
-				{
-					this->tileMap->AddTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->texRect, this->collision, this->type);
-				}
-			}
-			else {
-				this->texRect = this->texSelector->GetTexRect();
-			}
-		}
-	}
-	//remove
-	else if (Mouse::isButtonPressed(Mouse::Right) && this->GetKeyTime()) {
-		if (!this->sidebar.getGlobalBounds().contains(Vector2f(this->mousePosWindow))) {
-			if (!this->texSelector->GetActive()) {
-				//remove
-				this->tileMap->RemoveTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
-			}
-		}
-	}
-
-	//toggle collision
-	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("COLLISION"))) && this->GetKeyTime()) {
-		if (this->collision == false) {
-			this->collision = true;
-		}
-		else {
-			this->collision = false;
-		}
-
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("TYPE+"))) && this->GetKeyTime()) {
-		this->type++;
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("TYPE-"))) && this->GetKeyTime()) {
-		if (this->type > 0) {
-			this->type--;
-		}
-	}
-
-	//set tile add lock
-	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("TILE_LOCK"))) && this->GetKeyTime())
-	{
-		if (this->tileAddLock)
-		{
-			this->tileAddLock = false;
-		}
-		else {
-			this->tileAddLock = true;
-		}
 	}
 }
 void EditorState::RenderButtons(RenderTarget& target)
