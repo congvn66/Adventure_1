@@ -64,6 +64,24 @@ void GameState::InitTexture()
 		cout << "GameState: Player sheet loaded!" << endl;
 	}
 	this->textures["PLAYER_SHEET"] = temp;
+
+	//enemies
+	if (this->textures["ORC_SHEET"].loadFromFile("Assets/Enemy/Texture/orc.png"))
+	{
+		cout << "GameState: Orc sheet loaded!" << endl;
+	}
+	if (this->textures["SKELLY_SHEET"].loadFromFile("Assets/Enemy/Texture/skelly.png"))
+	{
+		cout << "GameState: Skelly sheet loaded!" << endl;
+	}
+	if (this->textures["WRAITH_SHEET"].loadFromFile("Assets/Enemy/Texture/wraith.png"))
+	{
+		cout << "GameState: Wraith sheet loaded!" << endl;
+	}
+	if (this->textures["ZOMBIE_SHEET"].loadFromFile("Assets/Enemy/Texture/zombie.png"))
+	{
+		cout << "GameState: Zombie sheet loaded!" << endl;
+	}
 }
 void GameState::InitPlayer()
 {
@@ -86,6 +104,11 @@ GameState::GameState(StateData* stateData)
 	this->InitPlayer();
 	this->InitPlayerGUI();
 	this->InitTileMap();
+
+	this->activeEnemies.push_back(new Orc(200.f, 400.f, this->textures["ORC_SHEET"]));
+	this->activeEnemies.push_back(new Orc(300.f, 400.f, this->textures["ORC_SHEET"]));
+	this->activeEnemies.push_back(new Orc(400.f, 400.f, this->textures["ORC_SHEET"]));
+	this->activeEnemies.push_back(new Orc(500.f, 400.f, this->textures["ORC_SHEET"]));
 }
 GameState::~GameState()
 {
@@ -93,6 +116,11 @@ GameState::~GameState()
 	delete this->player;
 	delete this->pauseMenu;
 	delete this->tileMap;
+
+	for (size_t i = 0; i < this->activeEnemies.size(); i++)
+	{
+		delete this->activeEnemies[i];
+	}
 
 }
 //---------------------------------CON & DE-------------------------------------------
@@ -157,11 +185,20 @@ void GameState::Update(const float& deltaTime)
 	this->UpdateInput(deltaTime);
 	if (!this->pause) { // unpause
 		this->UpdateView(deltaTime);
+
+		//player
 		this->UpdatePlayerInput(deltaTime);
 		this->UpdateTileMap(deltaTime);
 		this->player->Update(deltaTime,this->mousePosView);
+
+		//gui
 		this->UpdatePlayerGUI(deltaTime);
 		
+		//enemies
+		for (auto* i : this->activeEnemies)
+		{
+			i->Update(deltaTime, this->mousePosView);
+		}
 		
 	}
 	else { //when in pause menu
@@ -179,7 +216,11 @@ void GameState::UpdatePauseMenuButton()
 void GameState::UpdateTileMap(const float& dt)
 {
 	this->tileMap->Update(this->player,dt);
-	
+
+	for (auto* i : this->activeEnemies)
+	{
+		this->tileMap->Update(i, dt);
+	}
 }
 void GameState::Render(RenderTarget* target)
 {
@@ -194,7 +235,11 @@ void GameState::Render(RenderTarget* target)
 	//player
 	this->player->Render(this->renderTexture,nullptr,false);
 
-
+	//enemies
+	for (auto* i : this->activeEnemies)
+	{
+		i->Render(this->renderTexture, nullptr, true);
+	}
 
 	//render upper layers of the map
 	this->tileMap->RenderDefered(this->renderTexture);

@@ -5,7 +5,9 @@
 #include "TileMap.h"
 #include "EditorMode.h"
 #include "DefaultMode.h"
+#include "EnemyMode.h"
 
+class EnemyMode;
 class EditorMode;
 class StateData;
 class EditorStateData;
@@ -32,6 +34,8 @@ private:
     std::map<string, Button*> buttons;
 
     vector <EditorMode*> modes; 
+    unsigned activeMode;
+
     float camSpeed;
 
     //init

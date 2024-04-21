@@ -66,6 +66,8 @@ void EditorState::InitKeybinds()
 	this->keybinds["CAM_LEFT"] = this->supportedKeys->at("A");
 	this->keybinds["CAM_RIGHT"] = this->supportedKeys->at("D");
 	this->keybinds["TILE_LOCK"] = this->supportedKeys->at("Z");
+	this->keybinds["MODE_UP"] = this->supportedKeys->at("PGUP");
+	this->keybinds["MODE_DOWN"] = this->supportedKeys->at("PGDOWN");
 }
 void EditorState::InitFont()
 {
@@ -101,6 +103,9 @@ void EditorState::InitTileMap()
 void EditorState::InitMode()
 {
 	this->modes.push_back(new DefaultMode(this->stateData, this->tileMap, &this->editorStateData));
+	this->modes.push_back(new EnemyMode(this->stateData, this->tileMap, &this->editorStateData));
+
+	this->activeMode = EditorModes::DEFAULT_MODE;
 }
 //--------------------------------INITIALIZE------------------------------------------
 
@@ -183,11 +188,11 @@ void EditorState::UpdateButton()
 }
 void EditorState::UpdateModes(const float& deltaTime)
 {
-	this->modes[EditorModes::DEFAULT_MODE]->Update(deltaTime);
+	this->modes[this->activeMode]->Update(deltaTime);
 }
 void EditorState::RenderModes(RenderTarget& target)
 {
-	this->modes[EditorModes::DEFAULT_MODE]->Render(target);
+	this->modes[this->activeMode]->Render(target);
 }
 void EditorState::UpdateGui(const float& deltaTime)
 {
@@ -212,6 +217,21 @@ void EditorState::UpdateEditorInput(const float deltaTime)
 	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("CAM_DOWN"))))
 	{
 		this->view.move(0.f, this->camSpeed * deltaTime);
+	}
+
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MODE_UP"))))
+	{
+		if (this->activeMode < this->modes.size() - 1)
+		{
+			this->activeMode++;
+		}
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MODE_DOWN"))))
+	{
+		if (this->activeMode > 0)
+		{
+			this->activeMode--;
+		}
 	}
 }
 void EditorState::RenderButtons(RenderTarget& target)

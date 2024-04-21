@@ -25,7 +25,6 @@ void TileMap::Clear()
 		this->map.clear();
 	}
 }
-
 TileMap::TileMap(float gridSize, int width, int height, string texFile)
 {
 	this->gridSizeF = gridSize;
@@ -87,12 +86,16 @@ TileMap::TileMap(const string fileName)
 	this->collisionBox.setFillColor(Color(255, 0, 0, 50));
 	this->collisionBox.setOutlineColor(Color::Red);
 	this->collisionBox.setOutlineThickness(2.f);
-}
+} //override
 TileMap::~TileMap()
 {
 	this->Clear();
 }
 
+const bool TileMap::CheckType(const int x, const int y, const int z, const int type) const
+{
+	return this->map[x][y][this->layer].back()->GetType() == type;
+}
 const bool TileMap::TileEmpty(const int x, const int y, const int z) const
 {
 	if (x >= 0 && x < this->maxSizeGrid.x && y >= 0 && y < this->maxSizeGrid.y && z >= 0 && z < this->layers)
@@ -101,17 +104,14 @@ const bool TileMap::TileEmpty(const int x, const int y, const int z) const
 	}
 	return false;
 }
-
 const Vector2i& TileMap::GetMaxSizeGrid() const
 {
 	return this->maxSizeGrid;
 }
-
 const Vector2f& TileMap::GetMaxSizeF() const
 {
 	return this->maxSizeWorldF;
 }
-
 const int TileMap::GetLayerSize(const int x, const int y, const int z)
 {
 	if (x >= 0 && x < (int)this->map.size())
@@ -126,7 +126,6 @@ const int TileMap::GetLayerSize(const int x, const int y, const int z)
 	}
 	return -1;
 }
-
 void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const Vector2f playerPos, Shader* shader)
 {
 	this->layer = 0;
@@ -187,12 +186,20 @@ void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool s
 						this->map[x][y][this->layer][k]->Render(target);
 					}
 				}
+				//coll
 				if (show_collision)
 				{
 					if (this->map[x][y][this->layer][k]->GetCollision()) {
 						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
 						target.draw(this->collisionBox);
 					}
+				}
+
+				//spawner
+				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER)
+				{
+					this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
+					target.draw(this->collisionBox);
 				}
 			}
 		}
@@ -327,7 +334,7 @@ void TileMap::AddTile(const int x, const int y, const int z, const IntRect texRe
 		/*cout << "added Tiles!" << endl;*/
 	}
 }
-void TileMap::RemoveTile(const int x, const int y, const int z)
+void TileMap::RemoveTile(const int x, const int y, const int z, const int type)
 {
 	//take index from the mousePosGrid, then remove that tile at position 
 	// if the array alowed (mouse in the size of the array || only can remove in size)
@@ -337,9 +344,22 @@ void TileMap::RemoveTile(const int x, const int y, const int z)
 		&& y >= 0 && this->maxSizeGrid.y
 		&& z < this->layers && z >= 0) {
 		if (!this->map[x][y][z].empty()) { //if has something
-			delete this->map[x][y][z][this->map[x][y][z].size()-1]; // delete the top
-			this->map[x][y][z].pop_back();
-			/*cout << "remove Tiles!" << endl;*/
+			if (type >= 0)
+			{
+				if (this->map[x][y][z].back()->GetType() == type)
+				{
+					delete this->map[x][y][z][this->map[x][y][z].size() - 1]; // delete the top
+					this->map[x][y][z].pop_back();
+					/*cout << "remove Tiles!" << endl;*/
+				}
+				
+			}
+			else
+			{
+				delete this->map[x][y][z][this->map[x][y][z].size() - 1]; // delete the top
+				this->map[x][y][z].pop_back();
+			}
+			
 		}
 	}
 }
@@ -448,7 +468,6 @@ void TileMap::LoadFromFile(const string fileName)
 	}
 	inFile.close();
 }
-
 void TileMap::RenderDefered(RenderTarget& target,const Vector2f playerPos, Shader* shader)
 {
 	while (!this->deferedRenderStack.empty())

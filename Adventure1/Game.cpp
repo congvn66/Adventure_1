@@ -42,6 +42,8 @@ void Game::InitKeys()
 	this->supportedKeys["DOWN"] = Keyboard::Key::Down;
 	this->supportedKeys["C"] = Keyboard::Key::C;
 	this->supportedKeys["Z"] = Keyboard::Key::Z;
+	this->supportedKeys["PGUP"] = Keyboard::Key::PageUp;
+	this->supportedKeys["PGDOWN"] = Keyboard::Key::PageDown;
 }
 
 void Game::InitStateData()

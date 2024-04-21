@@ -9,16 +9,16 @@ class Enemy :
     public Entity
 {
 private:
-    EnemySpawner& enemySpawner; // keep track of its spawner
+    //EnemySpawner& enemySpawner; // keep track of its spawner
 
-    void InitVal();
+    virtual void InitVal()=0;
+    virtual void InitAnimation()=0;
     void InitComponents();
-    void InitAnimation();
 
 public:
-    Enemy(EnemySpawner& enemy_spawner,float x, float y, Texture& textureSheet);
+    Enemy();
     ~Enemy();
-    void Update(const float& dt, Vector2f& mousePosView);
-    void Render(RenderTarget& target, Shader* shader=nullptr, const bool showHitBox=false);
-    void UpdateAnimation(const float& dt);
+    virtual void Update(const float& dt, Vector2f& mousePosView)=0;
+    virtual void Render(RenderTarget& target, Shader* shader=nullptr, const bool showHitBox=false)=0;
+    virtual void UpdateAnimation(const float& dt)=0;
 };

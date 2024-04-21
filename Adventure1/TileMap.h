@@ -34,6 +34,7 @@ public:
 	~TileMap();
 
 	//for the editor, i mean this class =)
+	const bool CheckType(const int x, const int y, const int z,const int type) const;
 	const bool TileEmpty(const int x, const int y, const int z) const;
 	const Vector2i& GetMaxSizeGrid() const;
 	const Vector2f& GetMaxSizeF() const;
@@ -42,7 +43,7 @@ public:
 	const Texture* GetTileSheet() const;
 	void Update(Entity* entity, const float& deltaTime);
 	void AddTile(const int x, const int y, const int z, const IntRect texRect,const bool& collision, const short& type);
-	void RemoveTile(const int x, const int y, const int z);
+	void RemoveTile(const int x, const int y, const int z, const int type=-1);
 	void SaveToFile(const string fileName);
 	void LoadFromFile(const string fileName);
 	void RenderDefered(RenderTarget& target, const Vector2f playerPos = Vector2f(), Shader* shader = nullptr);

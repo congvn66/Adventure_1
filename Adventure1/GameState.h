@@ -1,11 +1,15 @@
 #pragma once
 
+#include "Orc.h"
 #include "State.h"
 #include "PauseMenu.h"
 #include "TileMap.h"
 #include "PlayerGUI.h"
 #include "Sword.h"
 #include "Enemy.h"
+
+class Player;
+class Orc;
 
 //state of the window when we in the game
 class GameState :
@@ -27,6 +31,8 @@ private:
     //pmenu
     Font font;
     PauseMenu* pauseMenu;
+
+    vector <Enemy*> activeEnemies;
 
     //init
     void InitDeferredRender();

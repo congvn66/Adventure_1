@@ -159,6 +159,7 @@
     <ClCompile Include="DefaultMode.cpp" />
     <ClCompile Include="EditorMode.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyMode.cpp" />
     <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="EditorState.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Melee.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="Orc.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerGUI.cpp" />
@@ -195,6 +197,7 @@
     <ClInclude Include="DefaultMode.h" />
     <ClInclude Include="EditorMode.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyMode.h" />
     <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="EditorState.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Melee.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="Orc.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerGUI.h" />
