@@ -44,13 +44,84 @@ void EnemyMode::UpdateInput(const float& deltaTime)
 	//add tiles
 	if (Mouse::isButtonPressed(Mouse::Left) && this->GetKeyTime()) {
 		if (!this->sidebar.getGlobalBounds().contains(Vector2f(*this->editorStateData->mousePosWindow))) {
-			this->tileMap->AddTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y, 0, this->texRect,false, TileType::SPAWNER);
+			this->tileMap->AddTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y,0, this->texRect, 
+				this->enemyType, this->amount, this->timeToSpawn, this->maxDis);
 		}
 	}
 	//remove
 	else if (Mouse::isButtonPressed(Mouse::Right) && this->GetKeyTime()) {
 		if (!this->sidebar.getGlobalBounds().contains(Vector2f(*this->editorStateData->mousePosWindow))) {
-			this->tileMap->RemoveTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y, TileType::SPAWNER);
+			this->tileMap->RemoveTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y,0, TileType::SPAWNER);
+		}
+	}
+
+	//toggle collision
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->editorStateData->keybinds->at("TYPE_UP"))) && this->GetKeyTime()) {
+		if (Keyboard::isKeyPressed(Keyboard::LShift))
+		{
+			if (this->enemyType > 0)
+			{
+				this->enemyType--;
+			}
+		}
+		else if (this->enemyType < 1000)
+		{
+			this->enemyType++;
+		}
+		else
+		{
+			this->enemyType = 0;
+		}
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->editorStateData->keybinds->at("AMOUNT_UP"))) && this->GetKeyTime()) {
+		if (Keyboard::isKeyPressed(Keyboard::LShift))
+		{
+			if (this->amount > 0)
+			{
+				this->amount--;
+			}
+		}
+		else if (this->amount < 1000)
+		{
+			this->amount++;
+		}
+		else
+		{
+			this->amount = 0;
+		}
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->editorStateData->keybinds->at("TTS_UP"))) && this->GetKeyTime()) {
+		if (Keyboard::isKeyPressed(Keyboard::LShift))
+		{
+			if (this->timeToSpawn > 0)
+			{
+				this->timeToSpawn--;
+			}
+		}
+		else if (this->timeToSpawn < 1000)
+		{
+			this->timeToSpawn++;
+		}
+		else
+		{
+			this->timeToSpawn = 0;
+		}
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Key(this->editorStateData->keybinds->at("MD_UP"))) && this->GetKeyTime()) {
+		if (Keyboard::isKeyPressed(Keyboard::LShift))
+		{
+			if (this->maxDis > 0)
+			{
+				this->maxDis--;
+			}
+		}
+		else if (this->maxDis < 1000)
+		{
+			this->maxDis++;
+		}
+		else
+		{
+			this->maxDis = 0;
 		}
 	}
 }

@@ -330,8 +330,22 @@ void TileMap::AddTile(const int x, const int y, const int z, const IntRect texRe
 	if (x < this->maxSizeGrid.x && x>=0
 		&& y>=0 &&this->maxSizeGrid.y
 		&& z<this->layers &&z>=0) {
-		this->map[x][y][z].push_back(new Tile(x, y , this->gridSizeF, this->tileSheet, texRect,collision,type));
-		/*cout << "added Tiles!" << endl;*/
+		
+		this->map[x][y][z].push_back(new RegularTile(type,x, y , this->gridSizeF, this->tileSheet, texRect,collision));
+			/*cout << "added Tiles!" << endl;*/
+		
+	}
+}
+void TileMap::AddTile(const int x, const int y, const int z, const IntRect texRect, const int enemyType, const int enemyAmount
+,const int TTS, const int maxDis)
+{
+	if (x < this->maxSizeGrid.x && x >= 0
+		&& y >= 0 && this->maxSizeGrid.y
+		&& z < this->layers && z >= 0) {
+		
+		this->map[x][y][z].push_back(new EnemySpawner(x, y, this->gridSizeF, this->tileSheet, texRect, enemyType, enemyAmount, TTS, maxDis));
+			/*cout << "added Tiles!" << endl;*/
+		
 	}
 }
 void TileMap::RemoveTile(const int x, const int y, const int z, const int type)
@@ -374,8 +388,10 @@ void TileMap::SaveToFile(const string fileName)
 	// texture file dir
 	// 
 	//Specific:	
-	//gridPos x y
-	//x(in grid), y(in grid), z(in grid-layer), Texture Rect x y, collision, type????
+	// coordinate grid (x,y,z)
+	// type (1st)
+	// Int rect x, int rect y
+	// "type specific"
 	ofstream outFile;
 
 	outFile.open(fileName);
@@ -393,7 +409,7 @@ void TileMap::SaveToFile(const string fileName)
 					if (!this->map[x][y][z].empty()) {
 						for (size_t k = 0; k < this->map[x][y][z].size(); k++)
 						{
-							outFile << x << " " << y << " " << z << " " << this->map[x][y][z][k]->GetAsString() << " ";//there's still a space =)
+							outFile << x << " " << y << " " << z << " " << this->map[x][y][z][k]->GetAsString() << " ";
 						}
 					}
 				}
@@ -460,10 +476,24 @@ void TileMap::LoadFromFile(const string fileName)
 		else {
 			cout << "Tile map: tile sheet cant load!" << endl;
 		}
+		while (inFile >> x >> y >> z >> type)
+		{
+			if (type == TileType::SPAWNER)
+			{
+				int enemyType=0;
+				int enemyAmount=0;
+				int enemyTimeToSpawn=0;
+				int maxDis=0;
+				inFile >> trX >> trY>>enemyType>> enemyAmount >> enemyTimeToSpawn >> maxDis; // spawner things
 
-		//information taking
-		while (inFile >> x >> y >> z >> trX >> trY >> collision >> type) {
-			this->map[x][y][z].push_back(new Tile(x, y, this->gridSizeF, this->tileSheet, IntRect(trX, trY, gridSizeI, gridSizeI), collision, type));
+				this->map[x][y][z].push_back(new EnemySpawner(x, y, this->gridSizeF, this->tileSheet, IntRect(trX, trY, gridSizeI, gridSizeI),enemyType,
+					enemyAmount,enemyTimeToSpawn,maxDis));
+			}
+			else //default tile type
+			{
+				inFile >> trX >> trY >> collision;
+				this->map[x][y][z].push_back(new RegularTile(type, x, y, this->gridSizeF, this->tileSheet, IntRect(trX, trY, gridSizeI, gridSizeI), collision));
+			}
 		}
 	}
 	inFile.close();

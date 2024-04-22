@@ -68,6 +68,10 @@ void EditorState::InitKeybinds()
 	this->keybinds["TILE_LOCK"] = this->supportedKeys->at("Z");
 	this->keybinds["MODE_UP"] = this->supportedKeys->at("PGUP");
 	this->keybinds["MODE_DOWN"] = this->supportedKeys->at("PGDOWN");
+	this->keybinds["TYPE_UP"] = this->supportedKeys->at("1");
+	this->keybinds["AMOUNT_UP"] = this->supportedKeys->at("2");
+	this->keybinds["TTS_UP"] = this->supportedKeys->at("3");
+	this->keybinds["MD_UP"] = this->supportedKeys->at("4");
 }
 void EditorState::InitFont()
 {

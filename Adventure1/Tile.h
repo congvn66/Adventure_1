@@ -11,17 +11,17 @@ protected:
 	short type;
 	bool collision;
 public:
-	Tile(int grid_x, int grid_y, float gridSizeF,Texture& tileSheet,const IntRect& texRect, 
-		bool collision=false, short type=TileType::DEFAULT);
+	Tile();
+	Tile(short type,int grid_x, int grid_y, float gridSizeF,Texture& tileSheet,const IntRect& texRect,const bool collision);
 	~Tile();
 
-	const short& GetType() const;
-	const bool& GetCollision() const;
-	const Vector2f& GetPos() const;
-	const bool Intersects(FloatRect bounds) const;
-	const FloatRect GetGlobalBounds() const;
-	const string GetAsString() const;
-	virtual void Update();
-	virtual void Render(RenderTarget& target,const Vector2f playerPos=Vector2f(), Shader* shader = nullptr);
+	virtual const bool& GetCollision() const;
+	virtual const short& GetType() const;
+	virtual const Vector2f& GetPos() const;
+	virtual const bool Intersects(FloatRect bounds) const;
+	virtual const FloatRect GetGlobalBounds() const;
+	virtual const string GetAsString() const=0;
+	virtual void Update()=0;
+	virtual void Render(RenderTarget& target,const Vector2f playerPos=Vector2f(), Shader* shader = nullptr)=0;
 };
 

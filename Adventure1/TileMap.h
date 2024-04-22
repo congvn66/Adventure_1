@@ -2,9 +2,16 @@
 
 #include "Tile.h"
 #include "Entity.h"
+#include "EnemySpawner.h"
+#include "RegularTile.h"
 
 using namespace std;
 using namespace sf;
+
+class RegularTile;
+class EnemySpawner;
+class Tile;
+
 class TileMap
 {
 private:
@@ -43,6 +50,8 @@ public:
 	const Texture* GetTileSheet() const;
 	void Update(Entity* entity, const float& deltaTime);
 	void AddTile(const int x, const int y, const int z, const IntRect texRect,const bool& collision, const short& type);
+	void AddTile(const int x, const int y, const int z, const IntRect texRect, const int enemyType, const int enemyAmount
+		, const int TTS, const int maxDis);
 	void RemoveTile(const int x, const int y, const int z, const int type=-1);
 	void SaveToFile(const string fileName);
 	void LoadFromFile(const string fileName);

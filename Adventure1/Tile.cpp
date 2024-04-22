@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Tile.h"
-Tile::Tile(int grid_x, int grid_y, float gridSizeF, Texture& tileSheet, const IntRect& texRect, bool collision, short type)
+Tile::Tile()
+{
+	this->collision = false;
+	this->type = 0;
+}
+Tile::Tile(short type,int grid_x, int grid_y, float gridSizeF, Texture& tileSheet, const IntRect& texRect, const bool collision)
 {
 	this->collision = collision;
 	this->type = type;
@@ -22,7 +27,6 @@ const short& Tile::GetType() const
 
 const bool& Tile::GetCollision() const
 {
-	// TODO: insert return statement here
 	return this->collision;
 }
 
@@ -41,30 +45,5 @@ const FloatRect Tile::GetGlobalBounds() const
 	return this->shape.getGlobalBounds();
 }
 
-const string Tile::GetAsString() const
-{
-	stringstream ss;
-	//x y collision type
-	ss << this->shape.getTextureRect().left << " " << this->shape.getTextureRect().top << " " << this->collision << " " << this->type;
-	return ss.str();
-}
-void Tile::Update()
-{
-	
-}
-void Tile::Render(RenderTarget& target, const Vector2f playerPos, Shader* shader)
-{
-	if (shader)
-	{
-		shader->setUniform("hasTexture", true);
-		shader->setUniform("lightPos", playerPos);
-		target.draw(this->shape, shader);
-	}
-	else
-	{
-		target.draw(this->shape);
-	}
-	
-}
 
 
