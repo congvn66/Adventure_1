@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Orc.h"
 #include "State.h"
 #include "PauseMenu.h"
 #include "TileMap.h"
 #include "PlayerGUI.h"
 #include "Sword.h"
-#include "Enemy.h"
+
 
 class Player;
 class Orc;
@@ -32,6 +31,8 @@ private:
     Font font;
     PauseMenu* pauseMenu;
 
+    EnemySystem *enemySystem;
+
     vector <Enemy*> activeEnemies;
 
     //init
@@ -45,10 +46,13 @@ private:
     void InitShader();
     void InitPlayerGUI();
     void InitTileMap();
+    void InitEnemySystem();
 public:
     GameState(StateData* stateData);
     ~GameState();
     
+    void UpdatePlayer(const float& dt);
+    void UpdateEnemies(const float& dt);
     void Update(const float& deltaTime);
     void UpdateView(const float& deltaTime);
     void UpdateInput(const float& dt);

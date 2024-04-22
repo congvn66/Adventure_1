@@ -9,6 +9,7 @@ EnemySpawner::EnemySpawner(int grid_x, int grid_y, float gridSizeF, Texture& til
 	this->amount = amount;
 	this->timeToSpawn = timeToSpawn;
 	this->maxDis = maxDis;
+	this->spawned = false;
 }
 
 EnemySpawner::~EnemySpawner()
@@ -26,6 +27,16 @@ void EnemySpawner::clear()
 void EnemySpawner::Update()
 {
 
+}
+
+const bool& EnemySpawner::GetSpawned() const
+{
+	return this->spawned;
+}
+
+void EnemySpawner::SetSpawned(const bool spawned)
+{
+	this->spawned = spawned;
 }
 
 void EnemySpawner::Render(RenderTarget& target, const Vector2f playerPos, Shader* shader)

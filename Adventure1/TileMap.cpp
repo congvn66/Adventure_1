@@ -126,200 +126,13 @@ const int TileMap::GetLayerSize(const int x, const int y, const int z)
 	}
 	return -1;
 }
-void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const Vector2f playerPos, Shader* shader)
-{
-	this->layer = 0;
-	this->fromX = gridPos.x - 15;
-	if (this->fromX < 0)
-	{
-		this->fromX = 0;
-	}
-	else if (this->fromX >= this->maxSizeGrid.x)
-	{
-		this->fromX = this->maxSizeGrid.x;
-	}
-	this->toX = gridPos.x + 16;
-	if (this->toX < 0)
-	{
-		this->toX = 0;
-	}
-	else if (this->toX >= this->maxSizeGrid.x)
-	{
-		this->toX = this->maxSizeGrid.x;
-	}
-	this->fromY = gridPos.y - 9;
-	if (this->fromY < 0)
-	{
-		this->fromY = 0;
-	}
-	else if (this->fromY >= this->maxSizeGrid.y)
-	{
-		this->fromY = this->maxSizeGrid.y;
-	}
-	this->toY = gridPos.y + 10;
-	if (this->toY < 0)
-	{
-		this->toY = 0;
-	}
-	else if (this->toY >= this->maxSizeGrid.y)
-	{
-		this->toY = this->maxSizeGrid.y;
-	}
-
-	//  only render tiles around player!
-	for (int x = this->fromX; x < this->toX; x++) {
-		for (int y = this->fromY; y < this->toY; y++) {
-			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++)
-			{
-				if (this->map[x][y][this->layer][k]->GetType()==TileType::ABOVE)
-				{
-					this->deferedRenderStack.push(this->map[x][y][this->layer][k]);
-				}
-				else
-				{
-					if (shader)
-					{
-						this->map[x][y][this->layer][k]->Render(target, playerPos, shader);
-					}
-					else
-					{
-						this->map[x][y][this->layer][k]->Render(target);
-					}
-				}
-				//coll
-				if (show_collision)
-				{
-					if (this->map[x][y][this->layer][k]->GetCollision()) {
-						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
-						target.draw(this->collisionBox);
-					}
-				}
-
-				//spawner
-				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER)
-				{
-					this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
-					target.draw(this->collisionBox);
-				}
-			}
-		}
-	}
-}
 const Texture* TileMap::GetTileSheet() const
 {
 	return &this->tileSheet;
 }
 void TileMap::Update(Entity* entity, const float& deltaTime)
 {
-	//check if pass the border
-	if (entity->GetPos().x < 0.f) // left border
-	{
-		entity->SetPos(0.f, entity->GetPos().y);
-		entity->StopX();
-	}
-	else if (entity->GetPos().x +entity->GetGlobalBounds().width> this->maxSizeWorldF.x) // right border
-	{
-		entity->SetPos(this->maxSizeWorldF.x- entity->GetGlobalBounds().width, entity->GetPos().y);
-		entity->StopX();
-	}
-
-	if (entity->GetPos().y < 0.f) // up border
-	{
-		entity->SetPos(entity->GetPos().x, 0.f);
-		entity->StopY();
-	}
-	else if (entity->GetPos().y+entity->GetGlobalBounds().height > this->maxSizeWorldF.y) //down border
-	{
-		entity->SetPos(entity->GetPos().x, this->maxSizeWorldF.y- entity->GetGlobalBounds().height);
-		entity->StopY();
-	}
-
-
-	//check if encounter collisive tiles
-	// check tiles around players
-	this->fromX = entity->getGridPos(this->gridSizeI).x -1;
-	if (this->fromX < 0)
-	{
-		this->fromX = 0;
-	}
-	else if (this->fromX >= this->maxSizeGrid.x)
-	{
-		this->fromX = this->maxSizeGrid.x ;
-	}
-	this->toX = entity->getGridPos(this->gridSizeI).x +3;
-	if (this->toX < 0)
-	{
-		this->toX = 0;
-	}
-	else if (this->toX >= this->maxSizeGrid.x)
-	{
-		this->toX = this->maxSizeGrid.x ;
-	}
-	this->fromY = entity->getGridPos(this->gridSizeI).y - 1;
-	if (this->fromY < 0)
-	{
-		this->fromY = 0;
-	}
-	else if (this->fromY >= this->maxSizeGrid.y)
-	{
-		this->fromY = this->maxSizeGrid.y - 1;
-	}
-	this->toY = entity->getGridPos(this->gridSizeI).y + 3;
-	if (this->toY < 0)
-	{
-		this->toY = 0;
-	}
-	else if (this->toY >= this->maxSizeGrid.y)
-	{
-		this->toY = this->maxSizeGrid.y - 1;
-	}
-
-	for (int x = this->fromX; x < this->toX; x++) {
-		for (int y = this->fromY; y < this->toY; y++) {
-			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++) {
-				FloatRect playerBounds = entity->GetGlobalBounds();
-				FloatRect wallBounds = this->map[x][y][this->layer][k]->GetGlobalBounds();
-				FloatRect nextPositionBounds = entity->GetNextPosBounds(deltaTime);
-				this->map[x][y][this->layer][k]->Update();
-				if (this->map[x][y][this->layer][k]->Intersects(nextPositionBounds) && this->map[x][y][this->layer][k]->GetCollision())
-				{
-					//bottom collision
-					if (playerBounds.top < wallBounds.top
-						&& playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height
-						&& playerBounds.left < wallBounds.left + wallBounds.width
-						&& playerBounds.left + playerBounds.width > wallBounds.left) {
-						entity->StopY();
-						entity->SetPos(playerBounds.left, wallBounds.top - playerBounds.height);
-					}
-					//top collision
-					else if (playerBounds.top > wallBounds.top
-						&& playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height
-						&& playerBounds.left < wallBounds.left + wallBounds.width
-						&& playerBounds.left + playerBounds.width > wallBounds.left) {
-						entity->StopY();
-						entity->SetPos(playerBounds.left, wallBounds.top + wallBounds.height);
-					}
-					//right collision
-					if (playerBounds.left < wallBounds.left
-						&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width
-						&& playerBounds.top < wallBounds.top + wallBounds.height
-						&& playerBounds.top + playerBounds.height > wallBounds.top) {
-						entity->StopX();
-						entity->SetPos(wallBounds.left - playerBounds.width, playerBounds.top);
-					}
-					//left collision
-					else if (playerBounds.left > wallBounds.left
-						&& playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width
-						&& playerBounds.top < wallBounds.top + wallBounds.height
-						&& playerBounds.top + playerBounds.height > wallBounds.top) {
-						entity->StopX();
-						entity->SetPos(wallBounds.left + wallBounds.width, playerBounds.top);
-					}
-				}
-			}
-		}
-	}
-
+	
 }
 void TileMap::AddTile(const int x, const int y, const int z, const IntRect texRect, const bool& collision, const short& type) //indexes
 {
@@ -511,5 +324,256 @@ void TileMap::RenderDefered(RenderTarget& target,const Vector2f playerPos, Shade
 			deferedRenderStack.top()->Render(target);
 		}
 		deferedRenderStack.pop();
+	}
+}
+void TileMap::UpdateWorldBoundCollision(Entity* entity, const float& deltaTime) //around screen
+{
+	//check if pass the border
+	if (entity->GetPos().x < 0.f) // left border
+	{
+		entity->SetPos(0.f, entity->GetPos().y);
+		entity->StopX();
+	}
+	else if (entity->GetPos().x + entity->GetGlobalBounds().width > this->maxSizeWorldF.x) // right border
+	{
+		entity->SetPos(this->maxSizeWorldF.x - entity->GetGlobalBounds().width, entity->GetPos().y);
+		entity->StopX();
+	}
+
+	if (entity->GetPos().y < 0.f) // up border
+	{
+		entity->SetPos(entity->GetPos().x, 0.f);
+		entity->StopY();
+	}
+	else if (entity->GetPos().y + entity->GetGlobalBounds().height > this->maxSizeWorldF.y) //down border
+	{
+		entity->SetPos(entity->GetPos().x, this->maxSizeWorldF.y - entity->GetGlobalBounds().height);
+		entity->StopY();
+	}
+}
+void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const Vector2f playerPos, Shader* shader)
+{
+	this->layer = 0;
+	this->fromX = gridPos.x - 15;
+	if (this->fromX < 0)
+	{
+		this->fromX = 0;
+	}
+	else if (this->fromX >= this->maxSizeGrid.x)
+	{
+		this->fromX = this->maxSizeGrid.x;
+	}
+	this->toX = gridPos.x + 16;
+	if (this->toX < 0)
+	{
+		this->toX = 0;
+	}
+	else if (this->toX >= this->maxSizeGrid.x)
+	{
+		this->toX = this->maxSizeGrid.x;
+	}
+	this->fromY = gridPos.y - 9;
+	if (this->fromY < 0)
+	{
+		this->fromY = 0;
+	}
+	else if (this->fromY >= this->maxSizeGrid.y)
+	{
+		this->fromY = this->maxSizeGrid.y;
+	}
+	this->toY = gridPos.y + 10;
+	if (this->toY < 0)
+	{
+		this->toY = 0;
+	}
+	else if (this->toY >= this->maxSizeGrid.y)
+	{
+		this->toY = this->maxSizeGrid.y;
+	}
+
+	//  only render tiles around player!
+	for (int x = this->fromX; x < this->toX; x++) {
+		for (int y = this->fromY; y < this->toY; y++) {
+			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++)
+			{
+				if (this->map[x][y][this->layer][k]->GetType()==TileType::ABOVE)
+				{
+					this->deferedRenderStack.push(this->map[x][y][this->layer][k]);
+				}
+				else
+				{
+					if (shader)
+					{
+						this->map[x][y][this->layer][k]->Render(target, playerPos, shader);
+					}
+					else
+					{
+						this->map[x][y][this->layer][k]->Render(target);
+					}
+				}
+				//coll
+				if (show_collision)
+				{
+					if (this->map[x][y][this->layer][k]->GetCollision()) {
+						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
+						target.draw(this->collisionBox);
+					}
+				}
+
+				//spawner
+				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER)
+				{
+					this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
+					target.draw(this->collisionBox);
+				}
+			}
+		}
+	}
+}
+void TileMap::UpdateTileCollision(Entity* entity, const float& deltaTime) //around player
+{
+	//check if encounter collisive tiles
+	// check tiles around players
+	this->layer = 0;
+	this->fromX = entity->getGridPos(this->gridSizeI).x - 1;
+	if (this->fromX < 0)
+	{
+		this->fromX = 0;
+	}
+	else if (this->fromX >= this->maxSizeGrid.x)
+	{
+		this->fromX = this->maxSizeGrid.x;
+	}
+	this->toX = entity->getGridPos(this->gridSizeI).x + 3;
+	if (this->toX < 0)
+	{
+		this->toX = 0;
+	}
+	else if (this->toX >= this->maxSizeGrid.x)
+	{
+		this->toX = this->maxSizeGrid.x;
+	}
+	this->fromY = entity->getGridPos(this->gridSizeI).y - 1;
+	if (this->fromY < 0)
+	{
+		this->fromY = 0;
+	}
+	else if (this->fromY >= this->maxSizeGrid.y)
+	{
+		this->fromY = this->maxSizeGrid.y - 1;
+	}
+	this->toY = entity->getGridPos(this->gridSizeI).y + 3;
+	if (this->toY < 0)
+	{
+		this->toY = 0;
+	}
+	else if (this->toY >= this->maxSizeGrid.y)
+	{
+		this->toY = this->maxSizeGrid.y - 1;
+	}
+
+	for (int x = this->fromX; x < this->toX; x++) {
+		for (int y = this->fromY; y < this->toY; y++) {
+			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++) {
+				FloatRect playerBounds = entity->GetGlobalBounds();
+				FloatRect wallBounds = this->map[x][y][this->layer][k]->GetGlobalBounds();
+				FloatRect nextPositionBounds = entity->GetNextPosBounds(deltaTime);
+				if (this->map[x][y][this->layer][k]->Intersects(nextPositionBounds) && this->map[x][y][this->layer][k]->GetCollision())
+				{
+					//bottom collision
+					if (playerBounds.top < wallBounds.top
+						&& playerBounds.top + playerBounds.height < wallBounds.top + wallBounds.height
+						&& playerBounds.left < wallBounds.left + wallBounds.width
+						&& playerBounds.left + playerBounds.width > wallBounds.left) {
+						entity->StopY();
+						entity->SetPos(playerBounds.left, wallBounds.top - playerBounds.height);
+					}
+					//top collision
+					else if (playerBounds.top > wallBounds.top
+						&& playerBounds.top + playerBounds.height > wallBounds.top + wallBounds.height
+						&& playerBounds.left < wallBounds.left + wallBounds.width
+						&& playerBounds.left + playerBounds.width > wallBounds.left) {
+						entity->StopY();
+						entity->SetPos(playerBounds.left, wallBounds.top + wallBounds.height);
+					}
+					//right collision
+					if (playerBounds.left < wallBounds.left
+						&& playerBounds.left + playerBounds.width < wallBounds.left + wallBounds.width
+						&& playerBounds.top < wallBounds.top + wallBounds.height
+						&& playerBounds.top + playerBounds.height > wallBounds.top) {
+						entity->StopX();
+						entity->SetPos(wallBounds.left - playerBounds.width, playerBounds.top);
+					}
+					//left collision
+					else if (playerBounds.left > wallBounds.left
+						&& playerBounds.left + playerBounds.width > wallBounds.left + wallBounds.width
+						&& playerBounds.top < wallBounds.top + wallBounds.height
+						&& playerBounds.top + playerBounds.height > wallBounds.top) {
+						entity->StopX();
+						entity->SetPos(wallBounds.left + wallBounds.width, playerBounds.top);
+					}
+				}
+			}
+		}
+	}
+}
+void TileMap::UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& enemySystem) //everything
+{
+	this->layer = 0;
+	this->fromX = entity->getGridPos(this->gridSizeI).x - 15;
+	if (this->fromX < 0)
+	{
+		this->fromX = 0;
+	}
+	else if (this->fromX >= this->maxSizeGrid.x)
+	{
+		this->fromX = this->maxSizeGrid.x;
+	}
+	this->toX = entity->getGridPos(this->gridSizeI).x + 16;
+	if (this->toX < 0)
+	{
+		this->toX = 0;
+	}
+	else if (this->toX >= this->maxSizeGrid.x)
+	{
+		this->toX = this->maxSizeGrid.x;
+	}
+	this->fromY = entity->getGridPos(this->gridSizeI).y - 8;
+	if (this->fromY < 0)
+	{
+		this->fromY = 0;
+	}
+	else if (this->fromY >= this->maxSizeGrid.y)
+	{
+		this->fromY = this->maxSizeGrid.y - 1;
+	}
+	this->toY = entity->getGridPos(this->gridSizeI).y + 9;
+	if (this->toY < 0)
+	{
+		this->toY = 0;
+	}
+	else if (this->toY >= this->maxSizeGrid.y)
+	{
+		this->toY = this->maxSizeGrid.y - 1;
+	}
+
+	for (int x = this->fromX; x < this->toX; x++) {
+		for (int y = this->fromY; y < this->toY; y++) {
+			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++) {
+				this->map[x][y][this->layer][k]->Update();
+				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER) // if is a spawner
+				{
+					EnemySpawner* tmp = dynamic_cast<EnemySpawner*>(this->map[x][y][this->layer][k]); // dynamic cast?
+					if (tmp)
+					{
+						if (!tmp->GetSpawned())
+						{
+							enemySystem.CreateEnemy(EnemyType::ORC, this->gridSizeF * x, this->gridSizeF * y);
+							tmp->SetSpawned(true);
+						}
+					}
+				}
+			}
+		}
 	}
 }

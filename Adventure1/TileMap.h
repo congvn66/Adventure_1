@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Tile.h"
-#include "Entity.h"
 #include "EnemySpawner.h"
 #include "RegularTile.h"
+#include "EnemySystem.h"
+
 
 using namespace std;
 using namespace sf;
@@ -11,6 +12,8 @@ using namespace sf;
 class RegularTile;
 class EnemySpawner;
 class Tile;
+class Enemy;
+class Orc;
 
 class TileMap
 {
@@ -56,5 +59,8 @@ public:
 	void SaveToFile(const string fileName);
 	void LoadFromFile(const string fileName);
 	void RenderDefered(RenderTarget& target, const Vector2f playerPos = Vector2f(), Shader* shader = nullptr);
+	void UpdateWorldBoundCollision(Entity* entity, const float& deltaTime);
+	void UpdateTileCollision(Entity* entity, const float& deltaTime);
+	void UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& enemySystem);
 };
 

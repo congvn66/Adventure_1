@@ -53,6 +53,10 @@ void GameState::InitPlayerGUI()
 {
 	this->playerGUI = new PlayerGUI(this->player);
 }
+void GameState::InitEnemySystem()
+{
+	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures);
+}
 void GameState::InitTileMap()
 {
 	this->tileMap = new TileMap("text.map");
@@ -103,12 +107,10 @@ GameState::GameState(StateData* stateData)
 
 	this->InitPlayer();
 	this->InitPlayerGUI();
+	this->InitEnemySystem();
 	this->InitTileMap();
 
-	this->activeEnemies.push_back(new Orc(200.f, 400.f, this->textures["ORC_SHEET"]));
-	this->activeEnemies.push_back(new Orc(300.f, 400.f, this->textures["ORC_SHEET"]));
-	this->activeEnemies.push_back(new Orc(400.f, 400.f, this->textures["ORC_SHEET"]));
-	this->activeEnemies.push_back(new Orc(500.f, 400.f, this->textures["ORC_SHEET"]));
+	
 }
 GameState::~GameState()
 {
@@ -122,10 +124,21 @@ GameState::~GameState()
 		delete this->activeEnemies[i];
 	}
 
+	delete this->enemySystem;
 }
 //---------------------------------CON & DE-------------------------------------------
 
 //------------------------------------FUNCTION----------------------------------------
+void GameState::UpdatePlayer(const float& dt)
+{
+}
+void GameState::UpdateEnemies(const float& dt)
+{
+	this->activeEnemies.push_back(new Orc(200.f, 400.f, this->textures["ORC_SHEET"]));
+	this->activeEnemies.push_back(new Orc(300.f, 400.f, this->textures["ORC_SHEET"]));
+	this->activeEnemies.push_back(new Orc(400.f, 400.f, this->textures["ORC_SHEET"]));
+	this->activeEnemies.push_back(new Orc(500.f, 400.f, this->textures["ORC_SHEET"]));
+}
 void GameState::UpdateView(const float& deltaTime)
 {
 	this->view.setCenter(floor(this->player->GetPos().x + (static_cast<float>(this->mousePosWindow.x)-static_cast<float>(1920/2)) / 10.f),
@@ -215,11 +228,14 @@ void GameState::UpdatePauseMenuButton()
 }
 void GameState::UpdateTileMap(const float& dt)
 {
-	this->tileMap->Update(this->player,dt);
+	this->tileMap->UpdateWorldBoundCollision(this->player, dt);
+	this->tileMap->UpdateTileCollision(this->player, dt);
+	this->tileMap->UpdateTiles(this->player,dt, *this->enemySystem);
 
 	for (auto* i : this->activeEnemies)
 	{
-		this->tileMap->Update(i, dt);
+		this->tileMap->UpdateWorldBoundCollision(i, dt);
+		this->tileMap->UpdateTileCollision(i, dt);
 	}
 }
 void GameState::Render(RenderTarget* target)
