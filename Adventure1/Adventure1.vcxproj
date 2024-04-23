@@ -211,6 +211,7 @@
     <ClInclude Include="HitboxComponent.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemInclude.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Melee.h" />
     <ClInclude Include="MovementComponent.h" />

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "Sword.h"
 
-Sword::Sword()
+Sword::Sword(unsigned value)
+	:Melee(value)
 {//sword
 	if (this->weaponTexture.loadFromFile("Assets/Player/Texture/pixswords.png"))
 	{
@@ -31,4 +32,9 @@ void Sword::Update(const Vector2f centerPos, const Vector2f& mousePosView)
 void Sword::Render(RenderTarget& target)
 {
 	target.draw(this->weaponSprite);
+}
+
+Sword* Sword::clone()
+{
+	return new Sword(*this); //copy of it
 }

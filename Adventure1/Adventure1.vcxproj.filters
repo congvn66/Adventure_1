@@ -251,6 +251,9 @@
     <ClInclude Include="Inventory.h">
       <Filter>Items</Filter>
     </ClInclude>
+    <ClInclude Include="ItemInclude.h">
+      <Filter>Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex_shader.vert">

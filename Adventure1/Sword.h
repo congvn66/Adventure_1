@@ -5,10 +5,11 @@ class Sword :
 {
 private:
 public:
-    Sword();
+    Sword(unsigned value);
     ~Sword();
 
     void Update(const Vector2f centerPos, const Vector2f& mousePosView);
     void Render(RenderTarget& target);
+    Sword* clone();
 };
 

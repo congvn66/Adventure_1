@@ -1,13 +1,15 @@
 #pragma once
 #include "Entity.h"
-#include "Sword.h"
+#include "ItemInclude.h"
+#include "Inventory.h"
 class Player :
     public Entity
 {
 private:
+    Inventory* inventory;
     //val
     bool attacking;
-    Sword sword;
+    Sword* sword;
 
     //init
     void InitVal();
@@ -18,8 +20,9 @@ public:
     Player(float x, float y, Texture& textureSheet);
     ~Player();
 
-
+    void InitInventory();
     void InitAnimation();
+    void InitWeapon();
     AttributeComponent* GetAttributeComponent();
     void LoseHP(const int hp);
     void LoseEXP(const int exp);

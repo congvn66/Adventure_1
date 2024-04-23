@@ -1,11 +1,16 @@
 #include "stdafx.h"
 #include "Game.h"
+#include <Windows.h>
 
 using namespace sf;
 
 int main()
 {
     Game game;
+
+    /*HWND hWnd = GetConsoleWindow();
+    ShowWindow(hWnd, SW_HIDE);*/
+
     game.Run();
     return 0;
 }

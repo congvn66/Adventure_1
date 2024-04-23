@@ -4,6 +4,7 @@
 void Player::InitVal()
 {
 	this->attacking = false;
+	
 }
 
 void Player::InitComponents()
@@ -13,6 +14,8 @@ void Player::InitComponents()
 Player::Player(float x, float y, Texture& textureSheet)
 {
 	this->InitVal();
+	this->InitWeapon();
+	this->InitInventory();
 	//create abilities????
 	this->InitComponents();
 	this->CreateHitboxComponent(this->sprite,40,10, 12*4,26*4); //hitbox
@@ -29,6 +32,8 @@ Player::Player(float x, float y, Texture& textureSheet)
 
 Player::~Player()
 {
+	delete this->sword;
+	delete this->inventory;
 }
 
 void Player::UpdateAttack()
@@ -70,6 +75,10 @@ void Player::UpdateAnimation(const float& dt)
 		this->animationComponent->Play("WALK_DOWN", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 }
+void Player::InitInventory()
+{
+	this->inventory = new Inventory(10);
+}
 void Player::InitAnimation()
 {
 	//add animation
@@ -79,6 +88,10 @@ void Player::InitAnimation()
 	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 1, 4, 1, 32, 32);
 	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 0, 4, 0, 32, 32);
 	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 32, 32);
+}
+void Player::InitWeapon()
+{
+	this->sword = new Sword(20);
 }
 AttributeComponent* Player::GetAttributeComponent()
 {
@@ -112,7 +125,7 @@ void Player::Update(const float& dt, Vector2f& mousePosView)
 	
 	this->hitboxComponent->Update();
 
-	this->sword.Update(this->GetCenterPos(), mousePosView);
+	this->sword->Update(this->GetCenterPos(), mousePosView);
 }
 void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 {
@@ -126,7 +139,7 @@ void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 	else
 	{
 		target.draw(this->sprite);
-		this->sword.Render(target);
+		this->sword->Render(target);
 	}
 
 	if (showHitBox)
