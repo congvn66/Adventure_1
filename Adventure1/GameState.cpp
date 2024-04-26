@@ -309,7 +309,7 @@ void GameState::UpdateCombat(Enemy* enemy, const int index, const float dt)
 			enemy->GetDistance(*this->player)<80.f)
 			// if the range is longer than the distance
 		{
-			enemy->LoseHP(1);
+			enemy->LoseHP(this->player->GetWeapon()->GetDamageMin());
 			cout << enemy->GetAC()->hp << endl;
 		}
 	}
