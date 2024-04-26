@@ -52,14 +52,15 @@ public:
     ~GameState();
     
     void UpdatePlayer(const float& dt);
-    void UpdateEnemies(const float& dt);
-    void Update(const float& deltaTime);
+    void UpdateCombatAndEnemies(const float& dt);
     void UpdateView(const float& deltaTime);
     void UpdateInput(const float& dt);
     void UpdatePlayerGUI(const float& deltaTime);
     void UpdatePauseMenuButton();
     void UpdateTileMap(const float& dt);
     void UpdatePlayerInput(const float& deltaTime);
+    void UpdateCombat(Enemy* enemy, const int index, const float dt);
+    void Update(const float& deltaTime);
     void Render(RenderTarget* target = nullptr);
 };
 

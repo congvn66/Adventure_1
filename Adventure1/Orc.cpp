@@ -10,6 +10,7 @@ Orc::Orc(float x, float y, Texture& textureSheet)
 	this->CreateHitboxComponent(this->sprite, 5.f, 0.f, 16.f * 4 - 15, 16.f * 4); //hitbox
 	this->CreateMovementComponent(50.f, 1600.f, 1000.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
+	this->CreateAttributeComponent(1);
 
 	this->SetPos(x, y);
 	this->InitAnimation();
@@ -36,6 +37,7 @@ void Orc::InitAnimation()
 	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 6, 3, 6, 16, 16);
 	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 16, 16);
 }
+
 void Orc::UpdateAnimation(const float& dt)
 {
 	/*this->UpdateAttack();

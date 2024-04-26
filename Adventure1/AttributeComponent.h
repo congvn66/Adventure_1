@@ -32,6 +32,7 @@ public:
 	~AttributeComponent();
 
 	//func
+	const bool isDead() const;
 	void LoseHP(const int hp);
 	void LoseEXP(const int exp);
 	void GainHP(const int hp);

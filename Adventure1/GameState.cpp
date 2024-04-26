@@ -132,12 +132,28 @@ GameState::~GameState()
 void GameState::UpdatePlayer(const float& dt)
 {
 }
-void GameState::UpdateEnemies(const float& dt)
+void GameState::UpdateCombatAndEnemies(const float& dt)
 {
-	this->activeEnemies.push_back(new Orc(200.f, 400.f, this->textures["ORC_SHEET"]));
-	this->activeEnemies.push_back(new Orc(300.f, 400.f, this->textures["ORC_SHEET"]));
-	this->activeEnemies.push_back(new Orc(400.f, 400.f, this->textures["ORC_SHEET"]));
-	this->activeEnemies.push_back(new Orc(500.f, 400.f, this->textures["ORC_SHEET"]));
+	int index = 0;
+	for (auto* enemy : this->activeEnemies)
+	{
+		enemy->Update(dt, this->mousePosView);
+
+		this->tileMap->UpdateWorldBoundCollision(enemy, dt);
+		this->tileMap->UpdateTileCollision(enemy, dt);
+
+		this->UpdateCombat(enemy,index, dt);
+
+		//delete enemies if die
+		if (enemy->IsDead())
+		{
+			this->player->GainEXP(enemy->GetGainExp());
+			this->activeEnemies.erase(this->activeEnemies.begin() + index);
+			--index;
+		}
+
+		++index;
+	}
 }
 void GameState::UpdateView(const float& deltaTime)
 {
@@ -208,10 +224,9 @@ void GameState::Update(const float& deltaTime)
 		this->UpdatePlayerGUI(deltaTime);
 		
 		//enemies
-		for (auto* i : this->activeEnemies)
-		{
-			i->Update(deltaTime, this->mousePosView);
-		}
+		this->UpdateCombatAndEnemies(deltaTime);
+		
+		//UpdateCombat(deltaTime);
 		
 	}
 	else { //when in pause menu
@@ -231,12 +246,6 @@ void GameState::UpdateTileMap(const float& dt)
 	this->tileMap->UpdateWorldBoundCollision(this->player, dt);
 	this->tileMap->UpdateTileCollision(this->player, dt);
 	this->tileMap->UpdateTiles(this->player,dt, *this->enemySystem);
-
-	for (auto* i : this->activeEnemies)
-	{
-		this->tileMap->UpdateWorldBoundCollision(i, dt);
-		this->tileMap->UpdateTileCollision(i, dt);
-	}
 }
 void GameState::Render(RenderTarget* target)
 {
@@ -252,9 +261,9 @@ void GameState::Render(RenderTarget* target)
 	this->player->Render(this->renderTexture,nullptr,false);
 
 	//enemies
-	for (auto* i : this->activeEnemies)
+	for (auto* enemy : this->activeEnemies)
 	{
-		i->Render(this->renderTexture, nullptr, true);
+		enemy->Render(this->renderTexture, nullptr, true);
 	}
 
 	//render upper layers of the map
@@ -289,6 +298,20 @@ void GameState::UpdatePlayerInput(const float& deltaTime)
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("MOVE_DOWN")))) {
 		this->player->Move(deltaTime, 0.0f, 2.0f);
+	}
+}
+void GameState::UpdateCombat(Enemy* enemy, const int index, const float dt)
+{
+	if (Mouse::isButtonPressed(Mouse::Left))
+	{
+		//cout << enemy->GetDistance(*this->player) << endl;
+		if (enemy->GetGlobalBounds().contains(this->mousePosView) && 
+			enemy->GetDistance(*this->player)<80.f)
+			// if the range is longer than the distance
+		{
+			enemy->LoseHP(1);
+			cout << enemy->GetAC()->hp << endl;
+		}
 	}
 }
 //------------------------------------FUNCTION----------------------------------------

@@ -20,6 +20,7 @@ public:
     Player(float x, float y, Texture& textureSheet);
     ~Player();
 
+    const Weapon* GetWeapon() const;
     void InitInventory();
     void InitAnimation();
     void InitWeapon();

@@ -21,6 +21,11 @@ void Entity::InitVal()
 	this->hitboxComponent = nullptr;
 	this->skillComponent = nullptr;
 }
+const float Entity::GetDistance(const Entity& entity) const
+{
+	//cout << sqrt(pow(this->GetCenterPos().y - entity.GetCenterPos().y, 2) + pow(this->GetCenterPos().x - entity.GetCenterPos().x, 2)) << endl;
+	return sqrt(pow(this->GetCenterPos().y - entity.GetCenterPos().y, 2) + pow(this->GetCenterPos().x - entity.GetCenterPos().x, 2));
+}
 const FloatRect Entity::GetNextPosBounds(const float& deltaTime) const
 {
 	if (this->hitboxComponent && this->movementComponent)

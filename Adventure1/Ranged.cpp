@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Ranged.h"
 
-Ranged::Ranged(unsigned value)
-    :Item(value)
+Ranged::Ranged(unsigned value, string texFile)
+    :Weapon(value, texFile)
 {
     this->type = ItemTypes::RANGED;
 }

@@ -21,6 +21,11 @@ AttributeComponent::~AttributeComponent()
 {
 }
 
+const bool AttributeComponent::isDead() const
+{
+	return this->hp <=0;
+}
+
 void AttributeComponent::LoseHP(const int hp)
 {
 	this->hp -= hp;

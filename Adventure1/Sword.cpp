@@ -1,15 +1,10 @@
 #include "stdafx.h"
 #include "Sword.h"
 
-Sword::Sword(unsigned value)
-	:Melee(value)
+Sword::Sword(unsigned value, string texFile)
+	:Melee(value, texFile)
 {//sword
-	if (this->weaponTexture.loadFromFile("Assets/Player/Texture/pixswords.png"))
-	{
-		cout << "GameState: sword is ready!" << endl;
-	}
-	this->weaponSprite.setTexture(weaponTexture);
-	this->weaponSprite.setScale(1.f, 1.f);
+	
 	this->weaponSprite.setOrigin(this->weaponSprite.getGlobalBounds().width / 2.f, this->weaponSprite.getGlobalBounds().height);
 }
 

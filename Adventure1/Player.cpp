@@ -75,6 +75,10 @@ void Player::UpdateAnimation(const float& dt)
 		this->animationComponent->Play("WALK_DOWN", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 }
+const Weapon* Player::GetWeapon() const
+{
+	return this->sword;
+}
 void Player::InitInventory()
 {
 	this->inventory = new Inventory(10);
@@ -91,7 +95,7 @@ void Player::InitAnimation()
 }
 void Player::InitWeapon()
 {
-	this->sword = new Sword(20);
+	this->sword = new Sword(20,"Assets/Player/Texture/pixswords.png");
 }
 AttributeComponent* Player::GetAttributeComponent()
 {

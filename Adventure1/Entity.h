@@ -41,6 +41,7 @@ public:
 	void CreateAnimationComponent(Texture& textureSheet);
 	void CreateAttributeComponent(const unsigned level);
 
+	virtual const float GetDistance(const Entity& entity) const;
 	virtual const FloatRect GetNextPosBounds(const float& deltaTime) const;
 	virtual const Vector2i getGridPos(const int gridSizeI) const;
 	virtual const FloatRect GetGlobalBounds() const;
