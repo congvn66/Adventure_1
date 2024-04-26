@@ -32,9 +32,12 @@ private:
     Font font;
     PauseMenu* pauseMenu;
 
+    //enemies
     EnemySystem *enemySystem;
-
     vector <Enemy*> activeEnemies;
+
+    //text tag
+    TextTagSystem* tts;
 
     //init
     void InitDeferredRender();
@@ -47,6 +50,7 @@ private:
     void InitShader();
     void InitPlayerGUI();
     void InitTileMap();
+    void InitTextTag();
     void InitEnemySystem();
 public:
     GameState(StateData* stateData);

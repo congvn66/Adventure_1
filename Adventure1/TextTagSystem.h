@@ -26,6 +26,15 @@ private:
 			this->text.setCharacterSize(charSize);
 			this->text.setString(text);
 		}
+		TextTag(TextTag* tag, float posX, float posY,string text) {
+			this->text = tag->text;
+			this->text.setString(text);
+			this->text.setPosition(posX, posY);
+			this->dirX = tag->dirX;
+			this->dirY = tag->dirY;
+			this->lifeTime = tag->lifeTime;
+			this->speed = tag->speed;
+		}
 		~TextTag()
 		{
 
@@ -47,9 +56,9 @@ private:
 			}
 
 		}
-		void Render(RenderTarget* target)
+		void Render(RenderTarget& target)
 		{
-			target->draw(this->text);
+			target.draw(this->text);
 		}
 
 	};
@@ -62,9 +71,11 @@ private:
 public:
 	TextTagSystem(string fontFile);
 	~TextTagSystem();
-	void AddTextTag(unsigned tagType);
-	void RemoveTextTag();
+	void AddTextTag(unsigned tagType,const float posX,const float posY,const string text);
+	void AddTextTag(unsigned tagType, const float posX, const float posY, const int val);
+	void AddTextTag(unsigned tagType, const float posX, const float posY, const float val);
+
 	void Update(const float& dt);
-	void Render(RenderTarget* target);
+	void Render(RenderTarget& target);
 };
 

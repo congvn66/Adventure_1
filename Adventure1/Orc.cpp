@@ -14,6 +14,7 @@ Orc::Orc(float x, float y, Texture& textureSheet)
 
 	this->SetPos(x, y);
 	this->InitAnimation();
+	this->InitGui();
 }
 
 Orc::~Orc()
@@ -36,6 +37,13 @@ void Orc::InitAnimation()
 	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 7, 3, 7, 16, 16);
 	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 6, 3, 6, 16, 16);
 	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 16, 16);
+}
+
+void Orc::InitGui()
+{
+	this->hpBar.setFillColor(Color::Red);
+	this->hpBar.setSize(Vector2f(70.f, 20.f));
+	this->hpBar.setPosition(this->sprite.getPosition());
 }
 
 void Orc::UpdateAnimation(const float& dt)
@@ -77,8 +85,14 @@ void Orc::Update(const float& dt, Vector2f& mousePosView)
 	//update pos with movement input
 	this->movementComponent->Update(dt);
 
+	//update gui
+	this->hpBar.setSize(Vector2f(70.f * (static_cast<float>(this->attributeComponent->hp) / static_cast<float>(this->attributeComponent->hpMax)), 20.f));
+	this->hpBar.setPosition(Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y-10.f));
+
+	//animation update
 	this->UpdateAnimation(dt);
 
+	//hitbox update
 	this->hitboxComponent->Update();
 }
 void Orc::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
@@ -94,6 +108,8 @@ void Orc::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 	{
 		target.draw(this->sprite);
 	}
+
+	target.draw(this->hpBar);
 
 	if (showHitBox)
 	{

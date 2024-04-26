@@ -49,6 +49,9 @@
     <Filter Include="Items\Weapon\Range">
       <UniqueIdentifier>{dbf22d89-7f11-4c71-9e4d-74861705c76f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TextTag">
+      <UniqueIdentifier>{afa9b422-61ac-49fa-bce6-b5129f39b52c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -157,7 +160,7 @@
       <Filter>Items\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="TextTagSystem.cpp">
-      <Filter>GUI</Filter>
+      <Filter>TextTag</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -267,7 +270,7 @@
       <Filter>Items\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="TextTagSystem.h">
-      <Filter>GUI</Filter>
+      <Filter>TextTag</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

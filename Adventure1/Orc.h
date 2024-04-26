@@ -10,6 +10,9 @@ private:
     void InitVal();
     void InitComponents();
     void InitAnimation();
+    void InitGui();
+
+    RectangleShape hpBar;
 public:
     Orc(float x, float y, Texture& textureSheet);
     ~Orc();
