@@ -5,6 +5,7 @@
 #include "TileMap.h"
 #include "PlayerGUI.h"
 #include "Sword.h"
+#include "TextTagSystem.h"
 
 
 class Player;

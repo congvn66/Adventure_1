@@ -6,14 +6,12 @@ void Weapon::InitVal()
 	this->range = 20;
 	this->damageMin = 1;
 	this->damageMax = 2;
+
+	this->atkTimer.restart();
+	this->atkTimerMax = 500;
 }
 
-void Weapon::InitCooldown()
-{
-	this->cooldown = 0.f;
-	this->cooldownMax = 10.f;
-	this->cooldownAddition = 1.f;
-}
+
 
 Weapon::Weapon(unsigned value, string texFile)
 	:Item(value)
@@ -43,4 +41,15 @@ const unsigned& Weapon::GetDamageMax() const
 const unsigned& Weapon::GetRange() const
 {
 	return this->range;
+}
+
+const bool Weapon::GetAtkTimer()
+{
+	//cout << this->atkTimer.getElapsedTime().asMilliseconds() << endl;
+	if (this->atkTimer.getElapsedTime().asMilliseconds()>=this->atkTimerMax)
+	{
+		this->atkTimer.restart();
+		return true;
+	}
+	return false;
 }

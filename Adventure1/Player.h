@@ -19,8 +19,7 @@ public:
     //con & de
     Player(float x, float y, Texture& textureSheet);
     ~Player();
-
-    const Weapon* GetWeapon() const;
+     Weapon* GetWeapon() const;
     void InitInventory();
     void InitAnimation();
     void InitWeapon();
@@ -29,7 +28,7 @@ public:
     void LoseEXP(const int exp);
     void GainHP(const int hp);
     void GainEXP(const int exp);
-    void UpdateAttack();
+
     void UpdateAnimation(const float& dt);
     virtual void Update(const float& dt,Vector2f& mousePosView);
     virtual void Render(RenderTarget& target, Shader* shader=nullptr,const bool showHitBox=false);

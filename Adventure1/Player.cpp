@@ -36,16 +36,10 @@ Player::~Player()
 	delete this->inventory;
 }
 
-void Player::UpdateAttack()
-{
-	if (Mouse::isButtonPressed(Mouse::Left))
-	{
-		//this->attacking = true;
-	}
-}
+
 void Player::UpdateAnimation(const float& dt)
 {
-	this->UpdateAttack();
+
 	if (this->attacking) {
 		this->animationComponent->Play("ATTACK", dt, true);
 		if (this->animationComponent->IsDone("ATTACK")) {
@@ -75,7 +69,7 @@ void Player::UpdateAnimation(const float& dt)
 		this->animationComponent->Play("WALK_DOWN", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
 }
-const Weapon* Player::GetWeapon() const
+ Weapon* Player::GetWeapon() const
 {
 	return this->sword;
 }
@@ -123,7 +117,6 @@ void Player::Update(const float& dt, Vector2f& mousePosView)
 	//update pos with movement input
 	this->movementComponent->Update(dt);
 
-	this->UpdateAttack();
 	
 	this->UpdateAnimation(dt);
 	

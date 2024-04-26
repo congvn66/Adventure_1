@@ -306,7 +306,8 @@ void GameState::UpdateCombat(Enemy* enemy, const int index, const float dt)
 	{
 		//cout << enemy->GetDistance(*this->player) << endl;
 		if (enemy->GetGlobalBounds().contains(this->mousePosView) && 
-			enemy->GetDistance(*this->player)<80.f)
+			enemy->GetDistance(*this->player)<80.f&&
+			this->player->GetWeapon()->GetAtkTimer())
 			// if the range is longer than the distance
 		{
 			enemy->LoseHP(this->player->GetWeapon()->GetDamageMin());

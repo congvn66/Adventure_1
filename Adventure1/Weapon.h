@@ -5,7 +5,7 @@ class Weapon :
 {
 private:
     void InitVal();
-    void InitCooldown();
+
 protected:
     unsigned range;
     Sprite weaponSprite;
@@ -13,9 +13,8 @@ protected:
     unsigned damageMin;
     unsigned damageMax;
 
-    float cooldown; // attacking timer
-    float cooldownMax;
-    float cooldownAddition;
+    Clock atkTimer;
+    Int32 atkTimerMax;
 public:
     Weapon(unsigned value, string texFile);
     ~Weapon();
@@ -23,6 +22,7 @@ public:
     const unsigned& GetDamageMin() const;
     const unsigned& GetDamageMax() const;
     const unsigned& GetRange() const;
+    const bool GetAtkTimer();
 
     virtual Item* clone()=0;
     virtual void Update(const Vector2f centerPos, const Vector2f& mousePosView)=0;
