@@ -27,6 +27,11 @@ private:
 	RectangleShape hpBarBack;
 	RectangleShape hpBarInner; //actual health
 
+	RectangleShape CharacterTabBack;
+	Text characterInfo;
+
+	void InitCharacterTab();
+	void InitTabMenu();
 	void InitFont();
 	void InitHpBar();
 	void InitLevel();
@@ -39,10 +44,12 @@ public:
 	void UpdateExpBar();
 	void UpdateHpBar();
 	void UpdateLevelBar();
+	void UpdateCharTab();
 
 	void RenderLevelBar(RenderTarget& target);
 	void RenderExpBar(RenderTarget& target);
 	void RenderHpBar(RenderTarget& target);
+	void RenderCharTab(RenderTarget& target);
 	void Render(RenderTarget& target);
 };
 

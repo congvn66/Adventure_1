@@ -43,20 +43,22 @@ TextTagSystem::~TextTagSystem()
 	}
 }
 
-void TextTagSystem::AddTextTag(unsigned tagType, const float posX, const float posY, const string text)
-{
-	this->tags.push_back(new TextTag(this->tagTemplates[tagType],posX,posY,text));
-}
-void TextTagSystem::AddTextTag(unsigned tagType, const float posX, const float posY, const int val)
+void TextTagSystem::AddTextTag(unsigned tagType, const float posX, const float posY, const string text,	const string prefix, const string postfix)
 {
 	stringstream ss;
-	ss << val;
+	ss << prefix << " " << text << " " << postfix;
+	this->tags.push_back(new TextTag(this->tagTemplates[tagType],posX,posY,ss.str()));
+}
+void TextTagSystem::AddTextTag(unsigned tagType, const float posX, const float posY, const int val, const string prefix, const string postfix)
+{
+	stringstream ss;
+	ss<< prefix<<" " << val << " " << postfix;
 	this->tags.push_back(new TextTag(this->tagTemplates[tagType], posX, posY, ss.str()));
 }
-void TextTagSystem::AddTextTag(unsigned tagType, const float posX, const float posY, const float val)
+void TextTagSystem::AddTextTag(unsigned tagType, const float posX, const float posY, const float val, const string prefix, const string postfix)
 {
 	stringstream ss;
-	ss << val;
+	ss << prefix << " " << val << " " << postfix;
 	this->tags.push_back(new TextTag(this->tagTemplates[tagType], posX, posY, ss.str()));
 }
 

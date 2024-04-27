@@ -151,7 +151,7 @@ void EditorState::Render(RenderTarget* target)
 
 	//render map things
 	target->setView(this->view);
-	this->tileMap->Render(*target, this->mousePosGrid, true);
+	this->tileMap->Render(*target, this->mousePosGrid, true, true);
 	this->tileMap->RenderDefered(*target);
 	
 	target->setView(this->window->getDefaultView());

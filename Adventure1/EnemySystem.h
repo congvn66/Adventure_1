@@ -14,7 +14,8 @@ public:
 	EnemySystem(vector <Enemy*>& activeEnemies, std::map <string, Texture>& textures);
 	~EnemySystem();
 
-	void CreateEnemy(const short type, const float x, const float y);
+	void CreateEnemy(const short type, const float x, const float y, EnemySpawner& es);
+	void removeEnemy(const int index);
 	void Update(const float& deltaTime);
 	void Render(RenderTarget* target);
 };

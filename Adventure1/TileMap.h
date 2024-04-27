@@ -49,7 +49,7 @@ public:
 	const Vector2i& GetMaxSizeGrid() const;
 	const Vector2f& GetMaxSizeF() const;
 	const int GetLayerSize(const int x, const int y, const int z);
-	void Render(RenderTarget& target, const Vector2i& gridPos,const bool show_collision = false, const Vector2f playerPos = Vector2f(), Shader* shader = nullptr);
+	void Render(RenderTarget& target, const Vector2i& gridPos,const bool show_collision = false,const bool show_spawner = false, const Vector2f playerPos = Vector2f(), Shader* shader = nullptr);
 	const Texture* GetTileSheet() const;
 	void Update(Entity* entity, const float& deltaTime);
 	void AddTile(const int x, const int y, const int z, const IntRect texRect,const bool& collision, const short& type);

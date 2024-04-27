@@ -14,7 +14,7 @@ private:
 
     RectangleShape hpBar;
 public:
-    Orc(float x, float y, Texture& textureSheet);
+    Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner);
     ~Orc();
 
     void UpdateAnimation(const float& dt);

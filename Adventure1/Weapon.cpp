@@ -13,10 +13,26 @@ void Weapon::InitVal()
 
 
 
-Weapon::Weapon(unsigned value, string texFile)
-	:Item(value)
+Weapon::Weapon(unsigned level,unsigned value, string texFile)
+	:Item(level, value)
 {
 	this->InitVal();
+	if (this->weaponTexture.loadFromFile(texFile))
+	{
+		cout << "GameState: sword is ready!" << endl;
+	}
+	this->weaponSprite.setTexture(weaponTexture);
+}
+
+Weapon::Weapon(unsigned dmgMin, unsigned dmgMax, unsigned range, unsigned level, unsigned value, string texFile)
+	:Item(level, value)
+{
+	this->InitVal();
+
+	this->damageMin = dmgMin;
+	this->damageMax = dmgMax;
+	this->range = range;
+
 	if (this->weaponTexture.loadFromFile(texFile))
 	{
 		cout << "GameState: sword is ready!" << endl;
@@ -41,6 +57,11 @@ const unsigned& Weapon::GetDamageMax() const
 const unsigned& Weapon::GetRange() const
 {
 	return this->range;
+}
+
+const unsigned Weapon::GetDamage() const
+{
+	return rand()%(this->damageMax- this->damageMin + 1) + this->damageMin;
 }
 
 const bool Weapon::GetAtkTimer()

@@ -6,9 +6,10 @@ void Item::InitVal()
 	
 }
 
-Item::Item(unsigned value)
+Item::Item(unsigned level, unsigned value)
 {
 	this->InitVal();
+	this->level = level;
 	this->value = value;
 	this->type = ItemTypes::DEFAULT_ITEM;
 }

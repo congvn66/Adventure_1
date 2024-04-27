@@ -10,14 +10,33 @@ PlayerGUI::PlayerGUI(Player* player)
 	this->InitHpBar();
 	this->InitExpBar();
 	this->InitLevel();
+
+	this->InitTabMenu();
+	this->InitCharacterTab();
 }
 PlayerGUI::~PlayerGUI()
 {
 }
 
+void PlayerGUI::InitCharacterTab()
+{
+	//background
+	this->CharacterTabBack.setFillColor(Color(50, 50, 50, 200));
+	this->CharacterTabBack.setSize(Vector2f(220.f, 1080.f));
+	//text
+	this->characterInfo.setFont(this->font);
+	this->characterInfo.setCharacterSize(40);
+	this->characterInfo.setFillColor(Color::White);
+	this->characterInfo.setPosition(this->CharacterTabBack.getPosition().x+20.f, this->CharacterTabBack.getPosition().y + 20.f);
+}
+
+void PlayerGUI::InitTabMenu()
+{
+}
+
 void PlayerGUI::InitFont()
 {
-	this->font.loadFromFile("Assets/Font/ARCADECLASSIC.TTF");
+	this->font.loadFromFile("Assets/Font/joystix monospace.otf");
 }
 void PlayerGUI::InitHpBar()
 {
@@ -74,13 +93,14 @@ void PlayerGUI::Update(const float& dt)
 	this->UpdateHpBar();
 	this->UpdateExpBar();
 	this->UpdateLevelBar();
+	this->UpdateCharTab();
 }
 void PlayerGUI::UpdateExpBar()
 {
 	float percent = static_cast<float>(this->player->GetAttributeComponent()->exp) / static_cast<float>(this->player->GetAttributeComponent()->expNext);
 	this->expBarInner.setSize(Vector2f(static_cast<float>(floor(this->expBarMaxWidth * percent)), this->expBarInner.getSize().y));
 
-	this->expString = to_string(this->player->GetAttributeComponent()->exp) + " on " + to_string(this->player->GetAttributeComponent()->expNext);
+	this->expString = to_string(this->player->GetAttributeComponent()->exp) + "/" + to_string(this->player->GetAttributeComponent()->expNext);
 	this->expText.setString(this->expString);
 }
 void PlayerGUI::UpdateHpBar()
@@ -88,13 +108,17 @@ void PlayerGUI::UpdateHpBar()
 	float percent = static_cast<float>(this->player->GetAttributeComponent()->hp) / static_cast<float>(this->player->GetAttributeComponent()->hpMax);
 	this->hpBarInner.setSize(Vector2f(static_cast<float>(floor(this->hpBarMaxWidth * percent)), this->hpBarInner.getSize().y));
 
-	this->hpString = to_string(this->player->GetAttributeComponent()->hp) + " on "+ to_string(this->player->GetAttributeComponent()->hpMax);
+	this->hpString = to_string(this->player->GetAttributeComponent()->hp) + "/"+ to_string(this->player->GetAttributeComponent()->hpMax);
 	this->hpText.setString(this->hpString);
 }
 void PlayerGUI::UpdateLevelBar()
 {
 	this->levelString = to_string(this->player->GetAttributeComponent()->level);
 	this->levelText.setString(this->levelString);
+}
+void PlayerGUI::UpdateCharTab()
+{
+	this->characterInfo.setString("test");
 }
 void PlayerGUI::RenderLevelBar(RenderTarget& target)
 {
@@ -113,9 +137,15 @@ void PlayerGUI::RenderHpBar(RenderTarget& target)
 	target.draw(this->hpBarInner);
 	target.draw(this->hpText);
 }
+void PlayerGUI::RenderCharTab(RenderTarget& target)
+{
+	target.draw(this->CharacterTabBack);
+	target.draw(this->characterInfo);
+}
 void PlayerGUI::Render(RenderTarget& target)
 {
 	this->RenderLevelBar(target);
 	this->RenderHpBar(target);
 	this->RenderExpBar(target);
+	this->RenderCharTab(target);
 }

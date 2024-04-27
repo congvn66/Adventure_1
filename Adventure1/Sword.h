@@ -5,7 +5,7 @@ class Sword :
 {
 private:
 public:
-    Sword(unsigned value, string texFile);
+    Sword(unsigned dmgMin, unsigned dmgMax, unsigned range, unsigned level,unsigned value, string texFile);
     ~Sword();
 
     void Update(const Vector2f centerPos, const Vector2f& mousePosView);

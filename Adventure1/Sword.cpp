@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Sword.h"
 
-Sword::Sword(unsigned value, string texFile)
-	:Melee(value, texFile)
+Sword::Sword(unsigned dmgMin, unsigned dmgMax, unsigned range, unsigned level,unsigned value, string texFile)
+	:Melee(dmgMin, dmgMax, range,level, value, texFile)
 {//sword
 	
 	this->weaponSprite.setOrigin(this->weaponSprite.getGlobalBounds().width / 2.f, this->weaponSprite.getGlobalBounds().height);
@@ -21,7 +21,16 @@ void Sword::Update(const Vector2f centerPos, const Vector2f& mousePosView)
 	const float PI = 3.14159625f;
 	float deg = atan2(dY, dX) * 180.f / PI;
 
-	this->weaponSprite.setRotation(deg + 90.f);
+	//this->weaponSprite.setRotation(deg + 90.f);
+
+	if (this->atkTimer.getElapsedTime().asMilliseconds() < this->atkTimerMax)
+	{
+		this->weaponSprite.rotate(30.f);
+	}
+	else
+	{
+		this->weaponSprite.setRotation(deg + 90.f);
+	}
 }
 
 void Sword::Render(RenderTarget& target)

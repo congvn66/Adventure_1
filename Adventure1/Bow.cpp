@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Bow.h"
 
-Bow::Bow(unsigned value, string texFile)
-	:Ranged(value,texFile)
+Bow::Bow(unsigned level,unsigned value, string texFile)
+	:Ranged(level, value,texFile)
 {
 }
 

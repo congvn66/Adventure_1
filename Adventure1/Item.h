@@ -23,9 +23,10 @@ private:
 	void InitVal();
 protected:
 	unsigned value;
+	unsigned level;
 	short unsigned type;
 public:
-	Item(unsigned value);
+	Item(unsigned level, unsigned value);
 	~Item();
 
 	virtual Item* clone() = 0;

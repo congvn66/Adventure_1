@@ -13,7 +13,8 @@ void Enemy::InitAnimation()
 {
 	
 }
-Enemy::Enemy()
+Enemy::Enemy(EnemySpawner& enemySpawner)
+	:enemySpawner(enemySpawner)
 {
 	this->InitVal();
 	this->InitAnimation();
@@ -26,6 +27,17 @@ Enemy::~Enemy()
 const unsigned& Enemy::GetGainExp() const
 {
 	return this->gainExp;
+}
+
+EnemySpawner& Enemy::GetEnemySpawner()
+{
+	// TODO: insert return statement here
+	return this->enemySpawner;
+}
+
+void Enemy::GenerateAttributes(const unsigned level)
+{
+	this->gainExp = level * (rand() % 5 + 1)+10 ;
 }
 
 const bool Enemy::IsDead() const

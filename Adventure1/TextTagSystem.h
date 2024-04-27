@@ -71,9 +71,9 @@ private:
 public:
 	TextTagSystem(string fontFile);
 	~TextTagSystem();
-	void AddTextTag(unsigned tagType,const float posX,const float posY,const string text);
-	void AddTextTag(unsigned tagType, const float posX, const float posY, const int val);
-	void AddTextTag(unsigned tagType, const float posX, const float posY, const float val);
+	void AddTextTag(unsigned tagType,const float posX,const float posY,const string text, const string prefix = "", const string postfix = "");
+	void AddTextTag(unsigned tagType, const float posX, const float posY, const int val, const string prefix = "", const string postfix = "");
+	void AddTextTag(unsigned tagType, const float posX, const float posY, const float val, const string prefix = "", const string postfix = "");
 
 	void Update(const float& dt);
 	void Render(RenderTarget& target);

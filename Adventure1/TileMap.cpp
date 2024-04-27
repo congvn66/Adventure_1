@@ -351,7 +351,7 @@ void TileMap::UpdateWorldBoundCollision(Entity* entity, const float& deltaTime) 
 		entity->StopY();
 	}
 }
-void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const Vector2f playerPos, Shader* shader)
+void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const bool show_spawner,const Vector2f playerPos, Shader* shader)
 {
 	this->layer = 0;
 	this->fromX = gridPos.x - 15;
@@ -421,10 +421,13 @@ void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool s
 				}
 
 				//spawner
-				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER)
+				if (show_spawner)
 				{
-					this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
-					target.draw(this->collisionBox);
+					if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER)
+					{
+						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
+						target.draw(this->collisionBox);
+					}
 				}
 			}
 		}
@@ -560,15 +563,18 @@ void TileMap::UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& e
 	for (int x = this->fromX; x < this->toX; x++) {
 		for (int y = this->fromY; y < this->toY; y++) {
 			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++) {
+				//tile
 				this->map[x][y][this->layer][k]->Update();
+
+				//spawner
 				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER) // if is a spawner
 				{
 					EnemySpawner* tmp = dynamic_cast<EnemySpawner*>(this->map[x][y][this->layer][k]); // dynamic cast?
 					if (tmp)
 					{
-						if (!tmp->GetSpawned())
+						if (!tmp->GetSpawned() && tmp->GetEnemyCounter()< tmp->GetEnemyAmount())
 						{
-							enemySystem.CreateEnemy(EnemyType::ORC, this->gridSizeF * x, this->gridSizeF * y);
+							enemySystem.CreateEnemy(EnemyType::ORC, this->gridSizeF * x, this->gridSizeF * y, *tmp);
 							tmp->SetSpawned(true);
 						}
 					}

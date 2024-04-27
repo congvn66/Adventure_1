@@ -4,7 +4,7 @@ class Bow :
     public Ranged
 {
 public:
-    Bow(unsigned value, string texFile);
+    Bow(unsigned level,unsigned value, string texFile);
     ~Bow();
 
     Bow* clone();

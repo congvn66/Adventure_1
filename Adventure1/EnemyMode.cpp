@@ -43,7 +43,8 @@ void EnemyMode::UpdateInput(const float& deltaTime)
 {
 	//add tiles
 	if (Mouse::isButtonPressed(Mouse::Left) && this->GetKeyTime()) {
-		if (!this->sidebar.getGlobalBounds().contains(Vector2f(*this->editorStateData->mousePosWindow))) {
+		if (!this->sidebar.getGlobalBounds().contains(Vector2f(*this->editorStateData->mousePosWindow))) 
+		{
 			this->tileMap->AddTile(this->editorStateData->mousePosGrid->x, this->editorStateData->mousePosGrid->y,0, this->texRect, 
 				this->enemyType, this->amount, this->timeToSpawn, this->maxDis);
 		}

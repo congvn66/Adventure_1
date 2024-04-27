@@ -89,7 +89,8 @@ void Player::InitAnimation()
 }
 void Player::InitWeapon()
 {
-	this->sword = new Sword(20,"Assets/Player/Texture/pixswords.png");
+	this->sword = new Sword(2,5,80,1,20,"Assets/Player/Texture/pixswords.png");
+	this->sword->Generate(3, 1); // max then min!!!!!
 }
 AttributeComponent* Player::GetAttributeComponent()
 {

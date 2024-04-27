@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "Orc.h"
 
-Orc::Orc(float x, float y, Texture& textureSheet)
-	:Enemy()
+Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner)
+	:Enemy( enemySpawner)
 {
 	this->InitVal();
 	//create abilities????
@@ -11,6 +11,7 @@ Orc::Orc(float x, float y, Texture& textureSheet)
 	this->CreateMovementComponent(50.f, 1600.f, 1000.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);
+	this->GenerateAttributes(this->attributeComponent->level);
 
 	this->SetPos(x, y);
 	this->InitAnimation();

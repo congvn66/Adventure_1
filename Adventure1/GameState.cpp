@@ -63,7 +63,7 @@ void GameState::InitTileMap()
 }
 void GameState::InitTextTag()
 {
-	this->tts = new TextTagSystem("Assets/Font/ARCADECLASSIC.TTF");
+	this->tts = new TextTagSystem("Assets/Font/joystix monospace.otf");
 }
 void GameState::InitTexture()
 {
@@ -183,8 +183,10 @@ void GameState::UpdateCombatAndEnemies(const float& dt)
 		if (enemy->IsDead())
 		{
 			this->player->GainEXP(enemy->GetGainExp());
-			this->tts->AddTextTag(TagType::EXPERIENCE_TAG, this->player->GetCenterPos().x, this->player->GetCenterPos().y, static_cast<int>(enemy->GetGainExp()));
-			this->activeEnemies.erase(this->activeEnemies.begin() + index);
+			this->tts->AddTextTag(TagType::EXPERIENCE_TAG, this->player->GetCenterPos().x, 
+				this->player->GetCenterPos().y, static_cast<int>(enemy->GetGainExp()),"+","exp");
+
+			this->enemySystem->removeEnemy(index);
 			--index;
 		}
 
@@ -273,16 +275,15 @@ void GameState::UpdatePlayerInput(const float& deltaTime)
 }
 void GameState::UpdateCombat(Enemy* enemy, const int index, const float dt)
 {
-	if (Mouse::isButtonPressed(Mouse::Left))
+	if (Mouse::isButtonPressed(Mouse::Left)&& enemy->GetGlobalBounds().contains(this->mousePosView) &&
+		enemy->GetDistance(*this->player) < this->player->GetWeapon()->GetRange())
 	{
 		//cout << enemy->GetDistance(*this->player) << endl;
-		if (enemy->GetGlobalBounds().contains(this->mousePosView) && 
-			enemy->GetDistance(*this->player)<this->player->GetWeapon()->GetRange() &&
-			this->player->GetWeapon()->GetAtkTimer())
+		if (this->player->GetWeapon()->GetAtkTimer())
 			// if the range is longer than the distance
 		{
-			enemy->LoseHP(this->player->GetWeapon()->GetDamageMin());
-			this->tts->AddTextTag(TagType::NEGATIVE_TAG, enemy->GetCenterPos().x, enemy->GetCenterPos().y, static_cast<int>(this->player->GetWeapon()->GetDamageMin()));
+			enemy->LoseHP(this->player->GetWeapon()->GetDamage());
+			this->tts->AddTextTag(TagType::NEGATIVE_TAG, enemy->GetCenterPos().x, enemy->GetCenterPos().y, static_cast<int>(this->player->GetWeapon()->GetDamage()),"-","HP");
 		}
 	}
 }
