@@ -186,6 +186,8 @@ void GameState::UpdateCombatAndEnemies(const float& dt)
 			this->tts->AddTextTag(TagType::EXPERIENCE_TAG, this->player->GetCenterPos().x, 
 				this->player->GetCenterPos().y, static_cast<int>(enemy->GetGainExp()),"+","exp");
 
+			cout << "kill" << endl;
+
 			this->enemySystem->removeEnemy(index);
 			--index;
 		}

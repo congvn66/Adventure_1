@@ -570,10 +570,12 @@ void TileMap::UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& e
 				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER) // if is a spawner
 				{
 					EnemySpawner* tmp = dynamic_cast<EnemySpawner*>(this->map[x][y][this->layer][k]); // dynamic cast?
+					//cout << tmp->GetSpawned() << " " << tmp->GetEnemyCounter() << " " << tmp->GetEnemyAmount() << endl;
 					if (tmp)
 					{
 						if (!tmp->GetSpawned() && tmp->GetEnemyCounter()< tmp->GetEnemyAmount())
 						{
+							//cout << tmp->GetSpawned() << " " << tmp->GetEnemyCounter() << " " << tmp->GetEnemyAmount() << endl;
 							enemySystem.CreateEnemy(EnemyType::ORC, this->gridSizeF * x, this->gridSizeF * y, *tmp);
 							tmp->SetSpawned(true);
 						}

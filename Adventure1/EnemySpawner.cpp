@@ -14,38 +14,51 @@ EnemySpawner::EnemySpawner(int grid_x, int grid_y, float gridSizeF, Texture& til
 	this->spawned = false;
 }
 
-EnemySpawner::~EnemySpawner()
-{
-}
-
-void EnemySpawner::spawn()
-{
-}
-
-void EnemySpawner::clear()
-{
-}
-
 void EnemySpawner::Update()
 {
 	if (this->CanSpawn())
 	{
 		this->spawned = false;
+		this->enemySpawnTimer.restart();
 	}
 }
-
 const bool EnemySpawner::CanSpawn() const
 {
-	if (this->enemySpawnTimer.getElapsedTime().asMilliseconds() >= this->timeToSpawn)
+	if (this->enemySpawnTimer.getElapsedTime().asSeconds() >= this->timeToSpawn)
 	{
 		return true;
 	}
 	return false;
 }
-
 const bool& EnemySpawner::GetSpawned() const
 {
 	return this->spawned;
+}
+const int& EnemySpawner::GetEnemyCounter() const
+{
+	// TODO: insert return statement here
+	return this->enemyCnt;
+}
+const int& EnemySpawner::GetEnemyAmount() const
+{
+	// TODO: insert return statement here
+	return this->amount;
+}
+void EnemySpawner::SetSpawned(const bool spawned)
+{
+	this->spawned = spawned;
+	this->enemySpawnTimer.restart();
+}
+
+
+EnemySpawner::~EnemySpawner()
+{
+}
+void EnemySpawner::spawn()
+{
+}
+void EnemySpawner::clear()
+{
 }
 
 void EnemySpawner::IncreaseEnemyCounter()
@@ -72,23 +85,6 @@ void EnemySpawner::DecreaseEnemyCounter()
 	}
 }
 
-const int& EnemySpawner::GetEnemyCounter() const
-{
-	// TODO: insert return statement here
-	return this->enemyCnt;
-}
-
-const int& EnemySpawner::GetEnemyAmount() const
-{
-	// TODO: insert return statement here
-	return this->amount;
-}
-
-void EnemySpawner::SetSpawned(const bool spawned)
-{
-	this->spawned = spawned;
-	this->enemySpawnTimer.restart();
-}
 
 void EnemySpawner::Render(RenderTarget& target, const Vector2f playerPos, Shader* shader)
 {
