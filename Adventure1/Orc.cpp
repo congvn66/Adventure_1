@@ -85,6 +85,15 @@ void Orc::UpdateAnimation(const float& dt)
 		this->sprite.setScale(4.f, 4.f);
 		this->animationComponent->Play("WALK_DOWN", dt, this->movementComponent->GetVelocity().x, this->movementComponent->GetMaxSpeed());
 	}
+
+	if (this->dmgTimer.getElapsedTime().asMilliseconds() <= this->dmgTimerMax)
+	{
+		this->sprite.setColor(Color::Red);
+	}
+	else
+	{
+		this->sprite.setColor(Color::White);
+	}
 }
 
 void Orc::Update(const float& dt, Vector2f& mousePosView)

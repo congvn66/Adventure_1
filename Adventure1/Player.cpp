@@ -3,8 +3,8 @@
 
 void Player::InitVal()
 {
+	this->initAttack = false;
 	this->attacking = false;
-	
 }
 
 void Player::InitComponents()
@@ -19,7 +19,7 @@ Player::Player(float x, float y, Texture& textureSheet)
 	//create abilities????
 	this->InitComponents();
 	this->CreateHitboxComponent(this->sprite,40,10, 12*4,26*4); //hitbox
-	this->CreateMovementComponent(350.f,1500.f,900.f); //move
+	this->CreateMovementComponent(140.f,1500.f,1000.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);				//stats
 	this->CreateSkillComponent(); // skill attribute
@@ -128,6 +128,14 @@ void Player::GainHP(const int hp)
 void Player::GainEXP(const int exp)
 {
 	this->attributeComponent->GainExp(exp);
+}
+const bool& Player::GetInitAttack() const
+{
+	return this->initAttack;
+}
+void Player::SetInitAttack(const bool initAttack)
+{
+	this->initAttack = initAttack;
 }
 void Player::Update(const float& dt, Vector2f& mousePosView)
 {

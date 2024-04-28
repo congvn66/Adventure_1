@@ -4,6 +4,7 @@
 void Enemy::InitVal()
 {
 	this->gainExp = 10;
+	this->dmgTimerMax = 1000;
 }
 
 void Enemy::InitComponents()
@@ -33,6 +34,16 @@ EnemySpawner& Enemy::GetEnemySpawner()
 {
 	// TODO: insert return statement here
 	return this->enemySpawner;
+}
+
+void Enemy::ResetDmgTimer()
+{
+	this->dmgTimer.restart();
+}
+
+const bool Enemy::GetDmgTimerDone()
+{
+	return this->dmgTimer.getElapsedTime().asMilliseconds()>=this->dmgTimerMax;
 }
 
 void Enemy::GenerateAttributes(const unsigned level)

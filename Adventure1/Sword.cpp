@@ -23,9 +23,11 @@ void Sword::Update(const Vector2f centerPos, const Vector2f& mousePosView)
 
 	//this->weaponSprite.setRotation(deg + 90.f);
 
-	if (this->atkTimer.getElapsedTime().asMilliseconds() < this->atkTimerMax)
+	if (this->atkTimer.getElapsedTime().asMilliseconds() < this->atkTimerMax/4)
 	{
-		this->weaponSprite.rotate(30.f);
+		float len = sqrt(pow(dX, 2) + pow(dY, 2));
+		Vector2f normVec(dX / len, dY / len);
+		this->weaponSprite.setPosition(centerPos.x + normVec.x * 20.f, centerPos.y + normVec.y * 20.f);
 	}
 	else
 	{

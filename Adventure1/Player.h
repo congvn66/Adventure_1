@@ -8,6 +8,7 @@ class Player :
 private:
     Inventory* inventory;
     //val
+    bool initAttack;
     bool attacking;
     Sword* sword;
 
@@ -29,7 +30,8 @@ public:
     void LoseEXP(const int exp);
     void GainHP(const int hp);
     void GainEXP(const int exp);
-
+    const bool& GetInitAttack() const;
+    void SetInitAttack(const bool initAttack);
     const string ToStringCharTab() const;
     void UpdateAnimation(const float& dt);
     virtual void Update(const float& dt,Vector2f& mousePosView);

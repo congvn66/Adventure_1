@@ -10,7 +10,7 @@ void GameState::InitDeferredRender()
 }
 void GameState::InitView()
 {
-	this->view.setSize(Vector2f(1920.f, 1080.f));
+	this->view.setSize(Vector2f(1920.f/2, 1080.f/2));
 	this->view.setCenter(Vector2f(1920.f / 2.f, 1080.f / 2.f));
 }
 void GameState::InitKeybinds()
@@ -172,6 +172,10 @@ void GameState::UpdatePlayer(const float& dt)
 }
 void GameState::UpdateCombatAndEnemies(const float& dt)
 {
+	if (Mouse::isButtonPressed(Mouse::Left)&& this->player->GetWeapon()->GetAtkTimer())
+	{
+		this->player->SetInitAttack(true);
+	}
 	int index = 0;
 	for (auto* enemy : this->activeEnemies)
 	{
@@ -180,7 +184,10 @@ void GameState::UpdateCombatAndEnemies(const float& dt)
 		this->tileMap->UpdateWorldBoundCollision(enemy, dt);
 		this->tileMap->UpdateTileCollision(enemy, dt);
 
-		this->UpdateCombat(enemy,index, dt);
+		if (this->player->GetInitAttack())
+		{
+			this->UpdateCombat(enemy,index, dt);
+		}
 
 		//delete enemies if die
 		if (enemy->IsDead())
@@ -197,6 +204,7 @@ void GameState::UpdateCombatAndEnemies(const float& dt)
 
 		++index;
 	}
+	this->player->SetInitAttack(false);
 }
 void GameState::UpdateView(const float& deltaTime)
 {
@@ -285,16 +293,19 @@ void GameState::UpdatePlayerInput(const float& deltaTime)
 }
 void GameState::UpdateCombat(Enemy* enemy, const int index, const float dt)
 {
-	if (Mouse::isButtonPressed(Mouse::Left)&& enemy->GetGlobalBounds().contains(this->mousePosView) &&
-		enemy->GetDistance(*this->player) < this->player->GetWeapon()->GetRange())
+	if ( enemy->GetGlobalBounds().contains(this->mousePosView) &&
+		enemy->GetDistance(*this->player) < this->player->GetWeapon()->GetRange()&&
+		enemy->GetDmgTimerDone())
 	{
 		//cout << enemy->GetDistance(*this->player) << endl;
-		if (this->player->GetWeapon()->GetAtkTimer())
-			// if the range is longer than the distance
-		{
-			enemy->LoseHP(this->player->GetWeapon()->GetDamage());
-			this->tts->AddTextTag(TagType::NEGATIVE_TAG, enemy->GetCenterPos().x, enemy->GetCenterPos().y, static_cast<int>(this->player->GetWeapon()->GetDamage()),"-","HP");
-		}
+		
+		// if the range is longer than the distance
+		
+		enemy->LoseHP(this->player->GetWeapon()->GetDamage());
+		//enemy->LoseHP(1);
+		enemy->ResetDmgTimer();
+		this->tts->AddTextTag(TagType::NEGATIVE_TAG, enemy->GetCenterPos().x, enemy->GetCenterPos().y, static_cast<int>(this->player->GetWeapon()->GetDamage()),"-","HP");
+		
 	}
 }
 void GameState::Render(RenderTarget* target)

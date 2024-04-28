@@ -8,7 +8,7 @@ void Weapon::InitVal()
 	this->damageMax = 2;
 
 	this->atkTimer.restart();
-	this->atkTimerMax = 500;
+	this->atkTimerMax = 200;
 }
 
 
