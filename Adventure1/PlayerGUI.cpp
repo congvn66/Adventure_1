@@ -10,29 +10,24 @@ PlayerGUI::PlayerGUI(Player* player)
 	this->InitHpBar();
 	this->InitExpBar();
 	this->InitLevel();
-
-	this->InitTabMenu();
-	this->InitCharacterTab();
+	this->InitPlayerTab(this->font, *this->player);
 }
 PlayerGUI::~PlayerGUI()
 {
+	delete this->playerTabs;
 }
 
-void PlayerGUI::InitCharacterTab()
+const bool PlayerGUI::GetTabsOpen() const
 {
-	//background
-	this->CharacterTabBack.setFillColor(Color(50, 50, 50, 200));
-	this->CharacterTabBack.setSize(Vector2f(220.f, 1080.f));
-	//text
-	this->characterInfo.setFont(this->font);
-	this->characterInfo.setCharacterSize(40);
-	this->characterInfo.setFillColor(Color::White);
-	this->characterInfo.setPosition(this->CharacterTabBack.getPosition().x+20.f, this->CharacterTabBack.getPosition().y + 20.f);
+	return this->playerTabs->TabsOpened();
 }
 
-void PlayerGUI::InitTabMenu()
+void PlayerGUI::ToggleCharacterTab()
 {
+	this->playerTabs->ToggleTab(PlayerTabsType::CHARACTER);
 }
+
+
 
 void PlayerGUI::InitFont()
 {
@@ -88,12 +83,16 @@ void PlayerGUI::InitExpBar()
 	this->expText.setFont(this->font);
 	this->expText.setPosition(this->expBarInner.getPosition().x + 10.f, this->expBarInner.getPosition().y + 5.f);
 }
+void PlayerGUI::InitPlayerTab(Font& font, Player& player)
+{
+	this->playerTabs = new PlayerTabs(font, player);
+}
 void PlayerGUI::Update(const float& dt)
 {
 	this->UpdateHpBar();
 	this->UpdateExpBar();
 	this->UpdateLevelBar();
-	this->UpdateCharTab();
+	this->UpdatePlayerTabs();
 }
 void PlayerGUI::UpdateExpBar()
 {
@@ -116,9 +115,9 @@ void PlayerGUI::UpdateLevelBar()
 	this->levelString = to_string(this->player->GetAttributeComponent()->level);
 	this->levelText.setString(this->levelString);
 }
-void PlayerGUI::UpdateCharTab()
+void PlayerGUI::UpdatePlayerTabs()
 {
-	this->characterInfo.setString("test");
+	this->playerTabs->Update();
 }
 void PlayerGUI::RenderLevelBar(RenderTarget& target)
 {
@@ -137,15 +136,14 @@ void PlayerGUI::RenderHpBar(RenderTarget& target)
 	target.draw(this->hpBarInner);
 	target.draw(this->hpText);
 }
-void PlayerGUI::RenderCharTab(RenderTarget& target)
+void PlayerGUI::RenderPlayerTabs(RenderTarget& target)
 {
-	target.draw(this->CharacterTabBack);
-	target.draw(this->characterInfo);
+	this->playerTabs->Render(target);
 }
 void PlayerGUI::Render(RenderTarget& target)
 {
 	this->RenderLevelBar(target);
 	this->RenderHpBar(target);
 	this->RenderExpBar(target);
-	this->RenderCharTab(target);
+	this->RenderPlayerTabs(target);
 }

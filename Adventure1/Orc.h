@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "AIFollow.h"
 
 class Enemy;
 
@@ -11,10 +12,13 @@ private:
     void InitComponents();
     void InitAnimation();
     void InitGui();
+    void InitAI();
+
+    AIFollow* follow;
 
     RectangleShape hpBar;
 public:
-    Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner);
+    Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player);
     ~Orc();
 
     void UpdateAnimation(const float& dt);

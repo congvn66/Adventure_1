@@ -21,7 +21,7 @@ void GameState::InitKeybinds()
 	this->keybinds["MOVE_UP"] = this->supportedKeys->at("W");
 	this->keybinds["MOVE_DOWN"] = this->supportedKeys->at("S");
 	this->keybinds["MOVE_RIGHT"] = this->supportedKeys->at("D");
-
+	this->keybinds["OPEN_CHAR_TAB"] = this->supportedKeys->at("TAB");
 }
 void GameState::InitFont()
 {
@@ -55,7 +55,7 @@ void GameState::InitPlayerGUI()
 }
 void GameState::InitEnemySystem()
 {
-	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures);
+	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures, *this->player);
 }
 void GameState::InitTileMap()
 {
@@ -115,7 +115,7 @@ GameState::GameState(StateData* stateData)
 	this->InitEnemySystem();
 	this->InitTileMap();
 
-	
+	//this->test = new Player(200, 300, this->textures["PLAYER_SHEET"]);
 }
 GameState::~GameState()
 {
@@ -147,9 +147,7 @@ void GameState::Update(const float& deltaTime)
 		//player
 		this->UpdatePlayerInput(deltaTime);
 		this->UpdateTileMap(deltaTime);
-		this->player->Update(deltaTime,this->mousePosView);
-
-		//gui
+		this->UpdatePlayer(deltaTime);
 		this->UpdatePlayerGUI(deltaTime);
 		
 		//enemies
@@ -166,6 +164,11 @@ void GameState::Update(const float& deltaTime)
 }
 void GameState::UpdatePlayer(const float& dt)
 {
+
+	this->player->Update(dt, this->mousePosView);
+
+	//gui
+	//this->UpdatePlayerGUI(dt);
 }
 void GameState::UpdateCombatAndEnemies(const float& dt)
 {
@@ -197,9 +200,9 @@ void GameState::UpdateCombatAndEnemies(const float& dt)
 }
 void GameState::UpdateView(const float& deltaTime)
 {
-	this->view.setCenter(floor(this->player->GetPos().x + (static_cast<float>(this->mousePosWindow.x)-static_cast<float>(1920/2)) / 10.f),
+	
+	this->view.setCenter(floor(this->player->GetPos().x + (static_cast<float>(this->mousePosWindow.x) - static_cast<float>(1920 / 2)) / 10.f),
 		floor(this->player->GetPos().y + (static_cast<float>(this->mousePosWindow.y) - static_cast<float>(1080 / 2)) / 10.f));
-
 
 	//make sure the camera wont go out the screen
 	if (this->view.getSize().x <= this->tileMap->GetMaxSizeF().x)
@@ -245,6 +248,11 @@ void GameState::UpdateInput(const float& dt)
 void GameState::UpdatePlayerGUI(const float& deltaTime)
 {
 	this->playerGUI->Update(deltaTime);
+
+	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("OPEN_CHAR_TAB"))) && this->GetKeyTime())
+	{
+		this->playerGUI->ToggleCharacterTab();
+	}
 }
 void GameState::UpdatePauseMenuButton()
 {
@@ -300,12 +308,12 @@ void GameState::Render(RenderTarget* target)
 	this->tileMap->Render(this->renderTexture,this->viewGridPos,false);
 
 	//player
-	this->player->Render(this->renderTexture,nullptr,false);
+	this->player->Render(this->renderTexture,nullptr,true);
 
 	//enemies
 	for (auto* enemy : this->activeEnemies)
 	{
-		enemy->Render(this->renderTexture, nullptr, false);
+		enemy->Render(this->renderTexture, nullptr, true);
 	}
 
 	//render upper layers of the map
@@ -315,6 +323,8 @@ void GameState::Render(RenderTarget* target)
 	//player Gui
 	this->renderTexture.setView(this->renderTexture.getDefaultView());
 	this->playerGUI->Render(this->renderTexture);
+
+	//this->test->Render(this->renderTexture, nullptr, true);
 
 	//pmenu
 	if (this->pause) {

@@ -6,21 +6,17 @@ MovementComponent::MovementComponent(float maxSpeed, Sprite& sprite,
 	:sprite(sprite), maxSpeed(maxSpeed), acceleration(acceleration), deceleration(decelaration)
 {
 }
-
 MovementComponent::~MovementComponent()
 {
 }
-
 const float& MovementComponent::GetMaxSpeed() const
 {
 	return this->maxSpeed;
 }
-
 const Vector2f& MovementComponent::GetVelocity() const
 {
 	return this->velocity;
 }
-
 const bool MovementComponent::GetState(const short unsigned state) const
 {
 	switch (state) {
@@ -59,17 +55,16 @@ const bool MovementComponent::GetState(const short unsigned state) const
 	}
 	return false;
 }
-
 void MovementComponent::Move(const float dirX, const float dirY, const float& dt)
 {
 	//acceleration
 	this->velocity.x += this->acceleration * dirX *dt;
 	this->velocity.y += this->acceleration * dirY* dt;
 }
-
 void MovementComponent::Update(const float& dt)
 {
-	if (this->velocity.x > 0.f) { //right
+	if (this->velocity.x > 0.f) 
+	{ //right
 		//check for surpassing max speed
 		if (this->velocity.x > this->maxSpeed) {
 			this->velocity.x = this->maxSpeed;
@@ -80,7 +75,8 @@ void MovementComponent::Update(const float& dt)
 			this->velocity.x = 0.f;
 		}
 	}
-	else if (this->velocity.x < 0.f) { //left
+	else if (this->velocity.x < 0.f) 
+	{ //left
 		//check for surpassing max speed
 		if (this->velocity.x < -this->maxSpeed) {
 			this->velocity.x = -this->maxSpeed;
@@ -116,20 +112,17 @@ void MovementComponent::Update(const float& dt)
 	//final
 	this->sprite.move(this->velocity * dt);
 }
-
 void MovementComponent::Stop()
 {
 	//reset velocity to 0.
 	this->velocity.x = 0;
 	this->velocity.y = 0;
 }
-
 void MovementComponent::StopX()
 {
 	//reset velocity x 
 	this->velocity.x = 0;
 }
-
 void MovementComponent::StopY()
 {
 	//reset velocity y

@@ -33,6 +33,7 @@ const FloatRect& HitboxComponent::GetNextPos(const Vector2f& velocity)
 
 const Vector2f& HitboxComponent::GetPosition() const
 {
+	//cout <<"hitbox:" << this->hitbox.getPosition().x << " " << this->hitbox.getPosition().y << endl;
 	return this->hitbox.getPosition();
 }
 

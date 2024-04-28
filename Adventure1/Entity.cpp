@@ -12,6 +12,7 @@ Entity::~Entity()
 	delete this->hitboxComponent;
 	delete this->attributeComponent;
 	delete this->skillComponent;
+
 }
 
 void Entity::InitVal()
@@ -20,6 +21,7 @@ void Entity::InitVal()
 	this->animationComponent = nullptr;
 	this->hitboxComponent = nullptr;
 	this->skillComponent = nullptr;
+	
 }
 const float Entity::GetDistance(const Entity& entity) const
 {
@@ -85,6 +87,7 @@ void Entity::CreateAttributeComponent(const unsigned level)
 {
 	this->attributeComponent = new AttributeComponent(level);
 }
+
 void Entity::SetTexture(Texture& texture)
 {
 	this->sprite.setTexture(texture);

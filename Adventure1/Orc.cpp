@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "Orc.h"
 
-Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner)
-	:Enemy( enemySpawner)
+Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player)
+	:Enemy(enemySpawner)
 {
 	this->InitVal();
+	this->InitGui();
 	//create abilities????
 	this->InitComponents();
 	this->CreateHitboxComponent(this->sprite, 5.f, 0.f, 16.f * 4 - 15, 16.f * 4); //hitbox
@@ -15,11 +16,13 @@ Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner)
 
 	this->SetPos(x, y);
 	this->InitAnimation();
-	this->InitGui();
+
+	this->follow = new AIFollow(*this, player);
 }
 
 Orc::~Orc()
 {
+	delete this->follow;
 }
 
 void Orc::InitVal()
@@ -45,6 +48,10 @@ void Orc::InitGui()
 	this->hpBar.setFillColor(Color::Red);
 	this->hpBar.setSize(Vector2f(70.f, 20.f));
 	this->hpBar.setPosition(this->sprite.getPosition());
+}
+
+void Orc::InitAI()
+{
 }
 
 void Orc::UpdateAnimation(const float& dt)
@@ -95,6 +102,9 @@ void Orc::Update(const float& dt, Vector2f& mousePosView)
 
 	//hitbox update
 	this->hitboxComponent->Update();
+
+	//AI
+	this->follow->Update(dt);
 }
 void Orc::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 {

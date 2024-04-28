@@ -27,6 +27,7 @@ private:
     //player things
     Player* player;
     PlayerGUI* playerGUI;
+    //Entity* test;
 
     //pmenu
     Font font;

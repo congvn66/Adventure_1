@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "EnemySystem.h"
 
-EnemySystem::EnemySystem(vector <Enemy*>& activeEnemies, std::map <string, Texture>& textures)
-	:activeEnemies(activeEnemies), textures(textures)
+EnemySystem::EnemySystem(vector <Enemy*>& activeEnemies, std::map <string, Texture>& textures, Entity& player)
+	:activeEnemies(activeEnemies), textures(textures), player(player)
 {
 }
 
@@ -15,7 +15,7 @@ void EnemySystem::CreateEnemy(const short type, const float x, const float y, En
 	switch(type)
 	{
 	case EnemyType::ORC:
-		this->activeEnemies.push_back(new Orc(x, y, this->textures["ORC_SHEET"],es));
+		this->activeEnemies.push_back(new Orc(x, y, this->textures["ORC_SHEET"],es , this->player));
 		es.IncreaseEnemyCounter();
 		break;
 	default:

@@ -4,7 +4,7 @@
 //init func
 void Game::InitWindow()
 {
-	this->fullscreen = true;
+	this->fullscreen = false;
 	this->settings.antialiasingLevel = this->AALevel;
 	if (this->fullscreen) {
 		this->window = new RenderWindow(VideoMode(1920, 1080), "Adventure 1", Style::Fullscreen, settings);
@@ -37,13 +37,16 @@ void Game::InitKeys()
 	this->supportedKeys["S"] = Keyboard::Key::S;
 	this->supportedKeys["D"] = Keyboard::Key::D;
 	this->supportedKeys["W"] = Keyboard::Key::W;
-	this->supportedKeys["ESC"] = Keyboard::Key::Escape;
-	this->supportedKeys["UP"] = Keyboard::Key::Up;
-	this->supportedKeys["DOWN"] = Keyboard::Key::Down;
 	this->supportedKeys["C"] = Keyboard::Key::C;
 	this->supportedKeys["Z"] = Keyboard::Key::Z;
+
+	this->supportedKeys["ESC"] = Keyboard::Key::Escape;
+	this->supportedKeys["DOWN"] = Keyboard::Key::Down;
+	this->supportedKeys["UP"] = Keyboard::Key::Up;
 	this->supportedKeys["PGUP"] = Keyboard::Key::PageUp;
 	this->supportedKeys["PGDOWN"] = Keyboard::Key::PageDown;
+	this->supportedKeys["TAB"] = Keyboard::Key::Tab;
+
 	this->supportedKeys["4"] = Keyboard::Key::Num4;
 	this->supportedKeys["3"] = Keyboard::Key::Num3;
 	this->supportedKeys["2"] = Keyboard::Key::Num2;

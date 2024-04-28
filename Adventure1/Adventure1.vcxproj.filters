@@ -52,6 +52,12 @@
     <Filter Include="TextTag">
       <UniqueIdentifier>{afa9b422-61ac-49fa-bce6-b5129f39b52c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{e96f8573-24ab-49c2-ae11-eb235dc3213f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Options">
+      <UniqueIdentifier>{77c5bf8f-5d45-4207-9b03-197a706697d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,6 +168,24 @@
     <ClCompile Include="TextTagSystem.cpp">
       <Filter>TextTag</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerTabs.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterTab.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Tab.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIOption.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIFollow.cpp">
+      <Filter>AI\Options</Filter>
+    </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -271,6 +295,24 @@
     </ClInclude>
     <ClInclude Include="TextTagSystem.h">
       <Filter>TextTag</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTabs.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterTab.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Tab.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIOption.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIFollow.h">
+      <Filter>AI\Options</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

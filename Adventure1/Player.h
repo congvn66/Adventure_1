@@ -15,6 +15,7 @@ private:
     void InitVal();
     void InitComponents(); // init its own abilities
 
+
 public:
     //con & de
     Player(float x, float y, Texture& textureSheet);
@@ -29,6 +30,7 @@ public:
     void GainHP(const int hp);
     void GainEXP(const int exp);
 
+    const string ToStringCharTab() const;
     void UpdateAnimation(const float& dt);
     virtual void Update(const float& dt,Vector2f& mousePosView);
     virtual void Render(RenderTarget& target, Shader* shader=nullptr,const bool showHitBox=false);

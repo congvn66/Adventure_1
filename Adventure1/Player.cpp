@@ -37,6 +37,23 @@ Player::~Player()
 }
 
 
+const string Player::ToStringCharTab() const
+{
+	stringstream ss;
+	ss << "Level: " << this->attributeComponent->level << endl
+		<< "Exp: " << this->attributeComponent->exp << endl
+		<< "Exp next: " << this->attributeComponent->expNext << endl
+		<< "Accuracy: " << this->attributeComponent->accuracy << endl
+		<< "Agility: " << this->attributeComponent->agility << endl
+		<< "Dexterity: " << this->attributeComponent->dexterity << endl
+		<< "Dodge: " << this->attributeComponent->dodge << endl
+		<< "Intelligence: " << this->attributeComponent->intelligence << endl
+		<< "HP max: " << this->attributeComponent->hpMax << endl
+		<< endl << endl
+		<<"Attribute Point(s): " << this->attributeComponent->attributePoint << endl;
+	return ss.str();
+}
+
 void Player::UpdateAnimation(const float& dt)
 {
 

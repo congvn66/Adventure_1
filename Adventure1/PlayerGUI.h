@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Player.h"
+#include "PlayerTabs.h"
 
 class PlayerGUI
 {
@@ -27,29 +27,30 @@ private:
 	RectangleShape hpBarBack;
 	RectangleShape hpBarInner; //actual health
 
-	RectangleShape CharacterTabBack;
-	Text characterInfo;
+	PlayerTabs* playerTabs;
 
-	void InitCharacterTab();
-	void InitTabMenu();
 	void InitFont();
 	void InitHpBar();
 	void InitLevel();
 	void InitExpBar();
+	void InitPlayerTab(Font& font,Player& player);
 public:
 	PlayerGUI(Player* player);
 	~PlayerGUI();
+
+	const bool GetTabsOpen() const;
+	void ToggleCharacterTab();
 
 	void Update(const float& dt);
 	void UpdateExpBar();
 	void UpdateHpBar();
 	void UpdateLevelBar();
-	void UpdateCharTab();
+	void UpdatePlayerTabs();
 
 	void RenderLevelBar(RenderTarget& target);
 	void RenderExpBar(RenderTarget& target);
 	void RenderHpBar(RenderTarget& target);
-	void RenderCharTab(RenderTarget& target);
+	void RenderPlayerTabs(RenderTarget& target);
 	void Render(RenderTarget& target);
 };
 
