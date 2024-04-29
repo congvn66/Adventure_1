@@ -1,18 +1,17 @@
 #include "stdafx.h"
-#include "Orc.h"
-
-Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player)
+#include "Skelly.h"
+Skelly::Skelly(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player)
 	:Enemy(enemySpawner)
 {
 	this->InitVal();
 	this->InitGui();
 	//create abilities????
 	this->InitComponents();
-	this->CreateHitboxComponent(this->sprite, 10.f, 10.f, 16.f * 4 - 20, 16.f * 4-15); //hitbox
-	this->CreateMovementComponent(100.f, 1600.f, 1000.f); //move
+	this->CreateHitboxComponent(this->sprite, 10.f, 10.f, 16.f * 4 - 20, 16.f * 4 - 15); //hitbox
+	this->CreateMovementComponent(50.f, 1600.f, 1000.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);
-	this->GenerateAttributes(this->attributeComponent->level);
+	this->GenerateAttributes(this->attributeComponent->level,1);
 
 	this->SetPos(x, y);
 	this->InitAnimation();
@@ -20,19 +19,19 @@ Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, En
 	this->follow = new AIFollow(*this, player);
 }
 
-Orc::~Orc()
+Skelly::~Skelly()
 {
 	delete this->follow;
 }
 
-void Orc::InitVal()
+void Skelly::InitVal()
 {
 }
 
-void Orc::InitComponents()
+void Skelly::InitComponents()
 {
 }
-void Orc::InitAnimation()
+void Skelly::InitAnimation()
 {
 	//add animation
 	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 2, 3, 2, 16, 16);
@@ -43,18 +42,18 @@ void Orc::InitAnimation()
 	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 16, 16);
 }
 
-void Orc::InitGui()
+void Skelly::InitGui()
 {
 	this->hpBar.setFillColor(Color::Red);
-	this->hpBar.setSize(Vector2f(65.f, 10.f));
+	this->hpBar.setSize(Vector2f(70.f, 20.f));
 	this->hpBar.setPosition(this->sprite.getPosition());
 }
 
-void Orc::InitAI()
+void Skelly::InitAI()
 {
 }
 
-void Orc::UpdateAnimation(const float& dt)
+void Skelly::UpdateAnimation(const float& dt)
 {
 	/*this->UpdateAttack();
 	if (this->attacking) {
@@ -96,7 +95,7 @@ void Orc::UpdateAnimation(const float& dt)
 	}
 }
 
-void Orc::Update(const float& deltaTime, Vector2f& mousePosView, const View& view)
+void Skelly::Update(const float& deltaTime, Vector2f& mousePosView, const View& view)
 {
 	Enemy::Update(deltaTime, mousePosView, view);
 	//update pos with movement input
@@ -104,7 +103,7 @@ void Orc::Update(const float& deltaTime, Vector2f& mousePosView, const View& vie
 
 	//update gui
 	this->hpBar.setSize(Vector2f(65.f * (static_cast<float>(this->attributeComponent->hp) / static_cast<float>(this->attributeComponent->hpMax)), 10.f));
-	this->hpBar.setPosition(Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y-10.f));
+	this->hpBar.setPosition(Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y - 10.f));
 
 	//animation update
 	this->UpdateAnimation(deltaTime);
@@ -115,7 +114,7 @@ void Orc::Update(const float& deltaTime, Vector2f& mousePosView, const View& vie
 	//AI
 	this->follow->Update(deltaTime);
 }
-void Orc::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
+void Skelly::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 {
 
 	if (shader)

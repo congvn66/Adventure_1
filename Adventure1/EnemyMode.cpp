@@ -25,7 +25,7 @@ void EnemyMode::InitVal()
 	this->enemyType= 0;
 	this->amount=1;
 	this->timeToSpawn=60;
-	this->maxDis=1000.f;
+	this->maxDis=100.f;
 }
 
 EnemyMode::EnemyMode(StateData* stateData, TileMap* tileMap, EditorStateData* editorStateData)

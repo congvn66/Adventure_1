@@ -13,7 +13,7 @@ private:
 	Int32 timeToSpawn;
 	Clock enemySpawnTimer;
 	float maxDis;
-	bool spawned;
+	bool firstSpawn;
 
 	//Spawn timer
 public:
@@ -23,13 +23,12 @@ public:
 	void spawn();
 	void clear();
 	void Update();
-	const bool CanSpawn() const;
-	const bool& GetSpawned() const;
 	void IncreaseEnemyCounter();
 	void DecreaseEnemyCounter();
+	const bool GetSpawnTimer() ;
 	const int& GetEnemyCounter() const;
 	const int& GetEnemyAmount() const;
-	void SetSpawned(const bool spawned);
+	const int& GetEnemyType() const;
 	void Render(RenderTarget& target, const Vector2f playerPos = Vector2f(), Shader* shader = nullptr);
 	const string GetAsString() const;
 };

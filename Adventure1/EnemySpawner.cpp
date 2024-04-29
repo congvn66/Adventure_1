@@ -11,29 +11,14 @@ EnemySpawner::EnemySpawner(int grid_x, int grid_y, float gridSizeF, Texture& til
 	this->enemySpawnTimer.restart();
 	this->timeToSpawn = timeToSpawn;
 	this->maxDis = maxDis;
-	this->spawned = false;
+	this->firstSpawn = true;
 }
 
 void EnemySpawner::Update()
 {
-	if (this->CanSpawn())
-	{
-		this->spawned = false;
-		this->enemySpawnTimer.restart();
-	}
+	
 }
-const bool EnemySpawner::CanSpawn() const
-{
-	if (this->enemySpawnTimer.getElapsedTime().asSeconds() >= this->timeToSpawn)
-	{
-		return true;
-	}
-	return false;
-}
-const bool& EnemySpawner::GetSpawned() const
-{
-	return this->spawned;
-}
+
 const int& EnemySpawner::GetEnemyCounter() const
 {
 	// TODO: insert return statement here
@@ -44,11 +29,13 @@ const int& EnemySpawner::GetEnemyAmount() const
 	// TODO: insert return statement here
 	return this->amount;
 }
-void EnemySpawner::SetSpawned(const bool spawned)
+
+const int& EnemySpawner::GetEnemyType() const
 {
-	this->spawned = spawned;
-	this->enemySpawnTimer.restart();
+	// TODO: insert return statement here
+	return this->enemyType;
 }
+
 
 
 EnemySpawner::~EnemySpawner()
@@ -63,11 +50,7 @@ void EnemySpawner::clear()
 
 void EnemySpawner::IncreaseEnemyCounter()
 {
-	if (this->enemyCnt > this->amount)
-	{
-		this->enemyCnt = this->amount;
-	}
-	else
+	if (this->enemyCnt < this->amount)
 	{
 		this->enemyCnt++;
 	}
@@ -75,14 +58,21 @@ void EnemySpawner::IncreaseEnemyCounter()
 
 void EnemySpawner::DecreaseEnemyCounter()
 {
-	if (this->enemyCnt < 0)
-	{
-		this->enemyCnt =0;
-	}
-	else
+	if (this->enemyCnt > 0)
 	{
 		this->enemyCnt--;
 	}
+}
+
+const bool EnemySpawner::GetSpawnTimer()
+{
+	if (this->enemySpawnTimer.getElapsedTime().asSeconds() >= this->timeToSpawn ||this->firstSpawn)
+	{
+		this->enemySpawnTimer.restart();
+		this->firstSpawn = false;
+		return true;
+	}
+	return false;
 }
 
 

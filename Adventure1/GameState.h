@@ -36,6 +36,7 @@ private:
     //enemies
     EnemySystem *enemySystem;
     vector <Enemy*> activeEnemies;
+    
 
     //text tag
     TextTagSystem* tts;

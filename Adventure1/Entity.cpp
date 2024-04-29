@@ -60,12 +60,20 @@ const Vector2f& Entity::GetPos() const
 	}
 	return this->sprite.getPosition();
 }
+const Vector2f& Entity::GetSpritePos() const
+{
+	return this->sprite.getPosition();
+}
 const Vector2f Entity::GetCenterPos() const
 {
 	if (this->hitboxComponent) {
 		return this->hitboxComponent->GetPosition()+ Vector2f(this->hitboxComponent->GetGlobalBounds().width/2.f,this->hitboxComponent->GetGlobalBounds().height/2.f);
 	}
 	return this->sprite.getPosition()+ Vector2f(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
+}
+const Vector2f Entity::GetSpriteCenterPos() const
+{
+	return this->sprite.getPosition() + Vector2f(this->sprite.getGlobalBounds().width / 2.f, this->sprite.getGlobalBounds().height / 2.f);
 }
 void Entity::CreateSkillComponent()
 {
@@ -86,6 +94,31 @@ void Entity::CreateAnimationComponent(Texture& textureSheet)
 void Entity::CreateAttributeComponent(const unsigned level)
 {
 	this->attributeComponent = new AttributeComponent(level);
+}
+
+MovementComponent* Entity::GetMC()
+{
+	return this->movementComponent;
+}
+
+HitboxComponent* Entity::GetHC()
+{
+	return this->hitboxComponent;
+}
+
+SkillComponent* Entity::GetSC()
+{
+	return this->skillComponent;
+}
+
+AnimationComponent* Entity::GetAniC()
+{
+	return this->animationComponent;
+}
+
+AttributeComponent* Entity::GetAC()
+{
+	return this->attributeComponent;
 }
 
 void Entity::SetTexture(Texture& texture)
@@ -114,7 +147,7 @@ void Entity::Move(const float& deltaTime,const float dirX, const float dirY)
 	}
 	
 }
-void Entity::Update(const float& deltaTime, Vector2f& mousePosView)
+void Entity::Update(const float& deltaTime, Vector2f& mousePosView, const View& view)
 {
 
 }

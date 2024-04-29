@@ -8,9 +8,9 @@ void TextTagSystem::InitVal()
 
 void TextTagSystem::InitTagTemplates()
 {
-	this->tagTemplates[TagType::DEFAULT_TAG] = new TextTag(this->font, "", 0.f, 0.f, 0.f, -1.f, Color::White, 40, 10.f, 200.f);
-	this->tagTemplates[TagType::NEGATIVE_TAG] = new TextTag(this->font, "", 0.f, 0.f, 0.f, -1.f, Color::Red, 40, 100.f, 250.f);
-	this->tagTemplates[TagType::EXPERIENCE_TAG] = new TextTag(this->font, "", 0.f, 0.f, 0.f, -1.f, Color::Yellow, 55, 150.f, 250.f);
+	this->tagTemplates[TagType::DEFAULT_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, Color::White, 15, 100.f,true, 100.f, 200.f);
+	this->tagTemplates[TagType::NEGATIVE_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, Color::Red, 15, 100.f,true, 150.f,200.f);
+	this->tagTemplates[TagType::EXPERIENCE_TAG] = new TextTag(this->font, "", 100.f, 100.f, 0.f, -1.f, Color::Cyan, 20, 200.f,true, 200.f,200.f);
 }
 
 void TextTagSystem::InitFont(string fontFile)

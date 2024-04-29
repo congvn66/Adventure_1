@@ -10,7 +10,7 @@ void GameState::InitDeferredRender()
 }
 void GameState::InitView()
 {
-	this->view.setSize(Vector2f(1920.f/2, 1080.f/2));
+	this->view.setSize(Vector2f(1920.f/1.5, 1080.f/1.5));
 	this->view.setCenter(Vector2f(1920.f / 2.f, 1080.f / 2.f));
 }
 void GameState::InitKeybinds()
@@ -90,6 +90,10 @@ void GameState::InitTexture()
 	{
 		cout << "GameState: Zombie sheet loaded!" << endl;
 	}
+	if (this->textures["BOSS_SHEET"].loadFromFile("Assets/Enemy/Texture/boss.png"))
+	{
+		cout << "GameState: Boss sheet loaded!" << endl;
+	}
 }
 void GameState::InitPlayer()
 {
@@ -165,7 +169,7 @@ void GameState::Update(const float& deltaTime)
 void GameState::UpdatePlayer(const float& dt)
 {
 
-	this->player->Update(dt, this->mousePosView);
+	this->player->Update(dt, this->mousePosView, this->view);
 
 	//gui
 	//this->UpdatePlayerGUI(dt);
@@ -179,27 +183,29 @@ void GameState::UpdateCombatAndEnemies(const float& dt)
 	int index = 0;
 	for (auto* enemy : this->activeEnemies)
 	{
-		enemy->Update(dt, this->mousePosView);
+		enemy->Update(dt, this->mousePosView, this->view);
 
 		this->tileMap->UpdateWorldBoundCollision(enemy, dt);
 		this->tileMap->UpdateTileCollision(enemy, dt);
-
-		if (this->player->GetInitAttack())
-		{
-			this->UpdateCombat(enemy,index, dt);
-		}
+		
+		this->UpdateCombat(enemy,index, dt);
 
 		//delete enemies if die
 		if (enemy->IsDead())
 		{
 			this->player->GainEXP(enemy->GetGainExp());
-			this->tts->AddTextTag(TagType::EXPERIENCE_TAG, this->player->GetCenterPos().x, 
-				this->player->GetCenterPos().y, static_cast<int>(enemy->GetGainExp()),"+","exp");
+			this->tts->AddTextTag(TagType::EXPERIENCE_TAG, this->player->GetCenterPos().x-40.f, 
+				this->player->GetCenterPos().y-30.f, static_cast<int>(enemy->GetGainExp()),"+","exp");
 
-			cout << "kill" << endl;
+			//cout << "kill" << endl;
 
 			this->enemySystem->removeEnemy(index);
-			--index;
+			continue;
+		}
+		else if (enemy->GetDespawnTimerDone()) // despawn enemies if outside the view
+		{
+			this->enemySystem->removeEnemy(index);
+			continue;
 		}
 
 		++index;
@@ -293,19 +299,21 @@ void GameState::UpdatePlayerInput(const float& deltaTime)
 }
 void GameState::UpdateCombat(Enemy* enemy, const int index, const float dt)
 {
-	if ( enemy->GetGlobalBounds().contains(this->mousePosView) &&
+	if (this->player->GetInitAttack() && enemy->GetGlobalBounds().contains(this->mousePosView) &&
 		enemy->GetDistance(*this->player) < this->player->GetWeapon()->GetRange()&&
 		enemy->GetDmgTimerDone())
 	{
-		//cout << enemy->GetDistance(*this->player) << endl;
-		
-		// if the range is longer than the distance
-		
-		enemy->LoseHP(this->player->GetWeapon()->GetDamage());
-		//enemy->LoseHP(1);
+		//our damage
+		enemy->LoseHP(this->player->GetDmg());
 		enemy->ResetDmgTimer();
-		this->tts->AddTextTag(TagType::NEGATIVE_TAG, enemy->GetCenterPos().x, enemy->GetCenterPos().y, static_cast<int>(this->player->GetWeapon()->GetDamage()),"-","HP");
-		
+		this->tts->AddTextTag(TagType::DEFAULT_TAG, enemy->GetCenterPos().x-50.f, enemy->GetCenterPos().y, static_cast<int>(this->player->GetWeapon()->GetDamage()),"","");
+	}
+	//enemies' damage
+	if (enemy->GetGlobalBounds().intersects(this->player->GetGlobalBounds())&&this->player->GetDmgTimer())
+	{
+		int dmg = enemy->GetDmg();
+		this->player->LoseHP(dmg);
+		this->tts->AddTextTag(TagType::NEGATIVE_TAG, player->GetPos().x - 30.f, player->GetPos().y, dmg, "-", "HP");	
 	}
 }
 void GameState::Render(RenderTarget* target)

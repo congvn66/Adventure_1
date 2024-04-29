@@ -573,11 +573,30 @@ void TileMap::UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& e
 					//cout << tmp->GetSpawned() << " " << tmp->GetEnemyCounter() << " " << tmp->GetEnemyAmount() << endl;
 					if (tmp)
 					{
-						if (!tmp->GetSpawned() && tmp->GetEnemyCounter()< tmp->GetEnemyAmount())
+						if (tmp->GetSpawnTimer() && tmp->GetEnemyCounter()< tmp->GetEnemyAmount())
 						{
-							//cout << tmp->GetSpawned() << " " << tmp->GetEnemyCounter() << " " << tmp->GetEnemyAmount() << endl;
-							enemySystem.CreateEnemy(EnemyType::ORC, this->gridSizeF * x, this->gridSizeF * y, *tmp);
-							tmp->SetSpawned(true);
+							if (tmp->GetEnemyType() == EnemyType::ORC)
+							{
+								enemySystem.CreateEnemy(EnemyType::ORC, this->gridSizeF * x, this->gridSizeF * y, *tmp);
+							}
+							else if (tmp->GetEnemyType() == EnemyType::SKELLY)
+							{
+								enemySystem.CreateEnemy(EnemyType::SKELLY, this->gridSizeF * x, this->gridSizeF * y, *tmp);
+							}
+							else if (tmp->GetEnemyType() == EnemyType::WRAITH)
+							{
+								enemySystem.CreateEnemy(EnemyType::WRAITH, this->gridSizeF * x, this->gridSizeF * y, *tmp);
+							}
+							else if (tmp->GetEnemyType() == EnemyType::ZOMBIE)
+							{
+								//cout << "pass" << endl;
+								
+								enemySystem.CreateEnemy(EnemyType::ZOMBIE, this->gridSizeF * x, this->gridSizeF * y, *tmp);
+							}
+							else if (tmp->GetEnemyType() == EnemyType::BOSS)
+							{
+								enemySystem.CreateEnemy(EnemyType::BOSS, this->gridSizeF * x, this->gridSizeF * y, *tmp);
+							}
 						}
 					}
 				}

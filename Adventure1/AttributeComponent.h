@@ -19,6 +19,7 @@ public:
 	int agility; // run
 
 	//stats
+	float movementSpeed;
 	int hp;
 	int hpMax;
 	int damageMin;

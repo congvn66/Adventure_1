@@ -5,6 +5,7 @@ void Player::InitVal()
 {
 	this->initAttack = false;
 	this->attacking = false;
+	this->dmgTimerMax = 500;
 }
 
 void Player::InitComponents()
@@ -18,10 +19,10 @@ Player::Player(float x, float y, Texture& textureSheet)
 	this->InitInventory();
 	//create abilities????
 	this->InitComponents();
-	this->CreateHitboxComponent(this->sprite,40,10, 12*4,26*4); //hitbox
-	this->CreateMovementComponent(140.f,1500.f,1000.f); //move
-	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);				//stats
+	this->CreateHitboxComponent(this->sprite,45,35, 12*4-15,26*4-20); //hitbox
+	this->CreateMovementComponent(this->attributeComponent->movementSpeed,1500.f,1000.f); //move
+	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateSkillComponent(); // skill attribute
 
 	this->SetPos(x, y);
@@ -32,7 +33,7 @@ Player::Player(float x, float y, Texture& textureSheet)
 
 Player::~Player()
 {
-	delete this->sword;
+	delete this->weapon;
 	delete this->inventory;
 }
 
@@ -88,7 +89,7 @@ void Player::UpdateAnimation(const float& dt)
 }
  Weapon* Player::GetWeapon() const
 {
-	return this->sword;
+	return this->weapon;
 }
 void Player::InitInventory()
 {
@@ -106,8 +107,8 @@ void Player::InitAnimation()
 }
 void Player::InitWeapon()
 {
-	this->sword = new Sword(2,5,80,1,20,"Assets/Player/Texture/pixswords.png");
-	this->sword->Generate(3, 1); // max then min!!!!!
+	this->weapon = new Sword(2,5,80,1,20,"Assets/Player/Texture/pixswords.png");
+	this->weapon->Generate(2, 1); // max then min!!!!!
 }
 AttributeComponent* Player::GetAttributeComponent()
 {
@@ -133,22 +134,35 @@ const bool& Player::GetInitAttack() const
 {
 	return this->initAttack;
 }
+const bool Player::GetDmgTimer()
+{
+	if (this->dmgTimer.getElapsedTime().asMilliseconds() >= this->dmgTimerMax)
+	{
+		this->dmgTimer.restart();
+		return true;
+	}
+	return false;
+}
+const unsigned Player::GetDmg() const
+{
+	return rand() % ((this->attributeComponent->damageMax+this->weapon->GetDamageMax()) - (this->attributeComponent->damageMin + this->weapon->GetDamageMin()) + 1) + (this->attributeComponent->damageMin + this->weapon->GetDamageMin());
+}
 void Player::SetInitAttack(const bool initAttack)
 {
 	this->initAttack = initAttack;
 }
-void Player::Update(const float& dt, Vector2f& mousePosView)
+void Player::Update(const float& deltaTime, Vector2f& mousePosView, const View& view)
 {
 
 	//update pos with movement input
-	this->movementComponent->Update(dt);
+	this->movementComponent->Update(deltaTime);
 
 	
-	this->UpdateAnimation(dt);
+	this->UpdateAnimation(deltaTime);
 	
 	this->hitboxComponent->Update();
 
-	this->sword->Update(this->GetCenterPos(), mousePosView);
+	this->weapon->Update(this->GetCenterPos(), mousePosView);
 }
 void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 {
@@ -162,7 +176,7 @@ void Player::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 	else
 	{
 		target.draw(this->sprite);
-		this->sword->Render(target);
+		this->weapon->Render(target);
 	}
 
 	if (showHitBox)

@@ -7,6 +7,7 @@ AttributeComponent::AttributeComponent(int level)
 	this->exp = 0;
 	this->expNext = static_cast<int>((50/3)*(pow(this->level+1,3)-6*pow(this->level+1,2)+((this->level+1)*17)-12));//equation to calculate next exp
 	this->attributePoint = 2;
+	this->movementSpeed = 140.f;
 
 	this->vitality = 1;
 	this->strength = 1;
@@ -63,7 +64,8 @@ void AttributeComponent::GainExp(const int exp)
 
 void AttributeComponent::UpdateStats(const bool reset)
 {
-	this->hpMax     = (this->vitality * 5 + this->vitality + this->strength/2 + this->intelligence / 5);
+	this->movementSpeed = 5 * this->agility + 140;
+	this->hpMax     = (this->vitality * 9 + this->vitality + this->strength/2 + this->intelligence / 5);
 	this->damageMin = (this->strength * 2 + this->strength / 4 + this->intelligence / 5);
 	this->damageMax = (this->strength * 2 + this->strength / 2 + this->intelligence / 5);
 	this->accuracy  = (this->dexterity * 5 + this->dexterity / 3 + this->intelligence / 5);

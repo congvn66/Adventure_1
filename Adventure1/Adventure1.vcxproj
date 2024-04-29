@@ -158,6 +158,7 @@
     <ClCompile Include="AIOption.cpp" />
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttributeComponent.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="CharacterTab.cpp" />
     <ClCompile Include="DefaultMode.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Ranged.cpp" />
     <ClCompile Include="RegularTile.cpp" />
     <ClCompile Include="SettingState.cpp" />
+    <ClCompile Include="Skelly.cpp" />
     <ClCompile Include="SkillComponent.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -200,6 +202,8 @@
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="Wraith.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIComponent.h" />
@@ -207,6 +211,7 @@
     <ClInclude Include="AIOption.h" />
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttributeComponent.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="CharacterTab.h" />
     <ClInclude Include="DefaultMode.h" />
@@ -235,6 +240,7 @@
     <ClInclude Include="Ranged.h" />
     <ClInclude Include="RegularTile.h" />
     <ClInclude Include="SettingState.h" />
+    <ClInclude Include="Skelly.h" />
     <ClInclude Include="SkillComponent.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="stdafx.h" />
@@ -244,6 +250,8 @@
     <ClInclude Include="Tile.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Weapon.h" />
+    <ClInclude Include="Wraith.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentshader.frag" />

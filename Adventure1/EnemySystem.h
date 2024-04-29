@@ -1,9 +1,13 @@
 #pragma once
 
-#include "Orc.h"
 #include "EnemySpawner.h"
+#include "Orc.h"
+#include "Skelly.h"
+#include "Wraith.h"
+#include "Zombie.h"
+#include "Boss.h"
 
-enum EnemyType {ORC = 0, SKELLY, WRAITH, ZOMBIE};
+enum EnemyType {ORC = 0, SKELLY, WRAITH, ZOMBIE, BOSS};
 
 class EnemySystem
 {

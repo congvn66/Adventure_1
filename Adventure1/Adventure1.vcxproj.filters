@@ -186,6 +186,18 @@
     <ClCompile Include="AIComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="Skelly.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Wraith.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Entity\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -313,6 +325,18 @@
     </ClInclude>
     <ClInclude Include="AIComponent.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Skelly.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Wraith.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>Entity\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

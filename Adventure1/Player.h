@@ -10,11 +10,15 @@ private:
     //val
     bool initAttack;
     bool attacking;
-    Sword* sword;
+    Weapon* weapon;
 
     //init
     void InitVal();
     void InitComponents(); // init its own abilities
+
+    //timer to take dmg from enemies
+    Clock dmgTimer;
+    Int32 dmgTimerMax;
 
 
 public:
@@ -31,10 +35,12 @@ public:
     void GainHP(const int hp);
     void GainEXP(const int exp);
     const bool& GetInitAttack() const;
+    const bool GetDmgTimer();
+    const unsigned GetDmg() const;
     void SetInitAttack(const bool initAttack);
     const string ToStringCharTab() const;
     void UpdateAnimation(const float& dt);
-    virtual void Update(const float& dt,Vector2f& mousePosView);
+    virtual void Update(const float& deltaTime, Vector2f& mousePosView, const View& view);
     virtual void Render(RenderTarget& target, Shader* shader=nullptr,const bool showHitBox=false);
 };
 

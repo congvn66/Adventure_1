@@ -1,10 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include "AIFollow.h"
-
-class Enemy;
-
-class Orc :
+class Boss :
     public Enemy
 {
 private:
@@ -18,8 +15,8 @@ private:
 
     RectangleShape hpBar;
 public:
-    Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player);
-    ~Orc();
+    Boss(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player);
+    ~Boss();
 
     void UpdateAnimation(const float& dt);
     void Update(const float& deltaTime, Vector2f& mousePosView, const View& view);

@@ -1,18 +1,20 @@
 #include "stdafx.h"
-#include "Orc.h"
+#include "Boss.h"
 
-Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player)
+//192x128
+
+Boss::Boss(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, Entity& player)
 	:Enemy(enemySpawner)
 {
 	this->InitVal();
 	this->InitGui();
 	//create abilities????
 	this->InitComponents();
-	this->CreateHitboxComponent(this->sprite, 10.f, 10.f, 16.f * 4 - 20, 16.f * 4-15); //hitbox
-	this->CreateMovementComponent(100.f, 1600.f, 1000.f); //move
+	this->CreateHitboxComponent(this->sprite, 250.f, 100.f, 192.f*4-450, 168.f*4-350); //hitbox
+	this->CreateMovementComponent(5000.f, 2600.f, 1000.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);
-	this->GenerateAttributes(this->attributeComponent->level);
+	this->GenerateAttributes(this->attributeComponent->level,4);
 
 	this->SetPos(x, y);
 	this->InitAnimation();
@@ -20,41 +22,41 @@ Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, En
 	this->follow = new AIFollow(*this, player);
 }
 
-Orc::~Orc()
+Boss::~Boss()
 {
 	delete this->follow;
 }
 
-void Orc::InitVal()
+void Boss::InitVal()
 {
 }
 
-void Orc::InitComponents()
+void Boss::InitComponents()
 {
 }
-void Orc::InitAnimation()
+void Boss::InitAnimation()
 {
 	//add animation
-	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 2, 3, 2, 16, 16);
-	this->animationComponent->AddAnimation("WALK_LEFT", 80.f, 0, 5, 3, 5, 16, 16);
-	this->animationComponent->AddAnimation("WALK_RIGHT", 80.f, 0, 4, 3, 4, 16, 16);
-	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 7, 3, 7, 16, 16);
-	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 6, 3, 6, 16, 16);
-	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 16, 16);
+	this->animationComponent->AddAnimation("IDLE", 80.f, 0, 0, 5, 0, 192, 128);
+	this->animationComponent->AddAnimation("WALK_LEFT", 80.f, 1, 1, 9, 1, 192, 128);
+	this->animationComponent->AddAnimation("WALK_RIGHT", 80.f, 0, 4, 3, 4, 192, 128);
+	this->animationComponent->AddAnimation("WALK_UP", 80.f, 0, 0, 5, 0, 192, 128);
+	this->animationComponent->AddAnimation("WALK_DOWN", 80.f, 0, 0, 5, 0, 192, 128);
+	this->animationComponent->AddAnimation("ATTACK", 50.f, 0, 4, 4, 4, 192, 128);
 }
 
-void Orc::InitGui()
+void Boss::InitGui()
 {
 	this->hpBar.setFillColor(Color::Red);
-	this->hpBar.setSize(Vector2f(65.f, 10.f));
+	this->hpBar.setSize(Vector2f(400.f, 10.f));
 	this->hpBar.setPosition(this->sprite.getPosition());
 }
 
-void Orc::InitAI()
+void Boss::InitAI()
 {
 }
 
-void Orc::UpdateAnimation(const float& dt)
+void Boss::UpdateAnimation(const float& dt)
 {
 	/*this->UpdateAttack();
 	if (this->attacking) {
@@ -96,15 +98,15 @@ void Orc::UpdateAnimation(const float& dt)
 	}
 }
 
-void Orc::Update(const float& deltaTime, Vector2f& mousePosView, const View& view)
+void Boss::Update(const float& deltaTime, Vector2f& mousePosView, const View& view)
 {
 	Enemy::Update(deltaTime, mousePosView, view);
 	//update pos with movement input
 	this->movementComponent->Update(deltaTime);
 
 	//update gui
-	this->hpBar.setSize(Vector2f(65.f * (static_cast<float>(this->attributeComponent->hp) / static_cast<float>(this->attributeComponent->hpMax)), 10.f));
-	this->hpBar.setPosition(Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y-10.f));
+	this->hpBar.setSize(Vector2f(400.f * (static_cast<float>(this->attributeComponent->hp) / static_cast<float>(this->attributeComponent->hpMax)), 10.f));
+	this->hpBar.setPosition(Vector2f(this->sprite.getPosition().x +200.f, this->sprite.getPosition().y + 80.f));
 
 	//animation update
 	this->UpdateAnimation(deltaTime);
@@ -115,7 +117,7 @@ void Orc::Update(const float& deltaTime, Vector2f& mousePosView, const View& vie
 	//AI
 	this->follow->Update(deltaTime);
 }
-void Orc::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
+void Boss::Render(RenderTarget& target, Shader* shader, const bool showHitBox)
 {
 
 	if (shader)
