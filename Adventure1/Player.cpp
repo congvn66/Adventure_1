@@ -27,8 +27,6 @@ Player::Player(float x, float y, Texture& textureSheet)
 
 	this->SetPos(x, y);
 	this->InitAnimation();
-	
-
 }
 
 Player::~Player()

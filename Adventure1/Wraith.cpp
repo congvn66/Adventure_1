@@ -8,7 +8,7 @@ Wraith::Wraith(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawn
 	//create abilities????
 	this->InitComponents();
 	this->CreateHitboxComponent(this->sprite, 10.f, 5.f, 16.f * 4 - 20, 16.f * 4-10); //hitbox
-	this->CreateMovementComponent(120.f, 2000.f, 1000.f); //move
+	this->CreateMovementComponent(150.f, 2000.f, 1000.f); //move
 	this->CreateAnimationComponent(textureSheet);     //animation
 	this->CreateAttributeComponent(1);
 	this->GenerateAttributes(this->attributeComponent->level,2);
@@ -16,7 +16,7 @@ Wraith::Wraith(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawn
 	this->SetPos(x, y);
 	this->InitAnimation();
 
-	this->follow = new AIFollow(*this, player,500.f);
+	this->follow = new AIFollow(*this, player,600.f);
 }
 
 Wraith::~Wraith()

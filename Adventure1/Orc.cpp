@@ -17,7 +17,7 @@ Orc::Orc(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, En
 	this->SetPos(x, y);
 	this->InitAnimation();
 
-	this->follow = new AIFollow(*this, player,500.f);
+	this->follow = new AIFollow(*this, player,600.f);
 }
 
 Orc::~Orc()

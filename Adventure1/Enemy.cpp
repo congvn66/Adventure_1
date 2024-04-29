@@ -59,24 +59,24 @@ const unsigned Enemy::GetDmg() const
 
 void Enemy::GenerateAttributes(const unsigned level, const int type)
 {
-	this->gainExp = level * (rand() % 5 + 1)+10 ;
+	this->gainExp = level * (rand() % 10 + 5) + 10 ;
 	if (type == 3) //zombie
 	{
-		this->attributeComponent->hpMax = 10;
+		this->attributeComponent->hpMax = 35;
 		this->attributeComponent->hp = this->attributeComponent->hpMax;
 		this->attributeComponent->damageMax = 2;
 		this->attributeComponent->damageMin = 1;
 	}
 	else if (type == 0) //orc
 	{
-		this->attributeComponent->hpMax = 5;
+		this->attributeComponent->hpMax = 25;
 		this->attributeComponent->hp = this->attributeComponent->hpMax;
 		this->attributeComponent->damageMax = 3;
 		this->attributeComponent->damageMin = 1;
 	}
 	else if (type == 1) //skelly
 	{
-		this->attributeComponent->hpMax = 3;
+		this->attributeComponent->hpMax = 20;
 		this->attributeComponent->hp = this->attributeComponent->hpMax;
 		this->attributeComponent->damageMax = 5;
 		this->attributeComponent->damageMin = 2;

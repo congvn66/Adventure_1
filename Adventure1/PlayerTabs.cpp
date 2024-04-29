@@ -68,25 +68,25 @@ void PlayerTabs::Update(const Vector2i& mousePosWindow)
 				{
 					this->player.GetAC()->vitality++;
 					this->player.GetAC()->attributePoint--;
-					this->player.GetAC()->UpdateStats(false);
+					this->player.GetAC()->UpdateStats(true);
 				}
 				else if (this->tabs[i]->IsButtonPressed("strength+") && this->GetKeyTime())
 				{
 					this->player.GetAC()->strength++;
 					this->player.GetAC()->attributePoint--;
-					this->player.GetAC()->UpdateStats(false);
+					this->player.GetAC()->UpdateStats(true);
 				}
 				else if (this->tabs[i]->IsButtonPressed("agility+") && this->GetKeyTime())
 				{
 					this->player.GetAC()->agility++;
 					this->player.GetAC()->attributePoint--;
-					this->player.GetAC()->UpdateStats(false);
+					this->player.GetAC()->UpdateStats(true);
 				}
 				else if (this->tabs[i]->IsButtonPressed("intelligence+") && this->GetKeyTime())
 				{
 					this->player.GetAC()->agility++;
 					this->player.GetAC()->attributePoint--;
-					this->player.GetAC()->UpdateStats(false);
+					this->player.GetAC()->UpdateStats(true);
 				}
 			}
 			

@@ -337,12 +337,12 @@ void GameState::Render(RenderTarget* target)
 	this->tileMap->Render(this->renderTexture,this->viewGridPos,false);
 
 	//player
-	this->player->Render(this->renderTexture,nullptr,true);
+	this->player->Render(this->renderTexture,nullptr,false);
 
 	//enemies
 	for (auto* enemy : this->activeEnemies)
 	{
-		enemy->Render(this->renderTexture, nullptr, true);
+		enemy->Render(this->renderTexture, nullptr, false);
 	}
 
 	//render upper layers of the map
