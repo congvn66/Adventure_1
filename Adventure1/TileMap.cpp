@@ -228,6 +228,7 @@ void TileMap::SaveToFile(const string fileName)
 				}
 			}
 		}
+		cout << "Tile Map: map saved!" << endl;
 	}
 	else {
 		cout << "Tile Map: cant save map!" << endl;
@@ -349,88 +350,6 @@ void TileMap::UpdateWorldBoundCollision(Entity* entity, const float& deltaTime) 
 	{
 		entity->SetPos(entity->GetPos().x, this->maxSizeWorldF.y - entity->GetGlobalBounds().height);
 		entity->StopY();
-	}
-}
-void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const bool show_spawner,const Vector2f playerPos, Shader* shader)
-{
-	this->layer = 0;
-	this->fromX = gridPos.x - 15;
-	if (this->fromX < 0)
-	{
-		this->fromX = 0;
-	}
-	else if (this->fromX >= this->maxSizeGrid.x)
-	{
-		this->fromX = this->maxSizeGrid.x;
-	}
-	this->toX = gridPos.x + 16;
-	if (this->toX < 0)
-	{
-		this->toX = 0;
-	}
-	else if (this->toX >= this->maxSizeGrid.x)
-	{
-		this->toX = this->maxSizeGrid.x;
-	}
-	this->fromY = gridPos.y - 9;
-	if (this->fromY < 0)
-	{
-		this->fromY = 0;
-	}
-	else if (this->fromY >= this->maxSizeGrid.y)
-	{
-		this->fromY = this->maxSizeGrid.y;
-	}
-	this->toY = gridPos.y + 10;
-	if (this->toY < 0)
-	{
-		this->toY = 0;
-	}
-	else if (this->toY >= this->maxSizeGrid.y)
-	{
-		this->toY = this->maxSizeGrid.y;
-	}
-
-	//  only render tiles around player!
-	for (int x = this->fromX; x < this->toX; x++) {
-		for (int y = this->fromY; y < this->toY; y++) {
-			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++)
-			{
-				if (this->map[x][y][this->layer][k]->GetType()==TileType::ABOVE)
-				{
-					this->deferedRenderStack.push(this->map[x][y][this->layer][k]);
-				}
-				else
-				{
-					if (shader)
-					{
-						this->map[x][y][this->layer][k]->Render(target, playerPos, shader);
-					}
-					else
-					{
-						this->map[x][y][this->layer][k]->Render(target);
-					}
-				}
-				//coll
-				if (show_collision)
-				{
-					if (this->map[x][y][this->layer][k]->GetCollision()) {
-						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
-						target.draw(this->collisionBox);
-					}
-				}
-
-				//spawner
-				if (show_spawner)
-				{
-					if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER)
-					{
-						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
-						target.draw(this->collisionBox);
-					}
-				}
-			}
-		}
 	}
 }
 void TileMap::UpdateTileCollision(Entity* entity, const float& deltaTime) //around player
@@ -599,6 +518,88 @@ void TileMap::UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& e
 								enemySystem.CreateEnemy(EnemyType::BOSS, this->gridSizeF * x, this->gridSizeF * y, *tmp);
 							}
 						}
+					}
+				}
+			}
+		}
+	}
+}
+void TileMap::Render(RenderTarget& target, const Vector2i& gridPos, const bool show_collision,const bool show_spawner,const Vector2f playerPos, Shader* shader)
+{
+	this->layer = 0;
+	this->fromX = gridPos.x - 15;
+	if (this->fromX < 0)
+	{
+		this->fromX = 0;
+	}
+	else if (this->fromX >= this->maxSizeGrid.x)
+	{
+		this->fromX = this->maxSizeGrid.x;
+	}
+	this->toX = gridPos.x + 16;
+	if (this->toX < 0)
+	{
+		this->toX = 0;
+	}
+	else if (this->toX >= this->maxSizeGrid.x)
+	{
+		this->toX = this->maxSizeGrid.x;
+	}
+	this->fromY = gridPos.y - 9;
+	if (this->fromY < 0)
+	{
+		this->fromY = 0;
+	}
+	else if (this->fromY >= this->maxSizeGrid.y)
+	{
+		this->fromY = this->maxSizeGrid.y;
+	}
+	this->toY = gridPos.y + 10;
+	if (this->toY < 0)
+	{
+		this->toY = 0;
+	}
+	else if (this->toY >= this->maxSizeGrid.y)
+	{
+		this->toY = this->maxSizeGrid.y;
+	}
+
+	//  only render tiles around player!
+	for (int x = this->fromX; x < this->toX; x++) {
+		for (int y = this->fromY; y < this->toY; y++) {
+			for (size_t k = 0; k < this->map[x][y][this->layer].size(); k++)
+			{
+				if (this->map[x][y][this->layer][k]->GetType()==TileType::ABOVE)
+				{
+					this->deferedRenderStack.push(this->map[x][y][this->layer][k]);
+				}
+				else
+				{
+					if (shader)
+					{
+						this->map[x][y][this->layer][k]->Render(target, playerPos, shader);
+					}
+					else
+					{
+						this->map[x][y][this->layer][k]->Render(target);
+					}
+				}
+				//coll
+				if (show_collision)
+				{
+					if (this->map[x][y][this->layer][k]->GetCollision()) {
+						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
+						target.draw(this->collisionBox);
+					}
+				}
+
+				//spawner
+				if (show_spawner)
+				{
+					if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER)
+					{
+						this->collisionBox.setPosition(this->map[x][y][this->layer][k]->GetPos());
+						target.draw(this->collisionBox);
 					}
 				}
 			}
