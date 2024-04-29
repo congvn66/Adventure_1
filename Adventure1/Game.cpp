@@ -4,7 +4,7 @@
 //init func
 void Game::InitWindow()
 {
-	this->fullscreen = false;
+	this->fullscreen = true;
 	this->settings.antialiasingLevel = this->AALevel;
 	if (this->fullscreen) {
 		this->window = new RenderWindow(VideoMode(1920, 1080), "Adventure 1", Style::Fullscreen, settings);

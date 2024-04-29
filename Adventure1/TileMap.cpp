@@ -570,6 +570,9 @@ void TileMap::UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& e
 				if (this->map[x][y][this->layer][k]->GetType() == TileType::SPAWNER) // if is a spawner
 				{
 					EnemySpawner* tmp = dynamic_cast<EnemySpawner*>(this->map[x][y][this->layer][k]); // dynamic cast?
+
+
+
 					//cout << tmp->GetSpawned() << " " << tmp->GetEnemyCounter() << " " << tmp->GetEnemyAmount() << endl;
 					if (tmp)
 					{
@@ -588,9 +591,7 @@ void TileMap::UpdateTiles(Entity* entity, const float& deltaTime, EnemySystem& e
 								enemySystem.CreateEnemy(EnemyType::WRAITH, this->gridSizeF * x, this->gridSizeF * y, *tmp);
 							}
 							else if (tmp->GetEnemyType() == EnemyType::ZOMBIE)
-							{
-								//cout << "pass" << endl;
-								
+							{					
 								enemySystem.CreateEnemy(EnemyType::ZOMBIE, this->gridSizeF * x, this->gridSizeF * y, *tmp);
 							}
 							else if (tmp->GetEnemyType() == EnemyType::BOSS)

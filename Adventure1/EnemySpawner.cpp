@@ -36,6 +36,12 @@ const int& EnemySpawner::GetEnemyType() const
 	return this->enemyType;
 }
 
+const float& EnemySpawner::GetEnemyMaxDis() const
+{
+	// TODO: insert return statement here
+	return this->maxDis;
+}
+
 
 
 EnemySpawner::~EnemySpawner()

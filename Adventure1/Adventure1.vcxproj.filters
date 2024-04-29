@@ -198,6 +198,9 @@
     <ClCompile Include="Boss.cpp">
       <Filter>Entity\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="GameOverState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -337,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="Boss.h">
       <Filter>Entity\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverState.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,7 @@ namespace gui {
 			string text, Color idleColor, Color hoverColor, Color activeColor, Color idleTextColor,
 			Color hoverTextColor, Color activeTextColor, Color outlineIdleColor=Color::Transparent, 
 			Color outlineHoverColor = Color::Transparent,
-			Color outlineActiveColor = Color::Transparent,short unsigned id=0);
+			Color outlineActiveColor = Color::Transparent,short unsigned id=0,int characterSize=36);
 		~Button();
 
 		//look in cpp file

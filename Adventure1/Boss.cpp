@@ -19,7 +19,7 @@ Boss::Boss(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawner, 
 	this->SetPos(x, y);
 	this->InitAnimation();
 
-	this->follow = new AIFollow(*this, player);
+	this->follow = new AIFollow(*this, player, 150.f*sqrt(2));
 }
 
 Boss::~Boss()

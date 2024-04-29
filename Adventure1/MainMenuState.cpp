@@ -121,6 +121,7 @@ void MainMenuState::UpdateButton()
 
 	//new game
 	if (this->buttons["GAME"]->IsPressed()) {
+		this->states->push(new GameOverState(this->stateData));
 		this->states->push(new GameState(this->stateData));
 	}
 }

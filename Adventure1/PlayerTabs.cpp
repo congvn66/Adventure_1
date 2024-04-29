@@ -55,16 +55,51 @@ void PlayerTabs::ToggleTab(const int tabIndex)
 	}
 }
 
-void PlayerTabs::Update()
+void PlayerTabs::Update(const Vector2i& mousePosWindow)
 {
 	for (size_t i = 0; i < this->tabs.size(); i++)
 	{
 		if (this->tabs[i]->GetOpen())
 		{
-			this->tabs[i]->Update();
+			this->tabs[i]->Update(mousePosWindow);
+			if (this->player.GetAC()->attributePoint > 0)
+			{
+				if (this->tabs[i]->IsButtonPressed("vitality+") && this->GetKeyTime())
+				{
+					this->player.GetAC()->vitality++;
+					this->player.GetAC()->attributePoint--;
+					this->player.GetAC()->UpdateStats(false);
+				}
+				else if (this->tabs[i]->IsButtonPressed("strength+") && this->GetKeyTime())
+				{
+					this->player.GetAC()->strength++;
+					this->player.GetAC()->attributePoint--;
+					this->player.GetAC()->UpdateStats(false);
+				}
+				else if (this->tabs[i]->IsButtonPressed("agility+") && this->GetKeyTime())
+				{
+					this->player.GetAC()->agility++;
+					this->player.GetAC()->attributePoint--;
+					this->player.GetAC()->UpdateStats(false);
+				}
+				else if (this->tabs[i]->IsButtonPressed("intelligence+") && this->GetKeyTime())
+				{
+					this->player.GetAC()->agility++;
+					this->player.GetAC()->attributePoint--;
+					this->player.GetAC()->UpdateStats(false);
+				}
+			}
+			
 		}
 	}
 }
+
+Tab* PlayerTabs::GetCharTab()
+{
+	return this->tabs[0];
+}
+
+
 
 void PlayerTabs::Render(RenderTarget& target)
 {

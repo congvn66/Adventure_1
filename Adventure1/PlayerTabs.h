@@ -24,8 +24,9 @@ public:
 	bool GetKeyTime();
 	const bool TabsOpened();
 
+	Tab* GetCharTab();
 	void ToggleTab(const int tabIndex);
-	void Update();
+	void Update(const Vector2i& mousePosWindow);
 	void Render(RenderTarget& target);
 };
 

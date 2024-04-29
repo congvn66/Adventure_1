@@ -29,9 +29,13 @@ private:
     PlayerGUI* playerGUI;
     //Entity* test;
 
-    //pmenu
+
     Font font;
+    //pmenu
     PauseMenu* pauseMenu;
+    //game over
+
+
 
     //enemies
     EnemySystem *enemySystem;
@@ -49,6 +53,7 @@ private:
     void InitPlayer();
     void InitFont();
     void InitPauseMenu();
+
     void InitShader();
     void InitPlayerGUI();
     void InitTileMap();
@@ -64,6 +69,7 @@ public:
     void UpdateInput(const float& dt);
     void UpdatePlayerGUI(const float& deltaTime);
     void UpdatePauseMenuButton();
+
     void UpdateTileMap(const float& dt);
     void UpdatePlayerInput(const float& deltaTime);
     void UpdateCombat(Enemy* enemy, const int index, const float dt);

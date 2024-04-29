@@ -4,7 +4,7 @@
 gui::Button::Button(float x, float y, float width, float height, Font* font,
 	string text, Color idleColor, Color hoverColor, Color activeColor,Color idleTextColor,
 Color hoverTextColor,Color activeTextColor, Color outlineIdleColor,
-Color outlineHoverColor, Color outlineActiveColor, short unsigned id)
+Color outlineHoverColor, Color outlineActiveColor, short unsigned id, int characterSize)
 {
 	this->id = id;
 	//basic settings
@@ -17,7 +17,7 @@ Color outlineHoverColor, Color outlineActiveColor, short unsigned id)
 	this->text.setFont(*this->font);
 	this->text.setString(text);
 	this->text.setFillColor(Color::Black);
-	this->text.setCharacterSize(36);
+	this->text.setCharacterSize(characterSize);
 	this->text.setPosition(this->shape.getPosition().x +this->shape.getGlobalBounds().width/2.f - this->text.getGlobalBounds().width / 2.f
 		,this->shape.getPosition().y);
 

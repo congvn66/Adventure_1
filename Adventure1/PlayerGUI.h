@@ -38,14 +38,15 @@ public:
 	PlayerGUI(Player* player);
 	~PlayerGUI();
 
+	PlayerTabs* GetPlayerTabs();
 	const bool GetTabsOpen() const;
 	void ToggleCharacterTab();
 
-	void Update(const float& dt);
+	void Update(const float& dt, const Vector2i& mousePosWindow);
 	void UpdateExpBar();
 	void UpdateHpBar();
 	void UpdateLevelBar();
-	void UpdatePlayerTabs();
+	void UpdatePlayerTabs(const Vector2i& mousePosWindow);
 
 	void RenderLevelBar(RenderTarget& target);
 	void RenderExpBar(RenderTarget& target);

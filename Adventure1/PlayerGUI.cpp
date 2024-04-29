@@ -17,6 +17,11 @@ PlayerGUI::~PlayerGUI()
 	delete this->playerTabs;
 }
 
+PlayerTabs* PlayerGUI::GetPlayerTabs()
+{
+	return this->playerTabs;
+}
+
 const bool PlayerGUI::GetTabsOpen() const
 {
 	return this->playerTabs->TabsOpened();
@@ -87,12 +92,12 @@ void PlayerGUI::InitPlayerTab(Font& font, Player& player)
 {
 	this->playerTabs = new PlayerTabs(font, player);
 }
-void PlayerGUI::Update(const float& dt)
+void PlayerGUI::Update(const float& dt, const Vector2i& mousePosWindow)
 {
 	this->UpdateHpBar();
 	this->UpdateExpBar();
 	this->UpdateLevelBar();
-	this->UpdatePlayerTabs();
+	this->UpdatePlayerTabs(mousePosWindow);
 }
 void PlayerGUI::UpdateExpBar()
 {
@@ -115,9 +120,9 @@ void PlayerGUI::UpdateLevelBar()
 	this->levelString = to_string(this->player->GetAttributeComponent()->level);
 	this->levelText.setString(this->levelString);
 }
-void PlayerGUI::UpdatePlayerTabs()
+void PlayerGUI::UpdatePlayerTabs(const Vector2i& mousePosWindow)
 {
-	this->playerTabs->Update();
+	this->playerTabs->Update(mousePosWindow);
 }
 void PlayerGUI::RenderLevelBar(RenderTarget& target)
 {

@@ -36,7 +36,7 @@ void GameState::InitFont()
 void GameState::InitPauseMenu()
 {
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
-	this->pauseMenu->AddButton("QUIT", 800.f, "Quit");
+	this->pauseMenu->AddButton("RESIGN", 800.f, "Resign");
 }
 void GameState::InitShader()
 {
@@ -52,6 +52,10 @@ void GameState::InitShader()
 void GameState::InitPlayerGUI()
 {
 	this->playerGUI = new PlayerGUI(this->player);
+	this->playerGUI->GetPlayerTabs()->GetCharTab()->AddButton("vitality+", 600.f, "VITALITY+");
+	this->playerGUI->GetPlayerTabs()->GetCharTab()->AddButton("strength+", 660.f, "STRENGTH+");
+	this->playerGUI->GetPlayerTabs()->GetCharTab()->AddButton("agility+", 720.f, "AGILITY+");
+	this->playerGUI->GetPlayerTabs()->GetCharTab()->AddButton("intelligence+", 780.f, "INTELLIGENCE+");
 }
 void GameState::InitEnemySystem()
 {
@@ -159,6 +163,11 @@ void GameState::Update(const float& deltaTime)
 		
 		//text tag
 		this->tts->Update(deltaTime);
+
+		if (this->player->GetAC()->hp == 0)
+		{
+			this->EndState();
+		}
 		
 	}
 	else { //when in pause menu
@@ -261,7 +270,7 @@ void GameState::UpdateInput(const float& dt)
 }
 void GameState::UpdatePlayerGUI(const float& deltaTime)
 {
-	this->playerGUI->Update(deltaTime);
+	this->playerGUI->Update(deltaTime, this->mousePosWindow);
 
 	if (Keyboard::isKeyPressed(Keyboard::Key(this->keybinds.at("OPEN_CHAR_TAB"))) && this->GetKeyTime())
 	{
@@ -271,10 +280,11 @@ void GameState::UpdatePlayerGUI(const float& deltaTime)
 void GameState::UpdatePauseMenuButton()
 {
 	//in pause menu
-	if (this->pauseMenu->IsButtonPressed("QUIT")) {
+	if (this->pauseMenu->IsButtonPressed("RESIGN")) {
 		this->EndState();
 	}
 }
+
 void GameState::UpdateTileMap(const float& dt)
 {
 	this->tileMap->UpdateWorldBoundCollision(this->player, dt);
@@ -346,7 +356,7 @@ void GameState::Render(RenderTarget* target)
 	//this->test->Render(this->renderTexture, nullptr, true);
 
 	//pmenu
-	if (this->pause) {
+	if (this->pause && this->player->GetAC()->hp!=0) {
 		//this->renderTexture.setView(this->renderTexture.getDefaultView());
 		this->pauseMenu->Render(this->renderTexture);
 	}

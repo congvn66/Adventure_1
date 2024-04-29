@@ -1,17 +1,11 @@
 #pragma once
 #include "State.h"
 #include "Gui.h"
-#include "GameState.h"
-#include "EditorState.h"
-#include "SettingState.h"
-#include "GameOverState.h"
-
-class MainMenuState :
+class GameOverState :
     public State
 {
 private:
     //menu
-    RectangleShape background;
 
     //button elements
     Font font;
@@ -20,14 +14,14 @@ private:
 
     //init
     void InitVal();
-    void InitBackground();
+
     void InitKeybinds();
     void InitFont();
     void InitButton();
 public:
     //constructor, deconstructor
-    MainMenuState(StateData* stateData);
-    ~MainMenuState();
+    GameOverState(StateData* stateData);
+    ~GameOverState();
 
     //just look in cpp file.
     void Update(const float& deltaTime);

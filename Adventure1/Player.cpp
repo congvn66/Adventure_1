@@ -47,11 +47,16 @@ const string Player::ToStringCharTab() const
 		<< "Accuracy: " << this->attributeComponent->accuracy << endl
 		<< "Agility: " << this->attributeComponent->agility << endl
 		<< "Dexterity: " << this->attributeComponent->dexterity << endl
+		<< "Vitality: " << this->attributeComponent->vitality << endl
+		<< "Strength: " << this->attributeComponent->strength << endl
 		<< "Dodge: " << this->attributeComponent->dodge << endl
 		<< "Intelligence: " << this->attributeComponent->intelligence << endl
 		<< "HP max: " << this->attributeComponent->hpMax << endl
-		<< endl << endl
-		<<"Attribute Point(s): " << this->attributeComponent->attributePoint << endl;
+		<< "DMG max: " << this->attributeComponent->damageMax << endl
+		<< "DMG min: " << this->attributeComponent->damageMin << endl
+		<< "Speed: " << this->attributeComponent->movementSpeed << endl
+		<< endl
+		<<"Attribute Point(s): " << this->attributeComponent->attributePoint << endl << endl;
 	return ss.str();
 }
 

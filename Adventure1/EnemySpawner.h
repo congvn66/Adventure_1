@@ -29,6 +29,7 @@ public:
 	const int& GetEnemyCounter() const;
 	const int& GetEnemyAmount() const;
 	const int& GetEnemyType() const;
+	const float& GetEnemyMaxDis() const;
 	void Render(RenderTarget& target, const Vector2f playerPos = Vector2f(), Shader* shader = nullptr);
 	const string GetAsString() const;
 };

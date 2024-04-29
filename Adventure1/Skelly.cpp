@@ -16,7 +16,7 @@ Skelly::Skelly(float x, float y, Texture& textureSheet, EnemySpawner& enemySpawn
 	this->SetPos(x, y);
 	this->InitAnimation();
 
-	this->follow = new AIFollow(*this, player);
+	this->follow = new AIFollow(*this, player,500.f);
 }
 
 Skelly::~Skelly()

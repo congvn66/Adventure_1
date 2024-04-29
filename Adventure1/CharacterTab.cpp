@@ -17,6 +17,7 @@ CharacterTab::CharacterTab(Font& font, Player& player)
 	//background
 	this->tabBack.setFillColor(Color(20, 20, 20, 250));
 	this->tabBack.setSize(Vector2f(900.f, 1080.f));
+
 	
 
 	this->InitText();
@@ -24,13 +25,18 @@ CharacterTab::CharacterTab(Font& font, Player& player)
 
 CharacterTab::~CharacterTab()
 {
+	
 }
 
-void CharacterTab::Update()
+void CharacterTab::Update(const Vector2i& mousePosWindow)
 {
 	if (!this->hidden)
 	{
 		this->info.setString(this->player.ToStringCharTab());
+
+		for (auto& i : this->buttons) {
+			i.second->Update(mousePosWindow);
+		}
 	}
 }
 
@@ -40,6 +46,10 @@ void CharacterTab::Render(RenderTarget& target)
 	{
 		target.draw(this->tabBack);
 		target.draw(this->info);
+		target.draw(container);
+		for (auto& i : this->buttons) {
+			i.second->Render(target);
+		}
 	}
 }
 
