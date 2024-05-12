@@ -9,3 +9,6 @@ Adventure 1:
   + Arrow Up & Down: chỉnh loại tile (hiện tại gồm có tile cơ bản và tile "nằm ở trên").
   + Phím C: bật tắt va chạm cho tile.
   + Phím Z: Bật tắt Tile lock: chỉ cho phép đặt 1 tile ở 1 vị trí.
+
+
+link tải game: https://drive.google.com/drive/folders/14MWaJwHA1MSGKZwJL44RvJXtRCIjm-XO?usp=sharing
